@@ -138,35 +138,13 @@ class MCPRepository(private val context: Context) {
     }
 
     /**
-     * 扫描文件系统中实际安装的插件（辅助验证）
-     */
-    private fun scanPhysicallyInstalledPlugins(): Set<String> {
-        val installedIds = mutableSetOf<String>()
-        try {
-            if (pluginsBaseDir.exists() && pluginsBaseDir.isDirectory) {
-                pluginsBaseDir.listFiles()?.forEach { pluginDir ->
-                    if (pluginDir.isDirectory && isPluginPhysicallyInstalled(pluginDir.name)) {
-                        installedIds.add(pluginDir.name)
-                    }
-                }
-            }
-            AppLogger.d(TAG, "文件系统扫描到已安装插件: ${installedIds.size}")
-        } catch (e: Exception) {
-            AppLogger.e(TAG, "扫描文件系统插件失败", e)
-        }
-        return installedIds
-    }
-
-    /**
-     * 判断插件是否需要物理安装（npx/uvx/uv/remote 类型不需要）
+     * 判断插件是否需要物理安装（仅远程MCP支持，都不需要物理安装）
      */
     private fun needsPhysicalInstallation(serverId: String): Boolean {
-        val serverConfig = mcpLocalServer.getMCPServer(serverId)
-        val command = serverConfig?.command?.lowercase() ?: return true
-        
-        return commandNeedsPhysicalInstallation(command)
+        // 远程MCP不需要物理安装
+        return false
     }
-    
+
     /**
      * 判断命令类型是否需要物理安装
      * @param command 命令字符串（小写）
