@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.filled.BuildCircle
 import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.Security
-import androidx.compose.material.icons.rounded.Terminal
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -37,16 +36,12 @@ import com.ai.assistance.operit.ui.features.toolbox.screens.ffmpegtoolbox.FFmpeg
 import com.ai.assistance.operit.ui.features.toolbox.screens.filemanager.FileManagerScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.logcat.LogcatScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.shellexecutor.ShellExecutorScreen
-import com.ai.assistance.operit.terminal.main.TerminalScreen as TerminalViewScreen
-// import com.ai.assistance.operit.ui.features.toolbox.screens.terminalconfig.TerminalAutoConfigScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.uidebugger.UIDebuggerScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import android.content.Context
 import com.ai.assistance.operit.R
 import androidx.compose.ui.res.stringResource
-import com.ai.assistance.operit.terminal.TerminalManager
-import com.ai.assistance.operit.terminal.rememberTerminalEnv
 
 // 工具类别
 enum class ToolCategory {
@@ -79,7 +74,6 @@ data class Tool(
 fun ToolboxScreen(
         navController: NavController,
         onFileManagerSelected: () -> Unit,
-        onTerminalSelected: () -> Unit,
         onAppPermissionsSelected: () -> Unit,
         onUIDebuggerSelected: () -> Unit,
         onFFmpegToolboxSelected: () -> Unit,
@@ -160,13 +154,6 @@ fun ToolboxScreen(
                                 description = stringResource(R.string.tool_default_assistant_guide_desc),
                                 category = ToolCategory.SYSTEM,
                                 onClick = onDefaultAssistantGuideSelected
-                        ),
-                        Tool(
-                                name = stringResource(R.string.tool_terminal),
-                                icon = Icons.Rounded.Terminal,
-                                description = stringResource(R.string.tool_terminal_desc),
-                                category = ToolCategory.DEVELOPMENT,
-                                onClick = onTerminalSelected
                         ),
                         Tool(
                                 name = stringResource(R.string.tool_ui_debugger),
@@ -473,34 +460,6 @@ fun FileManagerToolScreen(navController: NavController) {
         CustomScaffold() { paddingValues ->
                 Box(modifier = Modifier.padding(paddingValues)) {
                         FileManagerScreen(navController = navController)
-                }
-        }
-}
-
-/** 显示终端工具屏幕 */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TerminalToolScreen(navController: NavController, forceShowSetup: Boolean = false) {
-        val context = LocalContext.current
-        val terminalManager = remember { TerminalManager.getInstance(context) }
-        val terminalEnv = rememberTerminalEnv(terminalManager = terminalManager, forceShowSetup = forceShowSetup)
-        CustomScaffold() { paddingValues ->
-                Box(modifier = Modifier.padding(paddingValues)) { TerminalViewScreen(env = terminalEnv) }
-        }
-}
-
-/** 显示终端自动配置工具屏幕 */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TerminalAutoConfigToolScreen(navController: NavController) {
-        CustomScaffold() { paddingValues ->
-                Box(modifier = Modifier.padding(paddingValues)) {
-                        // TODO: 需要重构以适配新的终端架构
-                        // TerminalAutoConfigScreen(navController = navController)
-                        Text(
-                            text = "终端自动配置功能正在重构中...",
-                            modifier = Modifier.padding(16.dp)
-                        )
                 }
         }
 }
