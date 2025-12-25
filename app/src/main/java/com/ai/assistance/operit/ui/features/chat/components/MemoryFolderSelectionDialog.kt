@@ -254,8 +254,7 @@ private fun FolderTreeItem(
     onToggleExpanded: () -> Unit
 ) {
     val context = LocalContext.current
-    val spacingValue = AppSpacing.medium + AppSizes.strokeMedium
-    val indent = (node.level * spacingValue).dp
+    val indent = (node.level * (AppSpacing.medium + AppSizes.strokeMedium).value).dp
 
     Row(
         modifier = Modifier
