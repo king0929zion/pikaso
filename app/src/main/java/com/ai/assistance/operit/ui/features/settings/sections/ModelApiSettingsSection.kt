@@ -787,19 +787,19 @@ fun ModelApiSettingsSection(
                                 },
                                 modifier = Modifier.height(36.dp),
                                 enabled = selectedModels.value.isNotEmpty()
-                        ) { 
+                        ) {
                             Text(
-                                stringResource(R.string.confirm_action) + 
+                                stringResource(R.string.confirm_action) +
                                     if (selectedModels.value.isNotEmpty()) " (${selectedModels.value.size})" else "",
                                 fontSize = 14.sp
-                            ) 
+                            )
                         }
                     }
                 }
             }
-        }
-    }
-}
+        }  // End of Column
+    }  // End of Card
+}  // End of ModelApiSettingsSection function
 
 private fun getProviderDisplayName(provider: ApiProviderType, context: android.content.Context): String {
     return when (provider) {
