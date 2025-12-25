@@ -136,18 +136,15 @@ fun MCPInstallProgressDialog(
                                             textAlign = TextAlign.Center
                                     )
                                     Spacer(modifier = Modifier.height(AppSpacing.medium))
-                                        LinearProgressIndicator(
-                                                progress = { progress.progress / 100f },
-                                                modifier = Modifier.fillMaxWidth()
-                                        )
-                                        Text(
-                                                "${progress.progress}%",
-                                                style = MaterialTheme.typography.bodyMedium,
-                                                modifier = Modifier.padding(top = AppSpacing.extraSmall)
-                                        )
-                                    } else {
-                                        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                                    }
+                                    LinearProgressIndicator(
+                                            progress = { progress.progress / 100f },
+                                            modifier = Modifier.fillMaxWidth()
+                                    )
+                                    Text(
+                                            "${progress.progress}%",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            modifier = Modifier.padding(top = AppSpacing.extraSmall)
+                                    )
                                 }
                                 is InstallProgress.Extracting -> {
                                     val actionText = if (operationType == "卸载") "正在删除文件..." else "正在解压文件..."
@@ -157,18 +154,15 @@ fun MCPInstallProgressDialog(
                                             textAlign = TextAlign.Center
                                     )
                                     Spacer(modifier = Modifier.height(AppSpacing.medium))
-                                        LinearProgressIndicator(
-                                                progress = { progress.progress / 100f },
-                                                modifier = Modifier.fillMaxWidth()
-                                        )
-                                        Text(
-                                                "${progress.progress}%",
-                                                style = MaterialTheme.typography.bodyMedium,
-                                                modifier = Modifier.padding(top = AppSpacing.extraSmall)
-                                        )
-                                    } else {
-                                        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                                    }
+                                    LinearProgressIndicator(
+                                            progress = { progress.progress / 100f },
+                                            modifier = Modifier.fillMaxWidth()
+                                    )
+                                    Text(
+                                            "${progress.progress}%",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            modifier = Modifier.padding(top = AppSpacing.extraSmall)
+                                    )
                                 }
                                 InstallProgress.Finished -> {
                                     Text(
