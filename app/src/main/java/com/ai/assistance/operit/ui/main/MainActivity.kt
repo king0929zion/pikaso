@@ -39,7 +39,6 @@ import com.ai.assistance.operit.ui.common.NavItem
 import com.ai.assistance.operit.ui.features.agreement.screens.AgreementScreen
 import com.ai.assistance.operit.ui.features.migration.screens.MigrationScreen
 import com.ai.assistance.operit.ui.features.permission.screens.PermissionGuideScreen
-import com.ai.assistance.operit.ui.features.startup.screens.PluginLoadingState
 import com.ai.assistance.operit.ui.theme.OperitTheme
 import com.ai.assistance.operit.ui.common.displays.VirtualDisplayOverlay
 import com.ai.assistance.operit.util.AnrMonitor
@@ -72,9 +71,6 @@ class MainActivity : ComponentActivity() {
 
     // ======== 导航状态 ========
     private var showPreferencesGuide by mutableStateOf(false)
-
-    // ======== MCP插件状态 ========
-    private val pluginLoadingState = PluginLoadingState()
 
     // ======== 数据迁移状态 ========
     private lateinit var migrationManager: ChatHistoryMigrationManager
@@ -149,15 +145,6 @@ class MainActivity : ComponentActivity() {
         anrMonitor.start()
         setupPreferencesListener()
         configureDisplaySettings()
-
-        // 设置上下文以便获取插件元数据
-        pluginLoadingState.setAppContext(applicationContext)
-
-        // 设置跳过加载的回调
-        pluginLoadingState.setOnSkipCallback {
-            AppLogger.d(TAG, "用户跳过了插件加载过程")
-            Toast.makeText(this, getString(R.string.plugin_loading_skipped), Toast.LENGTH_SHORT).show()
-        }
 
         // 设置初始界面 - 显示加载占位符
         setAppContent()
@@ -305,14 +292,8 @@ class MainActivity : ComponentActivity() {
 
     // ======== 启动插件加载 ========
     private fun startPluginLoading() {
-        // 显示插件加载界面
-        pluginLoadingState.show()
-
-        // 启动超时检测（30秒）
-        pluginLoadingState.startTimeoutCheck(30000L, lifecycleScope)
-
-        // 初始化MCP服务器并启动插件
-        pluginLoadingState.initializeMCPServer(applicationContext, lifecycleScope)
+        // MCP插件加载已移除（仅保留远程MCP支持）
+        AppLogger.d(TAG, "本地MCP插件加载已移除，仅支持远程MCP插件")
     }
 
     // ======== 处理待处理的分享文件 ========
@@ -372,9 +353,6 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         AppLogger.d(TAG, "onDestroy called")
 
-        // 确保隐藏加载界面
-        pluginLoadingState.hide()
-
         // 主界面销毁时，确保关闭虚拟屏幕 Overlay 并断开 Shower WebSocket 连接
         try {
             VirtualDisplayOverlay.getInstance(applicationContext).hide()
@@ -388,9 +366,6 @@ class MainActivity : ComponentActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         AppLogger.d(TAG, "onConfigurationChanged: new orientation=${newConfig.orientation}, last orientation=${lastOrientation}")
-
-        // 屏幕方向变化时，确保加载界面不可见
-        pluginLoadingState.hide()
 
         // 仅当方向确实发生变化时才处理
         if (newConfig.orientation != lastOrientation) {
