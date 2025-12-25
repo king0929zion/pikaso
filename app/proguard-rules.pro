@@ -81,3 +81,14 @@
 # Reactor BlockHound integration with Netty
 -dontwarn reactor.blockhound.integration.BlockHoundIntegration
 -dontwarn io.netty.util.internal.Hidden$NettyBlockHoundIntegration
+
+# PDFBox JPEG2000 decoder (optional dependency)
+-dontwarn com.gemalto.jp2.**
+
+# Reactor Micrometer context (optional dependency)
+-dontwarn io.micrometer.context.**
+
+# Java annotation processor classes (compile-time only)
+-dontwarn javax.lang.model.**
+-dontwarn javax.annotation.processing.**
+-dontwarn autovalue.shaded.com.squareup.javapoet.**
