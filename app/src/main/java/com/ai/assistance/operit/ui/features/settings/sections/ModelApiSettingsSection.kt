@@ -517,11 +517,9 @@ fun ModelApiSettingsSection(
             ) {
                 Text(stringResource(R.string.save_api_settings))
             }
-        }
-    }
 
-    // 模型列表对话框
-    if (showModelsDialog) {
+            // 模型列表对话框
+            if (showModelsDialog) {
         var searchQuery by remember { mutableStateOf("") }
         // 维护已选中的模型集合
         val selectedModels = remember {
