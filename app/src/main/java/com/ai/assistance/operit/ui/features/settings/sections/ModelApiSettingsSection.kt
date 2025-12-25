@@ -445,7 +445,6 @@ fun ModelApiSettingsSection(
                                     AppLogger.d(TAG, "API端点或密钥为空")
                                     showNotification(fillEndpointKeyText)
                                 }
-                                }
                             }
                         },
                         modifier = Modifier.size(48.dp),
@@ -453,7 +452,7 @@ fun ModelApiSettingsSection(
                                 IconButtonDefaults.iconButtonColors(
                                         contentColor = MaterialTheme.colorScheme.primary
                                 ),
-                                enabled = if (isMnnProvider) true else !isUsingDefaultApiKey
+                                enabled = !isUsingDefaultApiKey
                 ) {
                     if (isLoadingModels) {
                         CircularProgressIndicator(
@@ -465,7 +464,7 @@ fun ModelApiSettingsSection(
                                 imageVector = Icons.AutoMirrored.Filled.FormatListBulleted,
                                 contentDescription = stringResource(R.string.get_models_list),
                                 tint =
-                                                if (!isMnnProvider && isUsingDefaultApiKey)
+                                                if (isUsingDefaultApiKey)
                                                         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                                                 else MaterialTheme.colorScheme.primary
                                 )
