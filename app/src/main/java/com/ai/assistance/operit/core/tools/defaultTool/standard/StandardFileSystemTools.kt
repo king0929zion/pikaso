@@ -1751,15 +1751,16 @@ open class StandardFileSystemTools(protected val context: Context) {
         }
 
         if (isLinuxEnvironment(srcEnv)) {
-            return linuxTools.copyFile(
-                AITool(
-                    name = tool.name,
-                    parameters = listOf(
-                        ToolParameter("source", sourcePath),
-                        ToolParameter("destination", destPath),
-                        ToolParameter("recursive", recursive.toString())
-                    )
-                )
+            return ToolResult(
+                toolName = tool.name,
+                success = false,
+                result = FileOperationData(
+                    operation = "copy",
+                    path = sourcePath,
+                    successful = false,
+                    details = "Linux environment is not supported. Please use Android environment only."
+                ),
+                error = "Linux environment is not supported"
             )
         }
         PathValidator.validateAndroidPath(sourcePath, tool.name, "source")?.let { return it }
