@@ -369,7 +369,6 @@ fun ModelApiSettingsSection(
                         visualTransformation = if (isApiKeyFocused || apiKeyInput.isEmpty()) VisualTransformation.None else ApiKeyVisualTransformation(),
                         interactionSource = apiKeyInteractionSource
                 )
-            }
 
             SettingsTextField(
                     title = stringResource(R.string.model_name),
@@ -797,6 +796,8 @@ fun ModelApiSettingsSection(
                     }
                 }
             }
+        }  // End Dialog
+        }  // End if (showModelsDialog)
         }  // End of Column
     }  // End of Card
 }  // End of ModelApiSettingsSection function
