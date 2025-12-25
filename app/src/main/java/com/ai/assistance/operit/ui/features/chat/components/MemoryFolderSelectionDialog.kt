@@ -26,6 +26,8 @@ import com.ai.assistance.operit.data.repository.MemoryRepository
 import com.ai.assistance.operit.R
 import com.ai.assistance.operit.ui.common.rememberLocal
 import com.ai.assistance.operit.ui.features.memory.screens.FolderExpandedState
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -104,13 +106,13 @@ fun MemoryFolderSelectionDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp)
+                    .height(AppSizes.floatingMaxWidth * 25)
             ) {
                 Text(
                     text = context.getString(R.string.select_memory_folder_description),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = AppSpacing.medium)
                 )
                 
                 when {
@@ -252,12 +254,12 @@ private fun FolderTreeItem(
     onToggleExpanded: () -> Unit
 ) {
     val context = LocalContext.current
-    val indent = (node.level * 20).dp
-    
+    val indent = (node.level * (AppSpacing.medium + AppSizes.strokeMedium)).dp
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp, horizontal = 8.dp)
+            .padding(vertical = AppSizes.strokeMedium, horizontal = AppSizes.strokeMedium)
             .padding(start = indent),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -265,7 +267,7 @@ private fun FolderTreeItem(
         if (hasChildren) {
             IconButton(
                 onClick = onToggleExpanded,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(AppSpacing.medium + AppSizes.avatarSmall)
             ) {
                 Icon(
                     imageVector = if (isExpanded) {
@@ -275,25 +277,25 @@ private fun FolderTreeItem(
                     },
                     contentDescription = if (isExpanded) context.getString(R.string.collapse) else context.getString(R.string.expand),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
                 )
             }
         } else {
             // 占位符，保持对齐
-            Spacer(modifier = Modifier.width(24.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.medium + AppSizes.avatarSmall))
         }
-        
-        Spacer(modifier = Modifier.width(4.dp))
-        
+
+        Spacer(modifier = Modifier.width(AppSizes.strokeThin))
+
         // 复选框
         Checkbox(
             checked = isSelected,
             onCheckedChange = { onToggleSelection() },
-            modifier = Modifier.size(20.dp)
+            modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
         )
-        
-        Spacer(modifier = Modifier.width(8.dp))
-        
+
+        Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
+
         // 文件夹图标
         Icon(
             imageVector = if (isExpanded && hasChildren) {
@@ -307,11 +309,11 @@ private fun FolderTreeItem(
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant
             },
-            modifier = Modifier.size(20.dp)
+            modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
         )
-        
-        Spacer(modifier = Modifier.width(8.dp))
-        
+
+        Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
+
         // 文件夹名称（可点击区域）
         Text(
             text = node.name,
@@ -324,7 +326,7 @@ private fun FolderTreeItem(
             modifier = Modifier
                 .weight(1f)
                 .clickable { onToggleSelection() }
-                .padding(vertical = 8.dp)
+                .padding(vertical = AppSizes.strokeMedium)
         )
     }
 }

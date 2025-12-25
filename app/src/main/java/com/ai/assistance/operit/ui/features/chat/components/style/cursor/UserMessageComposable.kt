@@ -63,6 +63,8 @@ import androidx.compose.ui.window.Dialog
 import com.ai.assistance.operit.R
 import com.ai.assistance.operit.data.model.ChatMessage
 import com.ai.assistance.operit.util.ImagePoolManager
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -98,28 +100,28 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
 
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 16.dp, vertical = 4.dp)) {
+        .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeThin)) {
         // Display reply info above attachments if present
         replyInfo?.let { reply ->
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 4.dp),
+                    .padding(bottom = AppSizes.strokeThin),
                 color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
             ) {
                 Row(
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(AppSizes.strokeMedium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Reply,
                         contentDescription = context.getString(R.string.reply),
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(12.dp)
+                        modifier = Modifier.size(AppSpacing.extraSmall)
                     )
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(AppSizes.strokeThin))
 
                     Text(
                         text = "${reply.sender}: ${reply.content}",
@@ -139,7 +141,7 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 4.dp),
+                    .padding(bottom = AppSizes.strokeThin),
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -164,7 +166,7 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
                             }
                         }
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(AppSizes.strokeThin))
                 }
 
                 // Display other trailing attachments
@@ -209,7 +211,7 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
                             }
                         }
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(AppSizes.strokeThin))
                 }
             }
         }
@@ -219,17 +221,17 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
             modifier =
             Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = backgroundColor),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
         ) {
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)) {
+                .padding(AppSpacing.medium)) {
                 // 用户消息标题
                 Text(
                     text = "Prompt",
                     style = MaterialTheme.typography.labelSmall,
                     color = textColor.copy(alpha = 0.7f),
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = AppSizes.strokeMedium)
                 )
 
                 // Display main text content with inline attachments
@@ -248,12 +250,12 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 400.dp),
-                shape = RoundedCornerShape(8.dp),
+                    .heightIn(max = AppSizes.floatingMaxWidth * 25),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
                 color = MaterialTheme.colorScheme.surface,
-                tonalElevation = 4.dp
+                tonalElevation = AppSizes.elevationMedium
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(AppSpacing.medium)) {
                     // 头部
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -264,7 +266,7 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
                             verticalAlignment =
                             Alignment.CenterVertically,
                             horizontalArrangement =
-                            Arrangement.spacedBy(8.dp)
+                            Arrangement.spacedBy(AppSizes.strokeMedium)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Code,
@@ -299,7 +301,7 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
                         }
                     }
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSizes.strokeMedium))
 
                     // 内容区域
                     Box(
@@ -311,17 +313,17 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
                             )
                             .weight(1f, fill = false)
                             .border(
-                                width = 1.dp,
+                                width = AppSizes.strokeThin,
                                 color =
                                 MaterialTheme
                                     .colorScheme
                                     .surfaceVariant,
                                 shape =
                                 RoundedCornerShape(
-                                    4.dp
+                                    AppSizes.strokeThin
                                 )
                             )
-                            .padding(8.dp)
+                            .padding(AppSizes.strokeMedium)
                             .verticalScroll(
                                 rememberScrollState()
                             )
@@ -333,7 +335,7 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
 
                     // 复制按钮
                     Button(
@@ -360,11 +362,11 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(AppSizes.floatingBallSize),
                 color = MaterialTheme.colorScheme.surface,
-                tonalElevation = 4.dp
+                tonalElevation = AppSizes.elevationMedium
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(AppSpacing.medium)) {
                     // 头部
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -373,7 +375,7 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(AppSizes.strokeMedium)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Image,
@@ -396,14 +398,14 @@ fun UserMessageComposable(message: ChatMessage, backgroundColor: Color, textColo
                         }
                     }
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSizes.strokeMedium))
 
                     // 图片显示区域
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .heightIn(max = 500.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .heightIn(max = AppSizes.avatarExtraLarge * 6)
+                            .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
                     ) {
                         selectedImageBitmap.value?.let { bitmap ->
                             Image(

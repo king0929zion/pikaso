@@ -408,7 +408,7 @@ private fun TapIndicator(
     // 波纹扩散并消失
     val radius = lerp(AppSpacing.small, AppSizes.avatarMedium - 8.dp, p)
     val alpha = (1f - p).coerceIn(0f, 1f)
-    val strokeWidth = lerp(AppSizes.strokeMedium + 4.dp, AppSizes.none, p)
+    val strokeWidth = lerp(AppSizes.strokeMedium + 4.dp, AppSpacing.none, p)
 
     Canvas(modifier = Modifier.fillMaxSize()) {
         val centerX = x.toFloat()
@@ -527,8 +527,8 @@ private fun TextInputIndicator(
         with(density) {
             val centerX = x.toFloat()
             val centerY = y.toFloat() - (AppSizes.avatarExtraLarge - 12.dp).toPx() // 稍微上移一点
-            val bubbleWidth = AppSizes.floatingMaxWidth - 180.dp.toPx()
-            val bubbleHeight = AppSizes.buttonMinHeightSmall + 2.dp.toPx()
+            val bubbleWidth = (AppSizes.floatingMaxWidth - 180.dp).toPx()
+            val bubbleHeight = (AppSizes.buttonMinHeightSmall + 2.dp).toPx()
             val cornerRadius = AppSizes.cornerRadiusMedium.toPx()
             
             // 1. 绘制背景阴影提升可见性
@@ -581,7 +581,7 @@ private fun TextInputIndicator(
         modifier = Modifier.fillMaxSize()
     ) {
         with(density) {
-            val bubbleWidth = AppSizes.floatingMaxWidth - 180.dp.toPx()
+            val bubbleWidth = (AppSizes.floatingMaxWidth - 180.dp).toPx()
             val targetY = y.toFloat() - (AppSizes.floatingMaxWidth - 15.dp).toPx()
             
             // 使用精确的像素计算，然后转换为dp

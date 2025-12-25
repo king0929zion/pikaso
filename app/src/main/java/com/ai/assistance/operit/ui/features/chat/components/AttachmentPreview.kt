@@ -31,6 +31,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.R
 import com.ai.assistance.operit.data.model.AttachmentInfo
 import com.ai.assistance.operit.ui.features.chat.attachments.AttachmentUtils
@@ -51,10 +53,10 @@ fun AttachmentPreview(
                 text = context.getString(R.string.attachments_count, attachments.size),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                modifier = Modifier.padding(horizontal = AppSpacing.medium, vertical = AppSizes.none)
         )
 
-        LazyRow(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
+        LazyRow(modifier = Modifier.fillMaxWidth().padding(horizontal = AppSpacing.extraSmall, vertical = AppSizes.none)) {
             items(attachments) { attachment ->
                 AttachmentItem(
                         attachment = attachment,
@@ -62,7 +64,7 @@ fun AttachmentPreview(
                         onInsert = { onInsertAttachment(attachment) }
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
             }
         }
     }
@@ -81,25 +83,25 @@ private fun AttachmentItem(attachment: AttachmentInfo, onRemove: () -> Unit, onI
 
     Box(
             modifier =
-                    Modifier.clip(RoundedCornerShape(8.dp))
+                    Modifier.clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
                             .border(
-                                    width = 1.dp,
+                                    width = AppSizes.strokeThin,
                                     color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-                                    shape = RoundedCornerShape(8.dp)
+                                    shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
                             )
                             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
                             .clickable(onClick = onInsert)
     ) {
-        Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.padding(AppSpacing.extraSmall), verticalAlignment = Alignment.CenterVertically) {
             // Icon based on file type
             Icon(
                     imageVector = icon,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
             // File info
             Column {
@@ -119,15 +121,15 @@ private fun AttachmentItem(attachment: AttachmentInfo, onRemove: () -> Unit, onI
                 }
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
             // Remove button
-            IconButton(onClick = onRemove, modifier = Modifier.size(24.dp)) {
+            IconButton(onClick = onRemove, modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)) {
                 Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Remove attachment",
                         tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
                 )
             }
         }

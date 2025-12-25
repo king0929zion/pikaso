@@ -18,6 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.ai.assistance.operit.data.model.ChatMessage
 import com.ai.assistance.operit.ui.common.markdown.StreamMarkdownRenderer
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.ui.features.chat.components.part.CustomXmlRenderer
 import com.ai.assistance.operit.ui.features.chat.components.LinkPreviewDialog
 import com.ai.assistance.operit.util.markdown.toCharStream
@@ -88,12 +90,12 @@ fun AiMessageComposable(
     }
 
     // 移除Card背景，使用直接的Column布局
-    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp)) {
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = AppSizes.none)) {
         // 构建标题 - 分左右两部分显示
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                .padding(start = AppSpacing.medium, end = AppSpacing.medium, bottom = AppSizes.strokeMedium),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -103,18 +105,18 @@ fun AiMessageComposable(
                 style = MaterialTheme.typography.labelSmall,
                 color = textColor.copy(alpha = 0.7f)
             )
-            
+
             // 右侧：详细信息（角色名、模型信息）
             val detailText = buildString {
                 // 根据用户设置显示角色名称
                 if (showRoleName && message.roleName.isNotEmpty()) {
                     append(message.roleName)
                 }
-                
+
                 // 根据用户设置显示模型信息
                 val showModel = showModelName && message.modelName.isNotEmpty()
                 val showProvider = showModelProvider && message.provider.isNotEmpty()
-                
+
                 if (showModel && showProvider) {
                     if (isNotEmpty()) append(" | ")
                     append("${message.modelName} by ${message.provider}")
@@ -126,7 +128,7 @@ fun AiMessageComposable(
                     append(message.provider)
                 }
             }
-            
+
             if (detailText.isNotEmpty()) {
                 Text(
                     text = detailText,

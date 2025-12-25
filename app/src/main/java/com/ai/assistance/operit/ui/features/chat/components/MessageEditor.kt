@@ -47,6 +47,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 /**
  * 消息编辑器组件，用于编辑包含XML标签的消息
@@ -131,12 +133,12 @@ fun MessageEditor(
     ) {
         Surface(
             modifier = Modifier
-                .widthIn(max = 520.dp)
+                .widthIn(max = AppSizes.floatingMaxWidth * 13)
                 .fillMaxWidth(0.9f)
-                .shadow(elevation = 8.dp, shape = RoundedCornerShape(20.dp)),
-            shape = RoundedCornerShape(20.dp),
+                .shadow(elevation = AppSizes.elevationSmall * 4, shape = RoundedCornerShape(AppSizes.floatingBallSize)),
+            shape = RoundedCornerShape(AppSizes.floatingBallSize),
             color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 1.dp
+            tonalElevation = AppSizes.elevationSmall / 2
         ) {
             Column {
                 // Header
@@ -144,7 +146,7 @@ fun MessageEditor(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                        .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -163,7 +165,7 @@ fun MessageEditor(
                         IconButton(
                             onClick = onCancel,
                             modifier = Modifier
-                                .size(32.dp)
+                                .size(AppSpacing.medium + AppSizes.avatarSmall)
                                 .clip(CircleShape)
                         ) {
                             Icon(
@@ -180,7 +182,7 @@ fun MessageEditor(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f, fill = false)
-                        .heightIn(max = 450.dp)
+                        .heightIn(max = AppSizes.floatingMaxWidth * 28)
                 ) {
                     if (isRawEditMode) {
                         OutlinedTextField(
@@ -188,12 +190,12 @@ fun MessageEditor(
                             onValueChange = { editingMessageContent.value = it },
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                                .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeMedium),
                             label = { Text(context.getString(R.string.plain_text_content)) },
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
                                 fontFamily = FontFamily.Monospace
                             ),
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium + AppSizes.none),
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                                 unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
@@ -206,11 +208,11 @@ fun MessageEditor(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .verticalScroll(rememberScrollState())
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                                .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeMedium)
                         ) {
                             // Section label
                             Row(
-                                modifier = Modifier.padding(bottom = 8.dp, top = 4.dp, start = 4.dp),
+                                modifier = Modifier.padding(bottom = AppSizes.strokeMedium, top = AppSizes.strokeThin, start = AppSizes.strokeThin),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
@@ -224,7 +226,7 @@ fun MessageEditor(
                             partsState.forEachIndexed { index, part ->
                                 when (part.type) {
                                     PartType.TEXT -> {
-                                        Box(modifier = Modifier.padding(bottom = 8.dp)) {
+                                        Box(modifier = Modifier.padding(bottom = AppSizes.strokeMedium)) {
                                             OutlinedTextField(
                                                 value = part.content,
                                                 onValueChange = { newText ->
@@ -236,7 +238,7 @@ fun MessageEditor(
                                                     .fillMaxWidth(),
                                                 label = { Text(context.getString(R.string.text_label), style = MaterialTheme.typography.bodySmall) },
                                                 placeholder = { Text(context.getString(R.string.input_text_content)) },
-                                                shape = RoundedCornerShape(12.dp),
+                                                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium + AppSizes.none),
                                                 colors = OutlinedTextFieldDefaults.colors(
                                                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                                                     unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
@@ -255,7 +257,7 @@ fun MessageEditor(
                                                 },
                                                 modifier = Modifier
                                                     .align(Alignment.TopEnd)
-                                                    .padding(top = 6.dp, end = 4.dp)
+                                                    .padding(top = AppSizes.strokeMedium, end = AppSizes.strokeThin)
                                             )
                                         }
                                     }
@@ -269,7 +271,7 @@ fun MessageEditor(
                                                 partsState = updatedParts
                                             }
                                         )
-                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
                                     }
                                 }
                             }
@@ -278,25 +280,25 @@ fun MessageEditor(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 4.dp),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+                                    .padding(vertical = AppSizes.strokeThin),
+                                horizontalArrangement = Arrangement.spacedBy(AppSizes.strokeMedium, Alignment.CenterHorizontally)
                             ) {
                                 // Add text button
                                 OutlinedButton(
                                     onClick = { partsState = partsState + ParsedMessagePart(PartType.TEXT, "") },
-                                    shape = RoundedCornerShape(16.dp),
-                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
+                                    shape = RoundedCornerShape(AppSizes.floatingBallSize),
+                                    border = BorderStroke(AppSizes.strokeThin, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
                                     colors = ButtonDefaults.outlinedButtonColors(
                                         contentColor = MaterialTheme.colorScheme.primary
                                     ),
-                                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                                    contentPadding = PaddingValues(horizontal = AppSpacing.medium, vertical = AppSizes.strokeMedium)
                                 ) {
                                     Icon(
                                         Icons.Default.Add,
                                         contentDescription = context.getString(R.string.add_text),
-                                        modifier = Modifier.size(16.dp)
+                                        modifier = Modifier.size(AppSpacing.extraSmall)
                                     )
-                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(modifier = Modifier.width(AppSizes.strokeThin))
                                     Text(
                                         context.getString(R.string.add_text),
                                         style = MaterialTheme.typography.labelMedium
@@ -306,19 +308,19 @@ fun MessageEditor(
                                 // Add tag button
                                 OutlinedButton(
                                     onClick = { showCreateTagDialog = true },
-                                    shape = RoundedCornerShape(16.dp),
-                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
+                                    shape = RoundedCornerShape(AppSizes.floatingBallSize),
+                                    border = BorderStroke(AppSizes.strokeThin, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
                                     colors = ButtonDefaults.outlinedButtonColors(
                                         contentColor = MaterialTheme.colorScheme.primary
                                     ),
-                                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                                    contentPadding = PaddingValues(horizontal = AppSpacing.medium, vertical = AppSizes.strokeMedium)
                                 ) {
                                     Icon(
                                         Icons.Outlined.Tag,
                                         contentDescription = context.getString(R.string.add_tag),
-                                        modifier = Modifier.size(16.dp)
+                                        modifier = Modifier.size(AppSpacing.extraSmall)
                                     )
-                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(modifier = Modifier.width(AppSizes.strokeThin))
                                     Text(
                                         context.getString(R.string.add_tag),
                                         style = MaterialTheme.typography.labelMedium
@@ -334,13 +336,13 @@ fun MessageEditor(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                        .padding(horizontal = AppSpacing.extraSmall, vertical = AppSizes.strokeMedium),
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextButton(
                         onClick = onCancel,
-                        shape = RoundedCornerShape(16.dp)
+                        shape = RoundedCornerShape(AppSizes.floatingBallSize)
                     ) {
                         Text(
                             context.getString(R.string.cancel),
@@ -349,14 +351,14 @@ fun MessageEditor(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(6.dp))
+                    Spacer(modifier = Modifier.width(AppSizes.strokeThin))
 
                     if (showResendButton) {
                         OutlinedButton(
                             onClick = onSave,
-                            shape = RoundedCornerShape(16.dp),
+                            shape = RoundedCornerShape(AppSizes.floatingBallSize),
                             border = ButtonDefaults.outlinedButtonBorder.copy(
-                                width = 1.dp
+                                width = AppSizes.strokeThin
                             )
                         ) {
                             Text(
@@ -366,12 +368,12 @@ fun MessageEditor(
                             )
                         }
 
-                        Spacer(modifier = Modifier.width(6.dp))
+                        Spacer(modifier = Modifier.width(AppSizes.strokeThin))
 
                         Button(
                             onClick = onResend,
-                            shape = RoundedCornerShape(16.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                            shape = RoundedCornerShape(AppSizes.floatingBallSize),
+                            contentPadding = PaddingValues(horizontal = AppSpacing.medium, vertical = AppSizes.strokeMedium),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary
                             )
@@ -381,17 +383,17 @@ fun MessageEditor(
                                 style = MaterialTheme.typography.bodySmall,
                                 fontWeight = FontWeight.Medium
                             )
-                            Spacer(modifier = Modifier.width(4.dp))
+                            Spacer(modifier = Modifier.width(AppSizes.strokeThin))
                             Icon(
                                 Icons.AutoMirrored.Filled.Send,
                                 contentDescription = null,
-                                modifier = Modifier.size(14.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall - 2.dp)
                             )
                         }
                     } else {
                         Button(
                             onClick = onSave,
-                            shape = RoundedCornerShape(16.dp)
+                            shape = RoundedCornerShape(AppSizes.floatingBallSize)
                         ) {
                             Text(
                                 context.getString(R.string.update_memory),
@@ -445,11 +447,11 @@ private fun XmlTagItem(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium + AppSizes.none),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.none)
     ) {
         Column {
             // Tag header
@@ -461,17 +463,17 @@ private fun XmlTagItem(
                         indication = rememberRipple(bounded = true),
                         onClick = { expanded = !expanded }
                     )
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                    .padding(horizontal = AppSpacing.extraSmall, vertical = AppSizes.strokeMedium),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     Icons.Outlined.Code,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + 2.dp)
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
@@ -510,7 +512,7 @@ private fun XmlTagItem(
                         contentDescription = context.getString(R.string.expand),
                         modifier = Modifier
                             .rotate(rotationState)
-                            .size(22.dp),
+                            .size(AppSpacing.extraSmall + 4.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -533,7 +535,7 @@ private fun XmlTagItem(
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 8.dp)
+                            .padding(horizontal = AppSpacing.extraSmall, vertical = AppSizes.strokeMedium)
                     )
                 }
             }
@@ -551,13 +553,13 @@ private fun ActionIconButton(
     IconButton(
         onClick = onClick,
         modifier = modifier
-            .size(28.dp)
+            .size(AppSpacing.extraSmall + 12.dp)
             .clip(CircleShape)
     ) {
         Icon(
             icon,
             contentDescription = contentDescription,
-            modifier = Modifier.size(16.dp),
+            modifier = Modifier.size(AppSpacing.extraSmall),
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -580,12 +582,12 @@ private fun TagEditorDialog(
         Surface(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .shadow(elevation = 8.dp, shape = RoundedCornerShape(20.dp)),
-            shape = RoundedCornerShape(20.dp),
+                .shadow(elevation = AppSizes.elevationSmall * 4, shape = RoundedCornerShape(AppSizes.floatingBallSize)),
+            shape = RoundedCornerShape(AppSizes.floatingBallSize),
             color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 2.dp
+            tonalElevation = AppSizes.elevationSmall
         ) {
-            Column(modifier = Modifier.padding(20.dp)) {
+            Column(modifier = Modifier.padding(AppSizes.floatingBallSize)) {
                 // Header
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -603,12 +605,12 @@ private fun TagEditorDialog(
                             text = if (isNewTag) context.getString(R.string.create_new_xml_tag) else context.getString(R.string.modify_xml_tag_content),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 2.dp)
+                            modifier = Modifier.padding(top = AppSizes.strokeThin)
                         )
                     }
 
                     Surface(
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier.size(AppSpacing.extraSmall + 16.dp),
                         shape = CircleShape,
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
                     ) {
@@ -617,13 +619,13 @@ private fun TagEditorDialog(
                                 Icons.Outlined.Tag,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
                             )
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // Tag name
                 OutlinedTextField(
@@ -632,7 +634,7 @@ private fun TagEditorDialog(
                     label = { Text(context.getString(R.string.tag_name), style=MaterialTheme.typography.bodySmall) },
                     placeholder = { Text(context.getString(R.string.tag_example)) },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusMedium + AppSizes.none),
                     textStyle = MaterialTheme.typography.bodyMedium,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -640,7 +642,7 @@ private fun TagEditorDialog(
                     )
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
 
                 // Attributes
                 OutlinedTextField(
@@ -649,7 +651,7 @@ private fun TagEditorDialog(
                     label = { Text(context.getString(R.string.attributes_optional), style=MaterialTheme.typography.bodySmall) },
                     placeholder = { Text(context.getString(R.string.attributes_example)) },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusMedium + AppSizes.none),
                     textStyle = MaterialTheme.typography.bodyMedium,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -657,7 +659,7 @@ private fun TagEditorDialog(
                     )
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
 
                 // Content
                 OutlinedTextField(
@@ -666,8 +668,8 @@ private fun TagEditorDialog(
                     label = { Text(context.getString(R.string.content_label), style=MaterialTheme.typography.bodySmall) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(120.dp),
-                    shape = RoundedCornerShape(12.dp),
+                        .height(AppSizes.avatarExtraLarge * 3),
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusMedium + AppSizes.none),
                     textStyle = MaterialTheme.typography.bodyMedium,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -676,19 +678,19 @@ private fun TagEditorDialog(
                     )
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(AppSizes.floatingBallSize))
 
                 // Action buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     OutlinedButton(
                         onClick = onDismiss,
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(AppSizes.floatingBallSize),
                         border = ButtonDefaults.outlinedButtonBorder.copy(
-                            width = 1.dp
+                            width = AppSizes.strokeThin
                         ),
                         modifier = Modifier.weight(1f)
                     ) {
@@ -704,7 +706,7 @@ private fun TagEditorDialog(
                             onSave(ParsedMessagePart(PartType.XML, content, tagName, attributes))
                         },
                         enabled = tagName.isNotBlank(),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(AppSizes.floatingBallSize),
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(

@@ -298,7 +298,7 @@ private fun ToolCard(
                                 text = param.name,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                modifier = Modifier.padding(horizontal = AppSizes.nano, vertical = AppSizes.none)
+                                modifier = Modifier.padding(horizontal = AppSpacing.nano, vertical = AppSizes.none)
                             )
                         }
                     }

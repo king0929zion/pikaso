@@ -50,6 +50,7 @@ import com.ai.assistance.operit.util.AppLogger
 import com.ai.assistance.operit.core.tools.agent.ShowerController
 import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppBorderRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -285,8 +286,8 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                 val centerX = params.x + params.width / 2
                 snappedToRight = centerX >= screenWidth / 2
 
-                val snappedWidthPx = (AppSizes.buttonMinHeightSmall.toInt() * context.resources.displayMetrics.density).roundToInt()
-                val snappedHeightPx = ((AppSizes.buttonMinHeightSmall + 12.dp).toInt() * context.resources.displayMetrics.density).roundToInt()
+                val snappedWidthPx = (AppSizes.buttonMinHeightSmall.value * context.resources.displayMetrics.density).roundToInt()
+                val snappedHeightPx = ((AppSizes.buttonMinHeightSmall + 12.dp).value * context.resources.displayMetrics.density).roundToInt()
                 val targetX = if (snappedToRight) screenWidth - snappedWidthPx else 0
                 val maxY = metrics.heightPixels - snappedHeightPx
                 val targetY = params.y.coerceIn(statusBarHeight, maxY)
@@ -322,8 +323,8 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
         val startWidth = params.width
         val startHeight = params.height
         val metrics = context.resources.displayMetrics
-        val snappedWidth = (AppSizes.buttonMinHeightSmall.toInt() * metrics.density).roundToInt()
-        val snappedHeight = ((AppSizes.buttonMinHeightSmall + 12.dp).toInt() * metrics.density).roundToInt()
+        val snappedWidth = (AppSizes.buttonMinHeightSmall.value * metrics.density).roundToInt()
+        val snappedHeight = ((AppSizes.buttonMinHeightSmall + 12.dp).value * metrics.density).roundToInt()
         val (endWidth, endHeight) = if (isSnapping) {
             snappedWidth to snappedHeight
         } else {
@@ -511,7 +512,7 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                         }
                     )
                 }
-                .clip(RoundedCornerShape(AppSizes.none))
+                .clip(RoundedCornerShape(AppBorderRadius.none))
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -633,9 +634,9 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                                     )
 
                                     val handleShape = if (snappedToRight) {
-                                        RoundedCornerShape(topStart = AppSizes.cornerRadiusMedium, bottomStart = AppSizes.cornerRadiusMedium, topEnd = AppSizes.none, bottomEnd = AppSizes.none)
+                                        RoundedCornerShape(topStart = AppSizes.cornerRadiusMedium, bottomStart = AppSizes.cornerRadiusMedium, topEnd = AppBorderRadius.none, bottomEnd = AppBorderRadius.none)
                                     } else {
-                                        RoundedCornerShape(topStart = AppSizes.none, bottomStart = AppSizes.none, topEnd = AppSizes.cornerRadiusMedium, bottomEnd = AppSizes.cornerRadiusMedium)
+                                        RoundedCornerShape(topStart = AppBorderRadius.none, bottomStart = AppBorderRadius.none, topEnd = AppSizes.cornerRadiusMedium, bottomEnd = AppSizes.cornerRadiusMedium)
                                     }
                                     val arrowIcon = if (snappedToRight) Icons.Filled.ChevronLeft else Icons.Filled.ChevronRight
 

@@ -48,6 +48,9 @@ object AppSpacing {
 }
 
 object AppSizes {
+    // Zero size for explicit no-size scenarios
+    val none: Dp = 0.dp
+
     // Button sizes (minimum 48dp for accessibility)
     val buttonMinHeight: Dp = 48.dp
     val buttonMinHeightSmall: Dp = 40.dp

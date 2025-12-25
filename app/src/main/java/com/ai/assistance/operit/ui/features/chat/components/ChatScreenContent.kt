@@ -32,6 +32,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.data.model.ChatHistory
 import com.ai.assistance.operit.data.model.ChatMessage
 import com.ai.assistance.operit.data.model.CharacterCard
@@ -371,26 +373,26 @@ fun ChatScreenContent(
             exit = fadeOut() + slideOutVertically(targetOffsetY = { it }),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp)
+                .padding(AppSpacing.medium)
         ) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                tonalElevation = 2.dp,
-                shadowElevation = 4.dp,
+                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium + AppSizes.none),
+                tonalElevation = AppSizes.elevationSmall,
+                shadowElevation = AppSizes.elevationMedium,
                 color = MaterialTheme.colorScheme.surface.copy(alpha = 0.97f)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                        .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.small + AppSizes.none),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // 显示选中数量
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                     ) {
                         // 取消按钮移到左侧
                         IconButton(
@@ -398,13 +400,13 @@ fun ChatScreenContent(
                                 isMultiSelectMode = false
                                 selectedMessageIndices = emptySet()
                             },
-                            modifier = Modifier.size(32.dp)
+                            modifier = Modifier.size(AppSpacing.medium + AppSizes.avatarSmall)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = stringResource(R.string.exit_multi_select),
                                 tint = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
                             )
                         }
                         
@@ -421,7 +423,7 @@ fun ChatScreenContent(
                     }
 
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        horizontalArrangement = Arrangement.spacedBy(AppSizes.strokeThin + AppSizes.strokeMedium),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         val allSelectableSelected =
@@ -438,7 +440,7 @@ fun ChatScreenContent(
                                         }
                             },
                             enabled = selectableMessageIndices.isNotEmpty(),
-                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                            contentPadding = PaddingValues(horizontal = AppSpacing.extraSmall, vertical = AppSizes.strokeMedium)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.SelectAll,
@@ -446,7 +448,7 @@ fun ChatScreenContent(
                                         if (allSelectableSelected) R.string.clear_selection else R.string.select_all_messages
                                 ),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(16.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall)
                             )
                         }
 
@@ -455,7 +457,7 @@ fun ChatScreenContent(
                             onClick = {
                                 if (selectedMessageIndices.isNotEmpty() && !isGeneratingImage) {
                                     isGeneratingImage = true
-                                    
+
                                     actualViewModel.shareMessages(
                                         context = context,
                                         messageIndices = selectedMessageIndices,
@@ -470,7 +472,7 @@ fun ChatScreenContent(
                                         chatStyle = chatStyle,
                                         onSuccess = { uri ->
                                             isGeneratingImage = false
-                                            
+
                                             // 调用系统分享
                                             try {
                                                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -481,7 +483,7 @@ fun ChatScreenContent(
                                                 context.startActivity(
                                                     Intent.createChooser(shareIntent, context.getString(R.string.share_selected))
                                                 )
-                                                
+
                                                 // 退出多选模式
                                                 isMultiSelectMode = false
                                                 selectedMessageIndices = emptySet()
@@ -507,7 +509,7 @@ fun ChatScreenContent(
                                 }
                             },
                             enabled = selectedMessageIndices.isNotEmpty() && !isGeneratingImage,
-                            modifier = Modifier.size(32.dp),
+                            modifier = Modifier.size(AppSpacing.medium + AppSizes.avatarSmall),
                             colors = IconButtonDefaults.filledIconButtonColors(
                                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -518,7 +520,7 @@ fun ChatScreenContent(
                             Icon(
                                 imageVector = Icons.Default.Share,
                                 contentDescription = stringResource(R.string.share_selected),
-                                modifier = Modifier.size(16.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall)
                             )
                         }
 
@@ -532,7 +534,7 @@ fun ChatScreenContent(
                                 }
                             },
                             enabled = selectedMessageIndices.isNotEmpty(),
-                            modifier = Modifier.size(32.dp),
+                            modifier = Modifier.size(AppSpacing.medium + AppSizes.avatarSmall),
                             colors = IconButtonDefaults.filledIconButtonColors(
                                 containerColor = MaterialTheme.colorScheme.errorContainer,
                                 contentColor = MaterialTheme.colorScheme.onErrorContainer,
@@ -543,7 +545,7 @@ fun ChatScreenContent(
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.delete_selected),
-                                modifier = Modifier.size(16.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall)
                             )
                         }
                     }
@@ -558,7 +560,7 @@ fun ChatScreenContent(
             exit = fadeOut() + slideOutHorizontally(targetOffsetX = { it }),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(end = 16.dp, bottom = 80.dp)
+                .padding(end = AppSpacing.medium, bottom = AppSizes.floatingMaxWidth - AppSizes.floatingBallSize)
         ) {
             SmallFloatingActionButton(
                 onClick = {
@@ -574,7 +576,7 @@ fun ChatScreenContent(
                 Icon(
                     imageVector = Icons.Filled.Stop,
                     contentDescription = stringResource(R.string.stop_reading),
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + 8.dp)
                 )
             }
         }
@@ -637,7 +639,7 @@ fun ChatScreenContent(
             onAutoScrollToBottomChange = onAutoScrollToBottomChange,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 16.dp)
+                .padding(bottom = AppSpacing.medium)
         )
 
 
@@ -865,14 +867,14 @@ fun ChatHistorySelectorPanel(
     // 历史选择器面板（不再包含遮罩层，遮罩层已在外部处理）
     Box(
             modifier =
-                    Modifier.width(280.dp)
+                    Modifier.width(AppSizes.floatingMaxWidth - AppSizes.floatingBallSize)
                             .fillMaxHeight()
                             .background(
                                     color =
                                             MaterialTheme.colorScheme.surface.copy(
                                                     alpha = 0.95f
                                             ),
-                                    shape = RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp)
+                                    shape = RoundedCornerShape(topEnd = AppSizes.strokeThin, bottomEnd = AppSizes.strokeThin)
                             )
     ) {
         if (activeCharacterCard == null) {
@@ -885,7 +887,7 @@ fun ChatHistorySelectorPanel(
         } else {
             // 直接使用ChatHistorySelector
             ChatHistorySelector(
-                    modifier = Modifier.fillMaxSize().padding(top = 8.dp),
+                    modifier = Modifier.fillMaxSize().padding(top = AppSizes.strokeMedium),
                     onNewChat = { characterCardName ->
                         actualViewModel.createNewChat(characterCardName)
                         // 创建新对话后自动收起侧边框

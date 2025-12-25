@@ -285,7 +285,7 @@ fun ChatSettingsBar(
             ) {
                 Box(modifier = Modifier.padding(top = AppSpacing.none, bottom = AppSizes.listItemHeightDouble + AppSpacing.extraSmall)) {
                     Card(
-                        modifier = Modifier.width(AppSizes.floatingMinWidth - AppSizes.extraSmall), // 加宽一级菜单以适应英文显示
+                        modifier = Modifier.width(AppSizes.floatingMinWidth - AppSpacing.extraSmall), // 加宽一级菜单以适应英文显示
                         shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
                             colors =
                                     CardDefaults.cardColors(

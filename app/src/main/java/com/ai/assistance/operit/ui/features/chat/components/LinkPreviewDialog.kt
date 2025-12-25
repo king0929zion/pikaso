@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 /**
  * 链接预览弹窗组件
@@ -42,13 +44,13 @@ fun LinkPreviewDialog(
     ) {
         Surface(
             modifier = modifier,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
             color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 8.dp
+            tonalElevation = AppSizes.elevationSmall * 2
         ) {
             Column(
                 modifier = Modifier
-                    .padding(24.dp)
+                    .padding(AppSizes.floatingBallSize + 8.dp)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -59,24 +61,24 @@ fun LinkPreviewDialog(
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center
                 )
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
+
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
+
                 // 链接内容显示区域
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
                     color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                 ) {
                     Column(
-                        modifier = Modifier.padding(12.dp)
+                        modifier = Modifier.padding(AppSpacing.extraSmall)
                     ) {
                         Text(
                             text = context.getString(R.string.link_address),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(AppSizes.none))
                         Text(
                             text = url,
                             style = MaterialTheme.typography.bodyMedium.copy(
@@ -86,13 +88,13 @@ fun LinkPreviewDialog(
                         )
                     }
                 }
-                
-                Spacer(modifier = Modifier.height(24.dp))
-                
+
+                Spacer(modifier = Modifier.height(AppSizes.floatingBallSize + 8.dp))
+
                 // 按钮区域
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                 ) {
                     // 取消按钮
                     OutlinedButton(
@@ -102,12 +104,12 @@ fun LinkPreviewDialog(
                         Icon(
                             imageVector = Icons.Default.Cancel,
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(AppSpacing.extraSmall + 2.dp)
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                         Text(context.getString(R.string.cancel))
                     }
-                    
+
                     // 访问按钮
                     Button(
                         onClick = {
@@ -116,7 +118,7 @@ fun LinkPreviewDialog(
                                     data = Uri.parse(url)
                                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 }
-                                
+
                                 // 检查是否有应用可以处理这个Intent
                                 val packageManager = context.packageManager
                                 if (intent.resolveActivity(packageManager) != null) {
@@ -142,14 +144,14 @@ fun LinkPreviewDialog(
                         Icon(
                             imageVector = Icons.Default.OpenInBrowser,
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(AppSpacing.extraSmall + 2.dp)
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                         Text(context.getString(R.string.visit))
                     }
                 }
-                
-                Spacer(modifier = Modifier.height(8.dp))
+
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                 
                 // 提示文字
                 Text(

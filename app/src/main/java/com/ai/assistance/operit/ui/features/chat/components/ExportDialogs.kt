@@ -30,8 +30,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ai.assistance.operit.R
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import androidx.compose.ui.window.DialogProperties
 import com.ai.assistance.operit.core.subpack.ApkEditor
 import com.ai.assistance.operit.core.subpack.ExeEditor
@@ -60,11 +61,11 @@ fun ExportPlatformDialog(
     ) {
         Card(
                 modifier = Modifier.fillMaxWidth(0.9f).wrapContentHeight(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(
-                    modifier = Modifier.padding(20.dp),
+                    modifier = Modifier.padding(AppSizes.floatingBallSize),
                     horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -74,7 +75,7 @@ fun ExportPlatformDialog(
                         textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(AppSizes.floatingBallSize))
 
                 Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -99,7 +100,7 @@ fun ExportPlatformDialog(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 TextButton(
                         onClick = onDismiss,
@@ -117,12 +118,12 @@ private fun PlatformButton(
         onClick: () -> Unit
 ) {
     Column(
-            modifier = Modifier.width(100.dp).clickable(onClick = onClick).padding(8.dp),
+            modifier = Modifier.width(AppSizes.floatingMaxWidth - AppSizes.floatingBallSize).clickable(onClick = onClick).padding(AppSizes.strokeMedium),
             horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
-                modifier = Modifier.size(60.dp).align(Alignment.CenterHorizontally),
-                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.size(AppSizes.floatingMaxWidth - 12.dp).align(Alignment.CenterHorizontally),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
                 colors =
                         CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -132,13 +133,13 @@ private fun PlatformButton(
                 Icon(
                         imageVector = icon,
                         contentDescription = text,
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier.size(AppSizes.avatarExtraLarge - 4.dp),
                         tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
 
         Text(
                 text = text,
@@ -183,17 +184,17 @@ fun AndroidExportDialog(
     ) {
         Card(
                 modifier = Modifier.fillMaxWidth(0.95f).wrapContentHeight(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
-            Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.Start) {
+            Column(modifier = Modifier.padding(AppSizes.floatingBallSize), horizontalAlignment = Alignment.Start) {
                 Text(
                         context.getString(R.string.configure_android_app),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 OutlinedTextField(
                         value = packageName,
@@ -230,7 +231,7 @@ fun AndroidExportDialog(
                         }
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
 
                 OutlinedTextField(
                         value = appName,
@@ -241,29 +242,29 @@ fun AndroidExportDialog(
                         singleLine = true
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // 图标选择区域
                 Row(
-                        modifier = Modifier.fillMaxWidth().height(100.dp),
+                        modifier = Modifier.fillMaxWidth().height(AppSizes.floatingMaxWidth - 48.dp),
                         verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                             context.getString(R.string.app_icon),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(end = 8.dp)
+                            modifier = Modifier.padding(end = AppSizes.strokeMedium)
                     )
 
                     // 图标显示/选择区域
                     Box(
                             modifier =
-                                    Modifier.size(80.dp)
-                                            .clip(RoundedCornerShape(8.dp))
+                                    Modifier.size(AppSizes.avatarExtraLarge + AppSizes.avatarMedium)
+                                            .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
                                             .background(MaterialTheme.colorScheme.surfaceVariant)
                                             .border(
-                                                    1.dp,
+                                                    AppSizes.strokeThin,
                                                     MaterialTheme.colorScheme.outline,
-                                                    RoundedCornerShape(8.dp)
+                                                    RoundedCornerShape(AppSizes.cornerRadiusMedium)
                                             )
                                             .clickable { imagePicker.launch("image/*") },
                             contentAlignment = Alignment.Center
@@ -290,7 +291,7 @@ fun AndroidExportDialog(
                                         contentDescription = context.getString(R.string.app_icon),
                                         contentScale = ContentScale.Fit,
                                         modifier =
-                                                Modifier.size(70.dp).clip(RoundedCornerShape(4.dp))
+                                                Modifier.size(AppSizes.avatarExtraLarge + AppSpacing.extraSmall).clip(RoundedCornerShape(AppSizes.strokeThin))
                                 )
                             } else {
                                 Icon(
@@ -313,11 +314,11 @@ fun AndroidExportDialog(
                             context.getString(R.string.click_select_icon),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(start = 8.dp)
+                            modifier = Modifier.padding(start = AppSizes.strokeMedium)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 OutlinedTextField(
                         value = versionName,
@@ -340,7 +341,7 @@ fun AndroidExportDialog(
                         }
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
 
                 OutlinedTextField(
                         value = versionCode,
@@ -351,13 +352,13 @@ fun AndroidExportDialog(
                         singleLine = true
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(AppSizes.floatingBallSize))
 
                 // 按钮区域
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     TextButton(onClick = onDismiss) { Text(context.getString(R.string.cancel)) }
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
 
                     Button(
                             onClick = { onExport(packageName, appName, iconUri, versionName, versionCode) },
@@ -392,17 +393,17 @@ fun WindowsExportDialog(
     ) {
         Card(
                 modifier = Modifier.fillMaxWidth(0.95f).wrapContentHeight(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
-            Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.Start) {
+            Column(modifier = Modifier.padding(AppSizes.floatingBallSize), horizontalAlignment = Alignment.Start) {
                 Text(
                         context.getString(R.string.configure_windows_app),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 OutlinedTextField(
                         value = appName,
@@ -413,29 +414,29 @@ fun WindowsExportDialog(
                         singleLine = true
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // 图标选择区域
                 Row(
-                        modifier = Modifier.fillMaxWidth().height(100.dp),
+                        modifier = Modifier.fillMaxWidth().height(AppSizes.floatingMaxWidth - 48.dp),
                         verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                             context.getString(R.string.app_icon),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(end = 8.dp)
+                            modifier = Modifier.padding(end = AppSizes.strokeMedium)
                     )
 
                     // 图标显示/选择区域
                     Box(
                             modifier =
-                                    Modifier.size(80.dp)
-                                            .clip(RoundedCornerShape(8.dp))
+                                    Modifier.size(AppSizes.avatarExtraLarge + AppSizes.avatarMedium)
+                                            .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
                                             .background(MaterialTheme.colorScheme.surfaceVariant)
                                             .border(
-                                                    1.dp,
+                                                    AppSizes.strokeThin,
                                                     MaterialTheme.colorScheme.outline,
-                                                    RoundedCornerShape(8.dp)
+                                                    RoundedCornerShape(AppSizes.cornerRadiusMedium)
                                             )
                                             .clickable { imagePicker.launch("image/*") },
                             contentAlignment = Alignment.Center
@@ -462,7 +463,7 @@ fun WindowsExportDialog(
                                         contentDescription = context.getString(R.string.app_icon),
                                         contentScale = ContentScale.Fit,
                                         modifier =
-                                                Modifier.size(70.dp).clip(RoundedCornerShape(4.dp))
+                                                Modifier.size(AppSizes.avatarExtraLarge + AppSpacing.extraSmall).clip(RoundedCornerShape(AppSizes.strokeThin))
                                 )
                             } else {
                                 Icon(
@@ -485,17 +486,17 @@ fun WindowsExportDialog(
                             context.getString(R.string.click_select_icon),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(start = 8.dp)
+                            modifier = Modifier.padding(start = AppSizes.strokeMedium)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(AppSizes.floatingBallSize))
 
                 // 按钮区域
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     TextButton(onClick = onDismiss) { Text(context.getString(R.string.cancel)) }
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
 
                     Button(
                             onClick = { onExport(appName, iconUri) },
@@ -517,11 +518,11 @@ fun ExportProgressDialog(progress: Float, status: String, onCancel: () -> Unit) 
     ) {
         Card(
                 modifier = Modifier.fillMaxWidth(0.9f).wrapContentHeight(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(
-                    modifier = Modifier.padding(20.dp).fillMaxWidth(),
+                    modifier = Modifier.padding(AppSizes.floatingBallSize).fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -530,11 +531,11 @@ fun ExportProgressDialog(progress: Float, status: String, onCancel: () -> Unit) 
                         fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth())
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
 
                 Text(
                         status,
@@ -542,7 +543,7 @@ fun ExportProgressDialog(progress: Float, status: String, onCancel: () -> Unit) 
                         textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 TextButton(onClick = onCancel) { Text(context.getString(R.string.cancel)) }
             }
@@ -566,11 +567,11 @@ fun ExportCompleteDialog(
     ) {
         Card(
                 modifier = Modifier.fillMaxWidth(0.9f).wrapContentHeight(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(
-                    modifier = Modifier.padding(20.dp),
+                    modifier = Modifier.padding(AppSizes.floatingBallSize),
                     horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -580,7 +581,7 @@ fun ExportCompleteDialog(
                         color = if (success) Color.Green else Color.Red
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 if (success && filePath != null) {
                     Text(context.getString(R.string.file_saved_to), style = MaterialTheme.typography.bodyMedium)
@@ -590,20 +591,20 @@ fun ExportCompleteDialog(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(top = 4.dp)
+                            modifier = Modifier.padding(top = AppSizes.strokeThin)
                     )
                 } else if (errorMessage != null) {
                     // 使用可滚动的列表显示错误信息，特别是对于长消息
                     Box(
                             modifier =
                                     Modifier.fillMaxWidth()
-                                            .heightIn(min = 80.dp, max = 200.dp)
+                                            .heightIn(min = AppSizes.avatarExtraLarge - 4.dp, max = AppSizes.floatingMaxWidth * 5)
                                             .border(
-                                                    1.dp,
+                                                    AppSizes.strokeThin,
                                                     Color.Red.copy(alpha = 0.5f),
-                                                    RoundedCornerShape(8.dp)
+                                                    RoundedCornerShape(AppSizes.cornerRadiusMedium)
                                             )
-                                            .padding(8.dp)
+                                            .padding(AppSizes.strokeMedium)
                     ) {
                         Text(
                                 errorMessage,
@@ -615,7 +616,7 @@ fun ExportCompleteDialog(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(AppSizes.floatingBallSize))
 
                 Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -624,7 +625,7 @@ fun ExportCompleteDialog(
                     TextButton(onClick = onDismiss) { Text(context.getString(R.string.close)) }
 
                     if (success && filePath != null) {
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
 
                         Button(onClick = { onOpenFile(filePath) }) { Text(context.getString(R.string.open_file)) }
                     }

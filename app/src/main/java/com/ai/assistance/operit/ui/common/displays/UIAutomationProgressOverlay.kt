@@ -46,6 +46,10 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.lifecycle.setViewTreeViewModelStoreOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.ai.assistance.operit.ui.theme.AppSizes
 import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.services.ServiceLifecycleOwner

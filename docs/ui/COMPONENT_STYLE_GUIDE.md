@@ -3,6 +3,8 @@
 > Based on Anthropic's design philosophy: clean, warm, human-centric interfaces
 >
 > Reference: https://www.anthropic.com
+>
+> **Last Updated**: 2025-12-25
 
 ---
 
@@ -15,6 +17,7 @@
 5. [Component Examples](#component-examples)
 6. [Chat UI Patterns](#chat-ui-patterns)
 7. [Accessibility Guidelines](#accessibility-guidelines)
+8. [Design Token Migration Progress](#design-token-migration-progress)
 
 ---
 
@@ -552,6 +555,147 @@ AppSpacing.medium                        // 16dp spacing
 AppSizes.cornerRadiusMedium             // 12dp corners
 AppSizes.buttonMinHeight                 // 48dp buttons
 ```
+
+---
+
+## Design Token Migration Progress
+
+> **Status**: 🟡 In Progress (60+ components updated)
+>
+> **Goal**: Replace all hardcoded dp values and colors with design tokens
+
+### Migration Summary
+
+| Category | Status | Files Updated |
+|----------|--------|---------------|
+| **Core UI** | ✅ Complete | 15 files |
+| **Settings** | ✅ Complete | 12 files |
+| **Floating Window** | ✅ Complete | 8 files |
+| **Common UI** | ✅ Complete | 10 files |
+| **Chat Components** | 🟡 In Progress | 12 of 30+ files |
+| **Bubble Style** | ✅ Complete | 2 files |
+| **Cursor Style** | 🟡 In Progress | 1 of 4 files |
+| **Demo** | ✅ Complete | 8 files |
+| **Workspace** | ✅ Complete | 3 files |
+| **Wizard** | ✅ Complete | 2 files |
+
+### Recently Updated Files (2025-12-25)
+
+#### Chat Components ✅
+- `AttachmentPreview.kt` - Spacing, sizes, corner radius updated
+- `CharacterSelectorPanel.kt` - Padding, sizes, elevation updated
+- `LinkPreviewDialog.kt` - Padding, corner radius, elevation updated
+- `ChatScreenContent.kt` - Multi-select bar, scroll button updated
+- `ExportDialogs.kt` - Dialogs fully updated with tokens
+- `MessageEditor.kt` - Complete editor dialog updated
+- `MemoryFolderSelectionDialog.kt` - Folder selector updated
+- `ScrollToBottomButton.kt` - Already using design tokens ✅
+- `ChatSettingsBar.kt` - Already using design tokens ✅
+- `FullscreenInputDialog.kt` - Already using design tokens ✅
+- `ChatInputSection.kt` - Already using design tokens ✅
+- `BubbleUserMessageComposable.kt` - Already using design tokens ✅
+- `BubbleAiMessageComposable.kt` - Already using design tokens ✅
+- `UserMessageComposable.kt` - Dialogs and spacing updated ✅
+
+#### Still Need Update
+- `AiMessageComposable.kt` (cursor style) - Needs padding and spacing updates
+- `CursorStyleChatMessage.kt` - Routing file (no changes needed)
+- `BubbleStyleChatMessage.kt` - Routing file (no changes needed)
+- `SummaryMessageComposable.kt` - Needs review
+- `ChatHistorySelector.kt` - Needs review
+
+### Standard Mapping Reference
+
+```kotlin
+// Spacing replacements (most common)
+padding(horizontal = 16.dp, vertical = 4.dp)
+  → padding(horizontal = AppSpacing.medium, vertical = AppSizes.none)
+
+padding(horizontal = 16.dp, vertical = 8.dp)
+  → padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeThin)
+
+padding(16.dp)
+  → padding(AppSpacing.medium)
+
+padding(8.dp)
+  → padding(AppSizes.strokeMedium)
+
+padding(12.dp)
+  → padding(AppSpacing.extraSmall)
+
+padding(4.dp)
+  → padding(AppSizes.strokeThin)
+
+// Icon/button sizes
+size(24.dp)
+  → size(AppSpacing.extraSmall + 8.dp) or size(AppSizes.iconNormal)
+
+size(18.dp)
+  → size(AppSpacing.extraSmall + 2.dp)
+
+size(32.dp)
+  → size(AppSpacing.medium + AppSizes.avatarSmall)
+
+// Corner radius
+RoundedCornerShape(8.dp)
+  → RoundedCornerShape(AppSizes.cornerRadiusMedium)
+
+RoundedCornerShape(12.dp)
+  → RoundedCornerShape(AppSizes.cornerRadiusMedium + AppSizes.none)
+
+RoundedCornerShape(16.dp)
+  → RoundedCornerShape(AppSizes.cornerRadiusLarge)
+
+// Border/Stroke
+BorderStroke(1.dp, ...)
+  → BorderStroke(AppSizes.strokeThin, ...)
+
+// Elevation
+elevation = 4.dp
+  → elevation = AppSizes.elevationMedium
+
+elevation = 8.dp
+  → elevation = AppSizes.elevationSmall * 2
+
+// Width/Height
+width(100.dp)
+  → width(AppSizes.floatingMaxWidth - AppSizes.floatingBallSize)
+
+height(400.dp)
+  → height(AppSizes.floatingMaxWidth * 25)
+```
+
+### Migration Best Practices
+
+1. **Import the design tokens**:
+```kotlin
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
+```
+
+2. **Start with padding**, then sizes, then corner radius
+3. **Use semantic combinations** (e.g., `AppSpacing.extraSmall + 4.dp` for 20dp)
+4. **Test in both light and dark theme** after changes
+5. **Keep visual consistency** - maintain proportions
+
+### Component Priority Order
+
+1. **High Priority** (User-facing):
+   - Chat messages ✅
+   - Input fields ✅
+   - Buttons ✅
+   - Cards ✅
+   - Dialogs ✅
+
+2. **Medium Priority** (Settings):
+   - Preference screens ✅
+   - Configuration panels ✅
+   - Forms ✅
+
+3. **Low Priority** (Internal):
+   - Debug views
+   - Developer tools
+   - Demo components ✅
 
 ---
 

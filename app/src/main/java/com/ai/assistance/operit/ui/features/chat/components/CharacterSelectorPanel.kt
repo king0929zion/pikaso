@@ -38,6 +38,8 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.rememberAsyncImagePainter
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 @Composable
 fun CharacterSelectorPanel(
@@ -82,28 +84,28 @@ fun CharacterSelectorPanel(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .fillMaxWidth()
-                    .padding(top = 60.dp, start = 20.dp, end = 20.dp)
+                    .padding(top = AppSizes.avatarExtraLarge - 16.dp, start = AppSpacing.medium, end = AppSpacing.medium)
             ) {
                 Surface(
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                     modifier = Modifier
                         .fillMaxWidth()
                         .shadow(
-                            elevation = 16.dp,
-                            shape = RoundedCornerShape(16.dp),
+                            elevation = AppSizes.floatingBallSize + 16.dp,
+                            shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                             spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                         )
                         .clickable(enabled = false) {},
                     color = MaterialTheme.colorScheme.surface
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(AppSpacing.medium)
                     ) {
                         // 标题栏
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 12.dp),
+                                .padding(bottom = AppSpacing.extraSmall),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
@@ -122,8 +124,8 @@ fun CharacterSelectorPanel(
                         
                         // 角色列表
                         LazyColumn(
-                            modifier = Modifier.heightIn(max = 320.dp),
-                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                            modifier = Modifier.heightIn(max = AppSizes.floatingMaxWidth - 80.dp),
+                            verticalArrangement = Arrangement.spacedBy(AppSpacing.nano)
                         ) {
                             items(allCards) { card ->
                                 CharacterItem(
@@ -169,26 +171,26 @@ fun CharacterItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
         color = backgroundColor,
         border = androidx.compose.foundation.BorderStroke(
-            width = if (isSelected) 1.dp else 0.dp,
+            width = if (isSelected) AppSizes.strokeThin else AppSizes.none,
             color = borderColor
         )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(AppSpacing.extraSmall),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 头像区域
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(AppSizes.avatarMedium - 12.dp)
                     .clip(CircleShape)
                     .background(
-                        if (avatarUri != null) Color.Transparent 
+                        if (avatarUri != null) Color.Transparent
                         else MaterialTheme.colorScheme.secondaryContainer
                     ),
                 contentAlignment = Alignment.Center
@@ -204,14 +206,14 @@ fun CharacterItem(
                     Icon(
                         Icons.Rounded.Person,
                         contentDescription = "Character Avatar",
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(AppSpacing.extraSmall + 2.dp),
                         tint = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
-                
+
             }
-            
-            Spacer(modifier = Modifier.width(12.dp))
+
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
             
             // 角色信息
             Column(
@@ -228,7 +230,7 @@ fun CharacterItem(
                 )
                 
                 if (card.description.isNotBlank()) {
-                    Spacer(modifier = Modifier.height(1.dp))
+                    Spacer(modifier = Modifier.height(AppSizes.none))
                     Text(
                         text = card.description,
                         style = MaterialTheme.typography.bodySmall,
@@ -241,11 +243,11 @@ fun CharacterItem(
             
             // 选中状态指示器（右侧）
             if (isSelected) {
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(AppSpacing.nano))
                 Icon(
                     Icons.Rounded.Check,
                     contentDescription = "Selected",
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(AppSpacing.extraSmall + 4.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
