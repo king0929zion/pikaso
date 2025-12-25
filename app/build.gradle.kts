@@ -18,16 +18,25 @@ if (localPropertiesFile.exists()) {
     localProperties.load(FileInputStream(localPropertiesFile))
 }
 
+// 读取签名配置
+val keystorePropertiesFile = rootProject.file("app/keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "com.ai.assistance.operit"
     compileSdk = 34
 
     signingConfigs {
         create("release") {
-            storeFile = file("release.keystore") // 项目根目录下的自定义密钥
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
+            // 优先使用 keystore.properties，否则使用默认值（用于CI）
+            storeFile = keystoreProperties["storeFile"]?.let { file(keystoreProperties["storeFile"] as String) }
+                ?: file("release.keystore")
+            storePassword = keystoreProperties["storePassword"] as? String ?: "android"
+            keyAlias = keystoreProperties["keyAlias"] as? String ?: "androiddebugkey"
+            keyPassword = keystoreProperties["keyPassword"] as? String ?: "android"
         }
     }
 

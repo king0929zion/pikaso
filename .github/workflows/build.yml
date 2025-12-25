@@ -1,0 +1,188 @@
+name: Build and Release APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  build:
+    name: Build Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master' }}
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Decode Keystore
+        run: |
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.keystore
+            echo "Keystore decoded successfully"
+            ls -la app/release.keystore
+          else
+            echo "WARNING: KEYSTORE_BASE64 secret is not set! Using debug keystore..."
+            # 如果没有配置签名密钥，创建一个临时密钥用于CI构建
+            keytool -genkeypair \
+              -alias androiddebugkey \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -keystore app/release.keystore \
+              -storepass android \
+              -keypass android \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
+
+      - name: Create keystore.properties
+        run: |
+          cat > app/keystore.properties << EOF
+          storePassword=${{ secrets.STORE_PASSWORD:-android }}
+          keyPassword=${{ secrets.KEY_PASSWORD:-android }}
+          keyAlias=${{ secrets.KEY_ALIAS:-androiddebugkey }}
+          storeFile=release.keystore
+          EOF
+          echo "keystore.properties created:"
+          cat app/keystore.properties | sed 's/Password=.*/Password=***/'
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Build Release AAB
+        run: ./gradlew bundleRelease --stacktrace
+
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*versionName = "\(.*\)".*/\1/')
+          VERSION_CODE=$(grep 'versionCode' app/build.gradle.kts | head -1 | sed 's/.*versionCode = \(.*\)/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "versionCode=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "date=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
+
+      - name: Rename APKs
+        run: |
+          mv app/build/outputs/apk/debug/app-debug.apk "app/build/outputs/apk/debug/Operit-Debug-${{ steps.version.outputs.version }}-${{ steps.version.outputs.date }}.apk"
+          mv app/build/outputs/apk/release/app-release.apk "app/build/outputs/apk/release/Operit-Release-${{ steps.version.outputs.version }}-${{ steps.version.outputs.date }}.apk"
+
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Operit-Debug-APK-${{ steps.version.outputs.date }}
+          path: app/build/outputs/apk/debug/Operit-Debug-*.apk
+          retention-days: 30
+
+      - name: Upload Release APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Operit-Release-APK-${{ steps.version.outputs.date }}
+          path: app/build/outputs/apk/release/Operit-Release-*.apk
+          retention-days: 90
+
+      - name: Upload AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Operit-Release-AAB-${{ steps.version.outputs.date }}
+          path: app/build/outputs/bundle/release/app-release.aab
+          retention-days: 90
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get version from build.gradle
+        id: version
+        run: |
+          VERSION=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*versionName = "\(.*\)".*/\1/')
+          VERSION_CODE=$(grep 'versionCode' app/build.gradle.kts | head -1 | sed 's/.*versionCode = \(.*\)/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "versionCode=$VERSION_CODE" >> $GITHUB_OUTPUT
+
+      - name: Download Release APK Artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: Operit-Release-APK-*
+          merge-multiple: true
+          path: ./artifacts
+
+      - name: Download Release AAB Artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: Operit-Release-AAB-*
+          merge-multiple: true
+          path: ./artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}+${{ steps.version.outputs.versionCode }}
+          name: Operit v${{ steps.version.outputs.version }}
+          body: |
+            ## Operit v${{ steps.version.outputs.version }} (Build ${{ steps.version.outputs.versionCode }})
+
+            自动构建版本，提交: ${{ github.sha }}
+
+            ### 下载
+            - **APK (Release)**: 发布版本APK，直接安装到 Android 设备
+            - **APK (Debug)**: 调试版本APK，用于开发测试
+            - **AAB**: Android App Bundle，用于 Google Play 发布
+
+            ### 系统要求
+            - Android 8.0+ (API 26)
+            - 推荐 2GB+ 内存
+
+            ### 主要功能
+            - AI 智能助手对话
+            - 无障碍服务集成
+            - Shizuku 权限管理
+            - 文件管理工具
+            - Workflow 工作流自动化
+            - MCP 插件系统
+
+            ### 更新内容
+            查看提交历史了解详细变更。
+
+            ---
+            🤖 Generated with [Claude Code](https://claude.com/claude-code)
+          files: |
+            ./artifacts/*.apk
+            ./artifacts/*.aab
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
