@@ -32,7 +32,6 @@ import com.ai.assistance.operit.data.repository.UIHierarchyManager
 import com.ai.assistance.operit.ui.features.demo.components.*
 import com.ai.assistance.operit.ui.features.demo.viewmodel.ShizukuDemoViewModel
 import com.ai.assistance.operit.ui.features.demo.wizards.AccessibilityWizardCard
-import com.ai.assistance.operit.ui.features.demo.wizards.OperitTerminalWizardCard
 import com.ai.assistance.operit.ui.features.demo.wizards.RootWizardCard
 import com.ai.assistance.operit.ui.features.demo.wizards.ShizukuWizardCard
 import com.ai.assistance.operit.ui.theme.AppSizes
@@ -251,8 +250,7 @@ fun ShizukuDemoScreen(
                     }
                 },
                 onOperitTerminalClick = {
-                    // 点击时总是打开向导
-                    viewModel.toggleOperitTerminalWizard()
+                    // Terminal functionality has been removed - do nothing
                 },
                 onRootClick = {
                     // 处理Root权限
@@ -268,8 +266,8 @@ fun ShizukuDemoScreen(
                 }
         )
 
-        // 组合向导卡片到一个专门的设置区域 - 现在检查NodeJS和Python环境
-        val needOperitTerminalSetupGuide = !viewModel.isNodejsPythonEnvironmentReady.value
+        // 组合向导卡片到一个专门的设置区域 - Terminal functionality has been removed
+        val needOperitTerminalSetupGuide = false // Disabled - Terminal functionality removed
 
         // 检查Shizuku版本状态 - 使用remember缓存结果，避免每次重组时重复调用
         val (installedVersion, bundledVersion, isUpdateNeeded) =
@@ -666,20 +664,8 @@ fun ShizukuDemoScreen(
                 Spacer(modifier = Modifier.height(AppSpacing.small))
             }
 
-            // NodeJS和Python环境配置向导卡片
-            if (needOperitTerminalSetupGuide) {
-                OperitTerminalWizardCard(
-                    isPnpmInstalled = viewModel.isPnpmInstalled.value,
-                    isPipInstalled = viewModel.isPythonInstalled.value,
-                    isEnvironmentReady = viewModel.isNodejsPythonEnvironmentReady.value,
-                    showWizard = uiState.showOperitTerminalWizard.value,
-                    onToggleWizard = { viewModel.toggleOperitTerminalWizard() },
-                    onOpenTerminalScreen = { 
-                        // 跳转到TerminalSetup，直接显示配置界面
-                        navigateTo?.invoke(Screen.TerminalSetup)
-                    }
-                )
-            }
+            // NodeJS和Python环境配置向导卡片 - Terminal functionality has been removed
+            // The OperitTerminalWizardCard has been disabled
         }
     }
 }

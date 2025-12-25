@@ -47,9 +47,6 @@ import androidx.core.content.FileProvider
 import android.webkit.MimeTypeMap
 import com.ai.assistance.operit.api.chat.enhance.FileBindingService
 import com.ai.assistance.operit.data.preferences.ApiPreferences
-import com.ai.assistance.operit.terminal.TerminalManager
-import com.ai.assistance.operit.terminal.provider.filesystem.FileSystemProvider
-import com.ai.assistance.operit.terminal.utils.SSHFileConnectionManager
 import com.ai.assistance.operit.core.tools.defaultTool.PathValidator
 import com.ai.assistance.operit.services.OnnxEmbeddingService
 
@@ -75,40 +72,10 @@ open class StandardFileSystemTools(protected val context: Context) {
         ApiPreferences.getInstance(context)
     }
 
-    // SSH文件管理器（单例，懒加载）
-    private val sshFileManager by lazy {
-        SSHFileConnectionManager.getInstance(context)
-    }
-
-    // TerminalManager（单例，懒加载）
-    private val terminalManager by lazy {
-        TerminalManager.getInstance(context)
-    }
-
-    // Linux文件系统提供者，优先使用SSH连接，否则从TerminalManager获取
-    protected fun getLinuxFileSystem(): FileSystemProvider {
-        // 先尝试获取SSH连接的文件系统
-        val sshProvider = sshFileManager.getFileSystemProvider()
-        
-        // 如果SSH已登录，使用SSH文件系统
-        if (sshProvider != null) {
-            AppLogger.d(TAG, "Using SSH file system provider")
-            return sshProvider
-        }
-        
-        // 否则使用本地Terminal的文件系统
-        AppLogger.d(TAG, "Using local terminal file system provider")
-        return terminalManager.getFileSystemProvider()
-    }
-
-    // Linux文件系统工具实例
-    protected val linuxTools: LinuxFileSystemTools by lazy {
-        LinuxFileSystemTools(context)
-    }
-
     /** 检查是否是Linux环境 */
     protected fun isLinuxEnvironment(environment: String?): Boolean {
-        return environment?.lowercase() == "linux"
+        // Linux/Terminal functionality has been removed
+        return false
     }
 
     /** Adds line numbers to a string of content. */
@@ -174,10 +141,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val path = tool.parameters.find { it.name == "path" }?.value ?: ""
         val environment = tool.parameters.find { it.name == "environment" }?.value
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.listFiles(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -548,10 +511,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val environment = tool.parameters.find { it.name == "environment" }?.value
         val textOnly = tool.parameters.find { it.name == "text_only" }?.value?.toBoolean() ?: false
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.readFileFull(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -645,10 +604,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val path = tool.parameters.find { it.name == "path" }?.value ?: ""
         val environment = tool.parameters.find { it.name == "environment" }?.value
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.readFileBinary(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -702,10 +657,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val path = tool.parameters.find { it.name == "path" }?.value ?: ""
         val environment = tool.parameters.find { it.name == "environment" }?.value
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.readFile(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -816,10 +767,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val startLineParam = tool.parameters.find { it.name == "start_line" }?.value?.toIntOrNull() ?: 1
         val endLineParam = tool.parameters.find { it.name == "end_line" }?.value?.toIntOrNull()
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.readFilePart(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -922,10 +869,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val append =
             tool.parameters.find { it.name == "append" }?.value?.toBoolean() ?: false
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.writeFile(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -1056,10 +999,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val environment = tool.parameters.find { it.name == "environment" }?.value
         val base64Content = tool.parameters.find { it.name == "base64Content" }?.value ?: ""
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.writeFileBinary(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -1184,10 +1123,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val recursive =
             tool.parameters.find { it.name == "recursive" }?.value?.toBoolean() ?: false
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.deleteFile(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -1307,10 +1242,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val path = tool.parameters.find { it.name == "path" }?.value ?: ""
         val environment = tool.parameters.find { it.name == "environment" }?.value
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.fileExists(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -1373,10 +1304,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val destPath = tool.parameters.find { it.name == "destination" }?.value ?: ""
         val environment = tool.parameters.find { it.name == "environment" }?.value
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.moveFile(tool)
-        }
         PathValidator.validateAndroidPath(sourcePath, tool.name, "source")?.let { return it }
         PathValidator.validateAndroidPath(destPath, tool.name, "destination")?.let { return it }
 
@@ -1569,7 +1496,6 @@ open class StandardFileSystemTools(protected val context: Context) {
 
             // 1. 检查源文件是否存在
             val sourceExists = if (isLinuxEnvironment(sourceEnvironment)) {
-                getLinuxFileSystem().exists(sourcePath)
             } else {
                 File(sourcePath).exists()
             }
@@ -1590,7 +1516,6 @@ open class StandardFileSystemTools(protected val context: Context) {
 
             // 2. 检查是否是目录
             val isDirectory = if (isLinuxEnvironment(sourceEnvironment)) {
-                getLinuxFileSystem().isDirectory(sourcePath)
             } else {
                 File(sourcePath).isDirectory
             }
@@ -1622,7 +1547,6 @@ open class StandardFileSystemTools(protected val context: Context) {
 
             // 3. 获取文件大小
             val fileSize = if (isLinuxEnvironment(sourceEnvironment)) {
-                getLinuxFileSystem().getFileSize(sourcePath)
             } else {
                 File(sourcePath).length()
             }
@@ -1633,7 +1557,6 @@ open class StandardFileSystemTools(protected val context: Context) {
 
             if (isLinuxEnvironment(sourceEnvironment)) {
                 // 从 Linux 读取并写入
-                val content = getLinuxFileSystem().readFile(sourcePath) ?: return ToolResult(
                     toolName = toolName,
                     success = false,
                     result = FileOperationData(
@@ -1647,7 +1570,6 @@ open class StandardFileSystemTools(protected val context: Context) {
                 val bytes = content.toByteArray(Charsets.UTF_8)
 
                 if (isLinuxEnvironment(destEnvironment)) {
-                    val result = getLinuxFileSystem().writeFileBytes(finalDestPath, bytes)
                     if (!result.success) {
                         return ToolResult(
                             toolName = toolName,
@@ -1686,7 +1608,6 @@ open class StandardFileSystemTools(protected val context: Context) {
 
                     if (isLinuxEnvironment(destEnvironment)) {
                         val bytes = (outputStream as java.io.ByteArrayOutputStream).toByteArray()
-                        val result = getLinuxFileSystem().writeFileBytes(finalDestPath, bytes)
                         if (!result.success) {
                             return ToolResult(
                                 toolName = toolName,
@@ -1754,7 +1675,6 @@ open class StandardFileSystemTools(protected val context: Context) {
 
             // 1. 创建目标目录
             if (isLinuxEnvironment(destEnvironment)) {
-                val result = getLinuxFileSystem().createDirectory(finalDestPath, createParents = true)
                 if (!result.success) {
                     return ToolResult(
                         toolName = toolName,
@@ -1777,7 +1697,6 @@ open class StandardFileSystemTools(protected val context: Context) {
 
             // 2. 列出源目录内容
             val entries = if (isLinuxEnvironment(sourceEnvironment)) {
-                getLinuxFileSystem().listDirectory(sourcePath)?.map { fileInfo ->
                     Pair(fileInfo.name, fileInfo.isDirectory)
                 } ?: emptyList()
             } else {
@@ -1901,7 +1820,6 @@ open class StandardFileSystemTools(protected val context: Context) {
             )
         }
 
-        // 同环境复制 - 如果是Linux环境，委托给LinuxFileSystemTools
         if (isLinuxEnvironment(srcEnv)) {
             return linuxTools.copyFile(
                 AITool(
@@ -2059,10 +1977,6 @@ open class StandardFileSystemTools(protected val context: Context) {
             tool.parameters.find { it.name == "create_parents" }?.value?.toBoolean()
                 ?: false
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.makeDirectory(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -2177,10 +2091,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val environment = tool.parameters.find { it.name == "environment" }?.value
         val pattern = tool.parameters.find { it.name == "pattern" }?.value ?: ""
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.findFiles(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank() || pattern.isBlank()) {
@@ -2351,10 +2261,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val path = tool.parameters.find { it.name == "path" }?.value ?: ""
         val environment = tool.parameters.find { it.name == "environment" }?.value
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.fileInfo(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -3148,10 +3054,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val path = tool.parameters.find { it.name == "path" }?.value ?: ""
         val environment = tool.parameters.find { it.name == "environment" }?.value
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.openFile(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -3263,10 +3165,6 @@ open class StandardFileSystemTools(protected val context: Context) {
 
         AppLogger.d(TAG, "grep_code: Starting search - path=$path, pattern=\"$pattern\", file_pattern=$filePattern, max_results=$maxResults")
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.grepCode(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -3503,10 +3401,6 @@ open class StandardFileSystemTools(protected val context: Context) {
             }
         }
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.grepContext(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {
@@ -3909,10 +3803,6 @@ open class StandardFileSystemTools(protected val context: Context) {
         val environment = tool.parameters.find { it.name == "environment" }?.value
         val title = tool.parameters.find { it.name == "title" }?.value ?: "Share File"
 
-        // 如果是Linux环境，委托给LinuxFileSystemTools
-        if (isLinuxEnvironment(environment)) {
-            return linuxTools.shareFile(tool)
-        }
         PathValidator.validateAndroidPath(path, tool.name)?.let { return it }
 
         if (path.isBlank()) {

@@ -3,7 +3,6 @@ package com.ai.assistance.operit.data.mcp.plugins
 import android.content.Context
 import android.os.Environment
 import com.ai.assistance.operit.util.AppLogger
-import com.ai.assistance.operit.core.tools.system.Terminal
 import com.ai.assistance.operit.core.tools.AIToolHandler
 import com.ai.assistance.operit.data.model.AITool
 import com.ai.assistance.operit.data.model.ToolParameter
@@ -122,68 +121,9 @@ class MCPBridge private constructor(private val context: Context) {
 
                     AppLogger.d(TAG, "桥接器文件已复制到公共目录: ${publicBridgeDir.absolutePath}")
 
-                    // 2. 确保终端目录存在并复制文件
-                    // 获取终端管理器
-                    val terminal = Terminal.getInstance(context)
-                    
-                    // 确保已连接到终端服务
-                    if (!terminal.isConnected()) {
-                        val connected = terminal.initialize()
-                        if (!connected) {
-                            AppLogger.e(TAG, "无法连接到终端服务")
-                            return@withContext false
-                        }
-                    }
-
-                    // 使用传入的sessionId或创建新的会话
-                    val actualSessionId = sessionId ?: run {
-                        val newSessionId = terminal.createSession("mcp-bridge-deploy")
-                        if (newSessionId == null) {
-                            AppLogger.e(TAG, "无法创建终端会话或会话初始化超时")
-                            return@withContext false
-                        }
-                        newSessionId
-                    }
-
-                    // 使用sdcard路径而不是Android storage路径
-                    val sdcardBridgePath = "/sdcard/Download/Operit/bridge"
-                    
-                    // 获取 AIToolHandler 实例
-                    val toolHandler = AIToolHandler.getInstance(context)
-                    
-                    // 先创建目标目录
-                    val mkdirCommand = "mkdir -p $TERMUX_BRIDGE_PATH"
-                    terminal.executeCommand(actualSessionId, mkdirCommand)
-                    delay(100) // 等待目录创建
-                    
-                    // 使用 AIToolHandler 复制打包后的文件（跨环境复制：Android -> Linux）
-                    // 打包后的文件已包含所有依赖，不需要 package.json 和 node_modules
-                    val filesToCopy = listOf("index.js", "spawn-helper.js")
-                    
-                    for (fileName in filesToCopy) {
-                        val copyTool = AITool(
-                            name = "copy_file",
-                            parameters = listOf(
-                                ToolParameter("source", "$sdcardBridgePath/$fileName"),
-                                ToolParameter("destination", "$TERMUX_BRIDGE_PATH/$fileName"),
-                                ToolParameter("source_environment", "android"),
-                                ToolParameter("dest_environment", "linux"),
-                                ToolParameter("recursive", "false")
-                            )
-                        )
-                        
-                        val result = toolHandler.executeTool(copyTool)
-                        if (!result.success) {
-                            AppLogger.e(TAG, "复制文件 $fileName 失败: ${result.error}")
-                            return@withContext false
-                        }
-                        AppLogger.d(TAG, "成功复制文件: $fileName")
-                    }
-                    
-                    // 打包后的文件已包含所有依赖，无需安装 node_modules
-
-                    AppLogger.d(TAG, "桥接器成功部署到终端")
-                    return@withContext true
+                    // Terminal functionality has been removed - bridge deployment to terminal is disabled
+                    AppLogger.w(TAG, "Terminal functionality has been removed. Bridge deployment to terminal is disabled.")
+                    return@withContext false
                 } catch (e: Exception) {
                     AppLogger.e(TAG, "部署桥接器异常", e)
                     return@withContext false
@@ -208,74 +148,9 @@ class MCPBridge private constructor(private val context: Context) {
                             return@withContext false
                         }
 
-                        // 首先检查桥接器是否已经在运行
-                        val listResult = getInstance(ctx).listMcpServices()
-                        if (listResult != null && listResult.optBoolean("success", false)) {
-                            AppLogger.d(TAG, "桥接器已经在运行，无需重新启动")
-                            return@withContext true
-                        }
-
-                        // 获取终端管理器
-                        val terminal = Terminal.getInstance(ctx)
-                        
-                        // 确保已连接到终端服务
-                        if (!terminal.isConnected()) {
-                            val connected = terminal.initialize()
-                            if (!connected) {
-                                AppLogger.e(TAG, "无法连接到终端服务")
-                                return@withContext false
-                            }
-                        }
-
-                        // 使用传入的sessionId或创建新的会话
-                        val actualSessionId = sessionId ?: run {
-                            val newSessionId = terminal.createSession("mcp-bridge-daemon")
-                            if (newSessionId == null) {
-                                AppLogger.e(TAG, "无法创建终端会话或会话初始化超时")
-                                return@withContext false
-                            }
-                            newSessionId
-                        }
-
-                        // 构建启动命令 - 使用后台方式运行
-                        val command = StringBuilder("cd $TERMUX_BRIDGE_PATH && node index.js $port")
-                        if (mcpCommand != null) {
-                            command.append(" $mcpCommand")
-                            if (mcpArgs != null && mcpArgs.isNotEmpty()) {
-                                command.append(" ${mcpArgs.joinToString(" ")}")
-                            }
-                        }
-                        command.append(" &")
-
-                        AppLogger.d(TAG, "发送启动命令: $command")
-
-                        // 异步方式发送启动命令 - 不等待完成，因为它会作为后台进程一直运行
-                        AppLogger.d(TAG, "进行桥接器启动...")
-                        terminal.executeCommand(actualSessionId, command.toString())
-
-                        // 等待一段时间让桥接器启动
-                        AppLogger.d(TAG, "等待桥接器启动...")
-                        delay(2000)
-
-                        // 验证桥接器是否成功启动 - 尝试三次
-                        var isRunning = false
-                        for (i in 1..3) {
-                            val checkResult = getInstance(ctx).listMcpServices()
-                            if (checkResult != null && checkResult.optBoolean("success", false)) {
-                                AppLogger.d(TAG, "桥接器成功启动，list响应: $checkResult")
-                                isRunning = true
-                                break
-                            }
-                            AppLogger.d(TAG, "第${i}次尝试连接桥接器失败，等待1秒后重试")
-                            delay(1000)
-                        }
-
-                        // 如果三次尝试后仍然无法ping通，检查日志
-                        if (!isRunning) {
-                            AppLogger.e(TAG, "桥接器可能未成功启动。请检查终端会话 'mcp-bridge-daemon' 的输出。")
-                        }
-
-                        return@withContext isRunning
+                        // Terminal functionality has been removed - bridge start is disabled
+                        AppLogger.w(TAG, "Terminal functionality has been removed. Bridge start via terminal is disabled.")
+                        return@withContext false
                     } catch (e: Exception) {
                         AppLogger.e(TAG, "启动桥接器异常", e)
                         return@withContext false

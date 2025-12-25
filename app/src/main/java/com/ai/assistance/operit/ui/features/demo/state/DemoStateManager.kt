@@ -10,7 +10,6 @@ import com.ai.assistance.operit.util.AppLogger
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import com.ai.assistance.operit.core.tools.system.OperitTerminalManager
 import com.ai.assistance.operit.core.tools.system.RootAuthorizer
 import com.ai.assistance.operit.data.repository.UIHierarchyManager
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +25,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.ai.assistance.operit.core.tools.system.AccessibilityProviderInstaller
 import com.ai.assistance.operit.core.tools.system.ShizukuAuthorizer
-import com.ai.assistance.operit.core.tools.system.Terminal
 import com.ai.assistance.operit.data.mcp.plugins.MCPSharedSession
 
 private const val TAG = "DemoStateManager"
@@ -126,11 +124,7 @@ class DemoStateManager(private val context: Context, private val coroutineScope:
     }
 
     fun toggleOperitTerminalWizard() {
-        _uiState.update { currentState ->
-            currentState.copy(
-                showOperitTerminalWizard = mutableStateOf(!currentState.showOperitTerminalWizard.value)
-            )
-        }
+        // Terminal functionality has been removed - do nothing
     }
 
     fun toggleRootWizard() {
@@ -224,9 +218,6 @@ class DemoStateManager(private val context: Context, private val coroutineScope:
                     updateShizukuRunning = { _uiState.value.isShizukuRunning.value = it },
                     updateShizukuPermission = { _uiState.value.hasShizukuPermission.value = it },
                     updateOperitTerminalInstalled = { _uiState.value.isOperitTerminalInstalled.value = it },
-                    updateOperitTerminalRunning = { isOperitTerminalRunning -> 
-                        // Add logic if needed for OperitTerminal running state
-                    },
                     updateStoragePermission = { _uiState.value.hasStoragePermission.value = it },
                     updateLocationPermission = { _uiState.value.hasLocationPermission.value = it },
                     updateOverlayPermission = { _uiState.value.hasOverlayPermission.value = it },
@@ -360,11 +351,9 @@ suspend fun refreshPermissionsAndStatus(
         }
     updateShizukuPermission(hasShizukuPermission)
 
-    // 检查NodeJS和Python环境是否就绪（替代OperitTerminal安装检查）
-    val isNodejsPythonEnvironmentReady = try {
-        val sessionId = MCPSharedSession.getOrCreateSharedSession(context)
-        if (sessionId != null) {
-            val terminal = Terminal.getInstance(context)
+    // 检查NodeJS和Python环境是否就绪（Terminal functionality removed）
+    val isNodejsPythonEnvironmentReady = false // Terminal functionality has been removed
+    updateOperitTerminalInstalled(isNodejsPythonEnvironmentReady)
             val pnpmResult = terminal.executeCommand(sessionId, "command -v pnpm")
             val isPnpmInstalled = pnpmResult != null && pnpmResult.contains("pnpm")
             
