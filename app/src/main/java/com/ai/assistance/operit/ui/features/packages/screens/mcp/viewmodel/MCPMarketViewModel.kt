@@ -79,9 +79,11 @@ class MCPMarketViewModel(
             _isLoading.value = true
             _error.value = null
             try {
-                val allPlugins = mcpRepository.getAllMCPServers()
-                _plugins.value = allPlugins
-                _installedPluginIds.value = allPlugins.map { it.id }.toSet()
+                // 使用 mcpServers StateFlow 获取插件列表
+                mcpRepository.mcpServers.collect { plugins ->
+                    _plugins.value = plugins
+                    _installedPluginIds.value = plugins.map { it.id }.toSet()
+                }
             } catch (e: Exception) {
                 _error.value = e.message ?: "加载插件失败"
             } finally {

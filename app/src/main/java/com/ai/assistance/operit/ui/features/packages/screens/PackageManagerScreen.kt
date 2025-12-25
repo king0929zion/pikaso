@@ -41,7 +41,6 @@ import com.ai.assistance.operit.core.tools.ToolPackage
 import com.ai.assistance.operit.core.tools.packTool.PackageManager
 import com.ai.assistance.operit.data.mcp.MCPRepository
 import com.ai.assistance.operit.data.preferences.EnvPreferences
-import com.ai.assistance.operit.ui.features.packages.screens.mcp.components.MCPEnvironmentVariablesDialog
 import com.ai.assistance.operit.data.model.ToolResult
 import com.ai.assistance.operit.ui.features.packages.components.EmptyState
 import com.ai.assistance.operit.ui.features.packages.components.PackageTab
@@ -524,9 +523,29 @@ fun PackageManagerScreen(
                     }
                     */
                     PackageTab.MCP -> {
-                        MCPConfigScreen(
-                            onNavigateToMCPMarket = onNavigateToMCPMarket
-                        )
+                        // MCP配置屏幕已被移除 - 显示占位符
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                Text(
+                                    text = "MCP配置功能已移除",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = "本地MCP部署功能已被移除。\n现在只支持远程MCP插件（HTTP/SSE连接）。",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Button(onClick = onNavigateToMCPMarket) {
+                                    Text("访问MCP市场")
+                                }
+                            }
+                        }
                     }
                 }
             }

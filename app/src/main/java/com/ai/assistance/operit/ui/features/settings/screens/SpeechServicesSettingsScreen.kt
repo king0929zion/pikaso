@@ -660,12 +660,11 @@ fun SpeechServicesSettingsScreen(
                             OutlinedTextField(
                                 value = when(sttServiceTypeInput) {
                                     SpeechServiceFactory.SpeechServiceType.SHERPA_NCNN -> stringResource(R.string.speech_services_stt_type_sherpa)
-                                    SpeechServiceFactory.SpeechServiceType.SHERPA_MNN -> stringResource(R.string.speech_services_stt_type_sherpa_mnn)
                                 },
                                 onValueChange = {},
                                 readOnly = true,
                                 label = { Text(stringResource(R.string.speech_services_stt_engine)) },
-                                trailingIcon = { 
+                                trailingIcon = {
                                     Icon(Icons.Default.ArrowDropDown, stringResource(R.string.speech_services_dropdown_expand))
                                 },
                                 modifier = Modifier.menuAnchor().fillMaxWidth()
@@ -676,22 +675,21 @@ fun SpeechServicesSettingsScreen(
                             ) {
                                 SpeechServiceFactory.SpeechServiceType.values().forEach { type ->
                                     DropdownMenuItem(
-                                        text = { 
+                                        text = {
                                             Text(
                                                 text = when(type) {
                                                     SpeechServiceFactory.SpeechServiceType.SHERPA_NCNN -> stringResource(R.string.speech_services_stt_type_sherpa)
-                                                    SpeechServiceFactory.SpeechServiceType.SHERPA_MNN -> stringResource(R.string.speech_services_stt_type_sherpa_mnn)
+                                                    else -> type.name
                                                 },
                                                 fontWeight = if (sttServiceTypeInput == type) FontWeight.Medium else FontWeight.Normal
-                                            ) 
+                                            )
                                         },
                                         onClick = {
                                             sttServiceTypeInput = type
                                             sttDropdownExpanded = false
                                         },
                                         // 支持本地识别引擎
-                                        enabled = type == SpeechServiceFactory.SpeechServiceType.SHERPA_NCNN || 
-                                                 type == SpeechServiceFactory.SpeechServiceType.SHERPA_MNN
+                                        enabled = type == SpeechServiceFactory.SpeechServiceType.SHERPA_NCNN
                                     )
                                 }
                             }

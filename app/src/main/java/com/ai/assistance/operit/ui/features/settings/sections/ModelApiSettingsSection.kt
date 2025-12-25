@@ -93,7 +93,6 @@ fun ModelApiSettingsSection(
             ApiProviderType.ALIPAY_BAILING -> "Ling-1T"
             ApiProviderType.DOUBAO -> "Doubao-pro-4k"
             ApiProviderType.LMSTUDIO -> "meta-llama-3.1-8b-instruct"
-            ApiProviderType.MNN -> ""
             ApiProviderType.PPINFRA -> "gpt-4o-mini"
             ApiProviderType.OTHER -> ""
         }
@@ -109,11 +108,7 @@ fun ModelApiSettingsSection(
     var apiKeyInput by remember(config.id) { mutableStateOf(config.apiKey) }
     var modelNameInput by remember(config.id) { mutableStateOf(config.modelName) }
     var selectedApiProvider by remember(config.id) { mutableStateOf(config.apiProviderType) }
-    
-    // MNN特定配置状态
-    var mnnForwardTypeInput by remember(config.id) { mutableStateOf(config.mnnForwardType) }
-    var mnnThreadCountInput by remember(config.id) { mutableStateOf(config.mnnThreadCount.toString()) }
-    
+
     // 图片处理配置状态
     var enableDirectImageProcessingInput by remember(config.id) { mutableStateOf(config.enableDirectImageProcessing) }
     
@@ -143,9 +138,7 @@ fun ModelApiSettingsSection(
                     apiKey = apiKeyInput,
                     apiEndpoint = apiEndpointInput,
                     modelName = modelToSave,
-                    apiProviderType = selectedApiProvider,
-                    mnnForwardType = mnnForwardTypeInput,
-                    mnnThreadCount = mnnThreadCountInput.toIntOrNull() ?: 4
+                    apiProviderType = selectedApiProvider
             )
 
             // 更新图片直接处理配置
@@ -212,7 +205,6 @@ fun ModelApiSettingsSection(
             ApiProviderType.ALIPAY_BAILING -> "https://api.tbox.cn/api/llm/v1/chat/completions"
             ApiProviderType.DOUBAO -> "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
             ApiProviderType.LMSTUDIO -> "http://localhost:1234/v1/chat/completions"
-            ApiProviderType.MNN -> "" // MNN本地推理不需要endpoint
             ApiProviderType.PPINFRA -> "https://api.ppinfra.com/openai/v1/chat/completions"
             ApiProviderType.OPENAI_GENERIC -> ""
             ApiProviderType.OTHER -> ""
@@ -326,32 +318,20 @@ fun ModelApiSettingsSection(
                 selectedApiProvider == ApiProviderType.OTHER ||
                 selectedApiProvider == ApiProviderType.GEMINI_GENERIC
 
-            if (selectedApiProvider == ApiProviderType.MNN) {
-                MnnSettingsBlock(
-                        mnnForwardTypeInput = mnnForwardTypeInput,
-                        onForwardTypeSelected = { mnnForwardTypeInput = it },
-                        mnnThreadCountInput = mnnThreadCountInput,
-                        onThreadCountChange = { input ->
-                            if (input.isEmpty() || input.toIntOrNull() != null) {
-                                mnnThreadCountInput = input
-                            }
-                        },
-                        navigateToMnnModelDownload = navigateToMnnModelDownload
-                )
-            } else {
-                SettingsTextField(
-                        title = stringResource(R.string.api_endpoint),
-                        subtitle = stringResource(R.string.api_endpoint_placeholder),
-                    value = apiEndpointInput,
-                    onValueChange = { 
-                        apiEndpointInput = it.replace("\n", "").replace("\r", "").replace(" ", "")
-                    },
-                        enabled = isGenericProvider,
-                        keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Uri,
-                                imeAction = ImeAction.Next
-                        )
-                )
+            // API 端点设置
+            SettingsTextField(
+                    title = stringResource(R.string.api_endpoint),
+                    subtitle = stringResource(R.string.api_endpoint_placeholder),
+                value = apiEndpointInput,
+                onValueChange = {
+                    apiEndpointInput = it.replace("\n", "").replace("\r", "").replace(" ", "")
+                },
+                    enabled = isGenericProvider,
+                    keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Uri,
+                            imeAction = ImeAction.Next
+                    )
+            )
 
             val completedEndpoint = EndpointCompleter.completeEndpoint(apiEndpointInput)
             if (completedEndpoint != apiEndpointInput) {
@@ -391,66 +371,19 @@ fun ModelApiSettingsSection(
                 )
             }
 
-            val isMnnProvider = selectedApiProvider == ApiProviderType.MNN
             SettingsTextField(
                     title = stringResource(R.string.model_name),
-                    subtitle = if (isMnnProvider) stringResource(R.string.mnn_select_downloaded_model) else stringResource(
-                            R.string.model_name_placeholder) + " (可用逗号分隔多个模型)",
-                        value = modelNameInput,
-                        onValueChange = {
-                        if (!isMnnProvider && !isUsingDefaultApiKey) {
+                    subtitle = stringResource(R.string.model_name_placeholder) + " (可用逗号分隔多个模型)",
+                    value = modelNameInput,
+                    onValueChange = {
+                    if (!isUsingDefaultApiKey) {
                                 modelNameInput = it.replace("\n", "").replace("\r", "")
                             }
                         },
-                    enabled = if (isMnnProvider) false else !isUsingDefaultApiKey,
+                    enabled = !isUsingDefaultApiKey,
                     trailingContent = {
                 IconButton(
                         onClick = {
-                                    if (isMnnProvider) {
-                                        AppLogger.d(TAG, "获取MNN本地模型列表")
-                                        val gettingModelsText =
-                                                context.getString(R.string.getting_models_list)
-                                        val modelsListSuccessText =
-                                                context.getString(R.string.models_list_success)
-                                        showNotification(gettingModelsText)
-
-                                        scope.launch {
-                                            isLoadingModels = true
-                                            modelLoadError = null
-
-                                            try {
-                                                val result = ModelListFetcher.getMnnLocalModels(context)
-                                                if (result.isSuccess) {
-                                                    val models = result.getOrThrow()
-                                                    AppLogger.d(TAG, "MNN模型列表获取成功，共 ${models.size} 个模型")
-                                                    modelsList = models
-                                                    showModelsDialog = true
-                                                    showNotification(modelsListSuccessText.format(models.size))
-                                                } else {
-                                                    val errorMsg =
-                                                            result.exceptionOrNull()?.message
-                                                                    ?: context.getString(R.string.unknown_error)
-                                                    AppLogger.e(TAG, "MNN模型列表获取失败: $errorMsg")
-                                                    modelLoadError =
-                                                            context.getString(
-                                                                    R.string.get_models_list_failed,
-                                                                    errorMsg
-                                                            )
-                                                    showNotification(modelLoadError!!)
-                                                }
-                                            } catch (e: Exception) {
-                                                AppLogger.e(TAG, "获取MNN模型列表发生异常", e)
-                                                modelLoadError =
-                                                        context.getString(
-                                                                R.string.get_models_list_failed,
-                                                                e.message ?: ""
-                                                        )
-                                                showNotification(modelLoadError!!)
-                                            } finally {
-                                                isLoadingModels = false
-                                            }
-                                        }
-                                    } else {
                             AppLogger.d(
                                     TAG,
                                     "模型列表按钮被点击 - API端点: $apiEndpointInput, API类型: ${selectedApiProvider.name}"
@@ -462,7 +395,7 @@ fun ModelApiSettingsSection(
                             val fillEndpointKeyText = context.getString(R.string.fill_endpoint_and_key)
                             val modelsListSuccessText = context.getString(R.string.models_list_success)
                             val refreshModelsFailedText = context.getString(R.string.refresh_models_failed)
-                            
+
                             showNotification(gettingModelsText)
 
                             scope.launch {
@@ -541,15 +474,12 @@ fun ModelApiSettingsSection(
                     }
             )
 
-
-            if (selectedApiProvider != ApiProviderType.MNN) {
-                SettingsSwitchRow(
-                        title = stringResource(R.string.enable_direct_image_processing),
-                        subtitle = stringResource(R.string.enable_direct_image_processing_desc),
-                            checked = enableDirectImageProcessingInput,
-                            onCheckedChange = { enableDirectImageProcessingInput = it }
-                    )
-            }
+            SettingsSwitchRow(
+                    title = stringResource(R.string.enable_direct_image_processing),
+                    subtitle = stringResource(R.string.enable_direct_image_processing_desc),
+                        checked = enableDirectImageProcessingInput,
+                        onCheckedChange = { enableDirectImageProcessingInput = it }
+                )
             
             // Google Search Grounding 开关 (仅Gemini支持)
             if (selectedApiProvider == ApiProviderType.GOOGLE ||
@@ -561,16 +491,14 @@ fun ModelApiSettingsSection(
                             onCheckedChange = { enableGoogleSearchInput = it }
                     )
             }
-            
-            // Tool Call 开关 (非MNN模型)
-            if (selectedApiProvider != ApiProviderType.MNN) {
-                SettingsSwitchRow(
-                        title = stringResource(R.string.enable_tool_call),
-                        subtitle = stringResource(R.string.enable_tool_call_desc),
-                            checked = enableToolCallInput,
-                            onCheckedChange = { enableToolCallInput = it }
-                    )
-            }
+
+            // Tool Call 开关
+            SettingsSwitchRow(
+                    title = stringResource(R.string.enable_tool_call),
+                    subtitle = stringResource(R.string.enable_tool_call_desc),
+                        checked = enableToolCallInput,
+                        onCheckedChange = { enableToolCallInput = it }
+                )
             
             // DeepSeek推理模式开关 (仅DeepSeek)
             if (selectedApiProvider == ApiProviderType.DEEPSEEK) {
@@ -857,9 +785,7 @@ fun ModelApiSettingsSection(
                                     val orderedSelection = modelsList.map { it.id }
                                         .filter { selectedModels.value.contains(it) }
                                     modelNameInput = orderedSelection.joinToString(",")
-                                    if (selectedApiProvider == ApiProviderType.MNN) {
-                                        AppLogger.d(TAG, "选择MNN模型: $modelNameInput")
-                                    }
+                                    AppLogger.d(TAG, "选择的模型: $modelNameInput")
                                     showModelsDialog = false
                                 },
                                 modifier = Modifier.height(36.dp),
@@ -899,7 +825,6 @@ private fun getProviderDisplayName(provider: ApiProviderType, context: android.c
         ApiProviderType.ALIPAY_BAILING -> context.getString(R.string.provider_alipay_bailing)
         ApiProviderType.DOUBAO -> context.getString(R.string.provider_doubao)
         ApiProviderType.LMSTUDIO -> context.getString(R.string.provider_lmstudio)
-        ApiProviderType.MNN -> context.getString(R.string.provider_mnn)
         ApiProviderType.PPINFRA -> context.getString(R.string.provider_ppinfra)
         ApiProviderType.OTHER -> context.getString(R.string.provider_other)
     }
@@ -1166,118 +1091,6 @@ internal fun SettingsSwitchRow(
 }
 
 @Composable
-private fun MnnSettingsBlock(
-        mnnForwardTypeInput: Int,
-        onForwardTypeSelected: (Int) -> Unit,
-        mnnThreadCountInput: String,
-        onThreadCountChange: (String) -> Unit,
-        navigateToMnnModelDownload: (() -> Unit)?
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        SettingsInfoBanner(text = stringResource(R.string.mnn_local_model_tip))
-
-        navigateToMnnModelDownload?.let { navigate ->
-            Button(
-                    onClick = navigate,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors =
-                            ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-            ) {
-                Icon(
-                        imageVector = Icons.Default.Download,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = stringResource(R.string.mnn_model_download))
-            }
-        }
-
-        var showForwardTypeDialog by remember { mutableStateOf(false) }
-
-        SettingsSelectorRow(
-                title = stringResource(R.string.mnn_forward_type),
-                subtitle = stringResource(R.string.select),
-                value = forwardTypeName(mnnForwardTypeInput),
-                onClick = { showForwardTypeDialog = true }
-        )
-
-        if (showForwardTypeDialog) {
-            Dialog(onDismissRequest = { showForwardTypeDialog = false }) {
-                Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
-                        color = MaterialTheme.colorScheme.surface
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                                text = stringResource(R.string.mnn_forward_type),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                modifier = Modifier.padding(bottom = 12.dp)
-                        )
-                        listOf(
-                                0 to "CPU",
-                                3 to "OpenCL",
-                                4 to "Auto",
-                                6 to "OpenGL",
-                                7 to "Vulkan"
-                        ).forEach { (type, name) ->
-                            Surface(
-                                    modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(vertical = 4.dp)
-                                            .clickable {
-                                                onForwardTypeSelected(type)
-                                                showForwardTypeDialog = false
-                                            },
-                                    shape = RoundedCornerShape(8.dp),
-                                    color =
-                                            if (mnnForwardTypeInput == type)
-                                                    MaterialTheme.colorScheme.primaryContainer
-                                            else MaterialTheme.colorScheme.surface
-                            ) {
-                                Text(
-                                        text = name,
-                                        modifier = Modifier.padding(14.dp),
-                                        style = MaterialTheme.typography.bodyLarge
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        SettingsTextField(
-                title = stringResource(R.string.mnn_thread_count),
-                value = mnnThreadCountInput,
-                onValueChange = onThreadCountChange,
-                placeholder = "4",
-                keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next
-                ),
-                valueFilter = { input -> input.filter { it.isDigit() } }
-        )
-    }
-}
-
-private fun forwardTypeName(type: Int): String {
-    return when (type) {
-        0 -> "CPU"
-        3 -> "OpenCL"
-        4 -> "Auto"
-        6 -> "OpenGL"
-        7 -> "Vulkan"
-        else -> "CPU"
-    }
-}
-
-@Composable
 private fun ApiProviderDialog(
         onDismissRequest: () -> Unit,
         onProviderSelected: (ApiProviderType) -> Unit
@@ -1428,7 +1241,6 @@ private fun getProviderColor(provider: ApiProviderType): androidx.compose.ui.gra
         ApiProviderType.ALIPAY_BAILING -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0.45f)
         ApiProviderType.DOUBAO -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.4f)
         ApiProviderType.LMSTUDIO -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)
-        ApiProviderType.MNN -> MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
         ApiProviderType.PPINFRA -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.9f)
         ApiProviderType.OTHER -> MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
     }
