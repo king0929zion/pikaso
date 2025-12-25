@@ -48,6 +48,8 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.ai.assistance.operit.services.ServiceLifecycleOwner
 import com.ai.assistance.operit.util.AppLogger
 import com.ai.assistance.operit.core.tools.agent.ShowerController
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -113,9 +115,9 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
     // The video region itself still uses 0.4x of the screen width; this extra width
     // is only used to host controls without changing the video size.
     private val automationPanelWidthPx: Int by lazy {
-        (56 * context.resources.displayMetrics.density).roundToInt()
+        (AppSpacing.mediumLarge * context.resources.displayMetrics.density).roundToInt()
     }
-    private val automationPanelWidthDp = 56.dp
+    private val automationPanelWidthDp = AppSpacing.mediumLarge
 
     private fun runOnMainThread(action: () -> Unit) {
         if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -283,8 +285,8 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                 val centerX = params.x + params.width / 2
                 snappedToRight = centerX >= screenWidth / 2
 
-                val snappedWidthPx = (36 * context.resources.displayMetrics.density).roundToInt()
-                val snappedHeightPx = (48 * context.resources.displayMetrics.density).roundToInt()
+                val snappedWidthPx = (AppSizes.buttonMinHeightSmall.toInt() * context.resources.displayMetrics.density).roundToInt()
+                val snappedHeightPx = ((AppSizes.buttonMinHeightSmall + 12.dp).toInt() * context.resources.displayMetrics.density).roundToInt()
                 val targetX = if (snappedToRight) screenWidth - snappedWidthPx else 0
                 val maxY = metrics.heightPixels - snappedHeightPx
                 val targetY = params.y.coerceIn(statusBarHeight, maxY)
@@ -320,8 +322,8 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
         val startWidth = params.width
         val startHeight = params.height
         val metrics = context.resources.displayMetrics
-        val snappedWidth = (36 * metrics.density).roundToInt()
-        val snappedHeight = (48 * metrics.density).roundToInt()
+        val snappedWidth = (AppSizes.buttonMinHeightSmall.toInt() * metrics.density).roundToInt()
+        val snappedHeight = ((AppSizes.buttonMinHeightSmall + 12.dp).toInt() * metrics.density).roundToInt()
         val (endWidth, endHeight) = if (isSnapping) {
             snappedWidth to snappedHeight
         } else {
@@ -509,7 +511,7 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                         }
                     )
                 }
-                .clip(RoundedCornerShape(0.dp))
+                .clip(RoundedCornerShape(AppSizes.none))
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -555,15 +557,15 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                                 Box(
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)
-                                        .padding(12.dp)
+                                        .padding(AppSpacing.small)
                                 ) {
                                     Row(
                                         modifier = Modifier
-                                            .clip(RoundedCornerShape(999.dp))
+                                            .clip(RoundedCornerShape(AppSizes.avatarExtraLarge))
                                             .background(Color.Black.copy(alpha = 0.45f))
-                                            .padding(horizontal = 6.dp, vertical = 2.dp),
+                                            .padding(horizontal = AppSpacing.nano, vertical = AppSpacing.none),
                                         verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.none)
                                     ) {
                                         // Minimize (映射到贴边，类似最小化到侧边)
                                         IconButton(
@@ -571,7 +573,7 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                                                 toggleFullScreen()
                                                 snapToEdge()
                                             },
-                                            modifier = Modifier.size(32.dp),
+                                            modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp),
                                             colors = IconButtonDefaults.iconButtonColors(
                                                 contentColor = Color.White,
                                                 containerColor = Color.Transparent
@@ -580,14 +582,14 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                                             Icon(
                                                 imageVector = Icons.Outlined.Minimize,
                                                 contentDescription = "Minimize",
-                                                modifier = Modifier.size(18.dp),
+                                                modifier = Modifier.size(AppSpacing.extraSmall),
                                                 tint = Color.White
                                             )
                                         }
                                         // Restore (退出全屏)
                                         IconButton(
                                             onClick = { toggleFullScreen() },
-                                            modifier = Modifier.size(32.dp),
+                                            modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp),
                                             colors = IconButtonDefaults.iconButtonColors(
                                                 contentColor = Color.White,
                                                 containerColor = Color.Transparent
@@ -596,14 +598,14 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                                             Icon(
                                                 imageVector = Icons.Filled.FullscreenExit,
                                                 contentDescription = "Exit Fullscreen",
-                                                modifier = Modifier.size(18.dp),
+                                                modifier = Modifier.size(AppSpacing.extraSmall),
                                                 tint = Color.White
                                             )
                                         }
                                         // Close
                                         IconButton(
                                             onClick = { hide() },
-                                            modifier = Modifier.size(32.dp),
+                                            modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp),
                                             colors = IconButtonDefaults.iconButtonColors(
                                                 contentColor = Color.White,
                                                 containerColor = Color.Transparent
@@ -612,7 +614,7 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                                             Icon(
                                                 imageVector = Icons.Filled.Close,
                                                 contentDescription = "Close",
-                                                modifier = Modifier.size(18.dp),
+                                                modifier = Modifier.size(AppSpacing.extraSmall),
                                                 tint = Color.White
                                             )
                                         }
@@ -626,14 +628,14 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                                 ) {
                                     // 保持 ShowerSurfaceView 附着但几乎不可见，仅用于维持渲染管线
                                     AndroidView(
-                                        modifier = Modifier.size(1.dp),
+                                        modifier = Modifier.size(AppSizes.strokeThin),
                                         factory = { ctx -> ShowerSurfaceView(ctx) }
                                     )
 
                                     val handleShape = if (snappedToRight) {
-                                        RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp, topEnd = 0.dp, bottomEnd = 0.dp)
+                                        RoundedCornerShape(topStart = AppSizes.cornerRadiusMedium, bottomStart = AppSizes.cornerRadiusMedium, topEnd = AppSizes.none, bottomEnd = AppSizes.none)
                                     } else {
-                                        RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp, topEnd = 12.dp, bottomEnd = 12.dp)
+                                        RoundedCornerShape(topStart = AppSizes.none, bottomStart = AppSizes.none, topEnd = AppSizes.cornerRadiusMedium, bottomEnd = AppSizes.cornerRadiusMedium)
                                     }
                                     val arrowIcon = if (snappedToRight) Icons.Filled.ChevronLeft else Icons.Filled.ChevronRight
 
@@ -649,7 +651,7 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                                         Icon(
                                             imageVector = arrowIcon,
                                             contentDescription = "Restore",
-                                            modifier = Modifier.size(18.dp),
+                                            modifier = Modifier.size(AppSpacing.extraSmall),
                                             tint = Color.White
                                         )
                                     }
@@ -710,27 +712,27 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                                             Column(
                                                 modifier = Modifier.align(Alignment.Center),
                                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                                                verticalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                                             ) {
                                                 IconButton(onClick = { snapToEdge() }) {
                                                     Icon(
                                                         imageVector = Icons.Outlined.Minimize,
                                                         contentDescription = "Minimize to ball",
-                                                        modifier = Modifier.size(32.dp)
+                                                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                                                     )
                                                 }
                                                 IconButton(onClick = { toggleFullScreen() }) {
                                                     Icon(
                                                         imageVector = Icons.Filled.Fullscreen,
                                                         contentDescription = "Toggle Fullscreen",
-                                                        modifier = Modifier.size(32.dp)
+                                                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                                                     )
                                                 }
                                                 IconButton(onClick = { hide() }) {
                                                     Icon(
                                                         imageVector = Icons.Filled.Close,
                                                         contentDescription = "Close",
-                                                        modifier = Modifier.size(32.dp)
+                                                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                                                     )
                                                 }
                                             }
@@ -763,8 +765,8 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
         Card(
             modifier = Modifier
                 .wrapContentWidth()
-                .padding(horizontal = 2.dp, vertical = 2.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                .padding(horizontal = AppSpacing.nano, vertical = AppSpacing.nano),
+            elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall + 2.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
                 contentColor = MaterialTheme.colorScheme.onSurface
@@ -772,13 +774,13 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
         ) {
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                    .padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.nano),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                verticalArrangement = Arrangement.spacedBy(AppSpacing.nano)
             ) {
                 // 只保留简单的步骤进度文案，例如 "3/20"
                 Box(
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -792,7 +794,7 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                     Icon(
                         imageVector = if (isPaused) Icons.Filled.PlayArrow else Icons.Filled.Pause,
                         contentDescription = if (isPaused) "Resume automation" else "Pause automation",
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(AppSpacing.extraSmall),
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -800,7 +802,7 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
                     Icon(
                         imageVector = Icons.Filled.Close,
                         contentDescription = "Stop automation",
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(AppSpacing.extraSmall),
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }

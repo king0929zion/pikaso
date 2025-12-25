@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 @Composable
 fun ChatStyleOption(
@@ -28,11 +30,11 @@ fun ChatStyleOption(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, borderColor, RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
+            .border(AppSizes.strokeThin, borderColor, RoundedCornerShape(AppSizes.cornerRadiusMedium))
             .background(backgroundColor)
             .clickable(onClick = onClick)
-            .padding(16.dp),
+            .padding(AppSpacing.medium),
         contentAlignment = Alignment.Center
     ) {
         Text(text = title, color = contentColor, style = MaterialTheme.typography.bodyMedium)

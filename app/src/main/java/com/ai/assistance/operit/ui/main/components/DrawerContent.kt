@@ -35,6 +35,8 @@ import com.ai.assistance.operit.ui.main.screens.OperitRouter
 import com.ai.assistance.operit.ui.main.screens.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 /** Content for the expanded navigation drawer */
 @Composable
@@ -54,27 +56,27 @@ fun DrawerContent(
                         Modifier.fillMaxHeight()
                                 .verticalScroll(rememberScrollState())
                                 .padding(
-                                        end = 8.dp,
-                                        // Ensure bottom items aren’t obscured by system nav bar
+                                        end = AppSpacing.extraSmall,
+                                        // Ensure bottom items aren't obscured by system nav bar
                                         bottom = WindowInsets.navigationBars
                                                 .asPaddingValues()
                                                 .calculateBottomPadding()
                                 )
         ) {
                 // 抽屉标题
-                Spacer(modifier = Modifier.height(54.dp))
+                Spacer(modifier = Modifier.height(AppSizes.avatarLarge + AppSpacing.extraSmall))
                 Text(
                         text = stringResource(id = R.string.app_name),
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
+                        modifier = Modifier.padding(horizontal = AppSpacing.large, vertical = AppSpacing.extraSmall)
                 )
 
                 // 网络状态显示
                 Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
+                        modifier = Modifier.padding(horizontal = AppSpacing.large, vertical = AppSpacing.extraSmall)
                 ) {
                         Icon(
                                 imageVector =
@@ -84,9 +86,9 @@ fun DrawerContent(
                                 tint =
                                         if (isNetworkAvailable) MaterialTheme.colorScheme.primary
                                         else MaterialTheme.colorScheme.error,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(AppSpacing.small + 4.dp)
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                         Text(
                                 text = networkType,
                                 style = MaterialTheme.typography.bodyMedium,
@@ -96,9 +98,9 @@ fun DrawerContent(
                         )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
-                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
+                HorizontalDivider(modifier = Modifier.padding(horizontal = AppSpacing.medium))
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
 
                 // 分组导航菜单
                 navGroups.forEach { group ->
@@ -120,7 +122,7 @@ fun DrawerContent(
                 }
 
                 // 为了在底部留出一些空间，避免最后一个选项贴底
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
         }
 }
 
@@ -137,11 +139,11 @@ fun CollapsedDrawerContent(
                 modifier =
                         Modifier.fillMaxHeight()
                                 .verticalScroll(rememberScrollState()) // 添加滚动支持
-                                .padding(vertical = 16.dp),
+                                .padding(vertical = AppSpacing.medium),
                 horizontalAlignment = Alignment.CenterHorizontally
         ) {
                 // 抽屉标题 - 仅图标
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
 
                 // 网络状态图标 - 与其他图标保持一致
                 IconButton(onClick = { /* 点击图标操作可选 */}) {
@@ -153,13 +155,13 @@ fun CollapsedDrawerContent(
                                 tint =
                                         if (isNetworkAvailable) MaterialTheme.colorScheme.primary
                                         else MaterialTheme.colorScheme.error,
-                                modifier = Modifier.size(24.dp) // 与其他图标大小一致
+                                modifier = Modifier.size(AppSizes.iconNormal) // 与其他图标大小一致
                         )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
                 HorizontalDivider(modifier = Modifier.fillMaxWidth(0.6f))
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // 图标列表 - 只显示图标按钮
                 for (item in navItems) {
@@ -170,7 +172,7 @@ fun CollapsedDrawerContent(
                                                 item
                                         )
                                 },
-                                modifier = Modifier.padding(vertical = 8.dp)
+                                modifier = Modifier.padding(vertical = AppSpacing.extraSmall)
                         ) {
                                 Icon(
                                         imageVector = item.icon,
@@ -179,12 +181,12 @@ fun CollapsedDrawerContent(
                                                 if (selectedItem == item)
                                                         MaterialTheme.colorScheme.primary
                                                 else MaterialTheme.colorScheme.onSurfaceVariant,
-                                        modifier = Modifier.size(24.dp)
+                                        modifier = Modifier.size(AppSizes.iconNormal)
                                 )
                         }
                 }
 
                 // 底部留白，避免最后一项靠底
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
         }
 }

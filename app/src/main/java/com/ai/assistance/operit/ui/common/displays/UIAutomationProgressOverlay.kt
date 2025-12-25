@@ -46,10 +46,8 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.setViewTreeLifecycleOwner
-import androidx.lifecycle.setViewTreeViewModelStoreOwner
-import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.services.ServiceLifecycleOwner
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.Dispatchers
@@ -125,7 +123,7 @@ class UIAutomationProgressOverlay private constructor(private val context: Conte
                         WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
                 format = PixelFormat.TRANSLUCENT
                 gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                y = (16 * context.resources.displayMetrics.density).toInt()
+                y = (AppSpacing.small * context.resources.displayMetrics.density).toInt()
             }
 
             layoutParams = params
@@ -309,7 +307,7 @@ private fun ProgressCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall)
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDrag = { change, dragAmount ->
@@ -321,7 +319,7 @@ private fun ProgressCard(
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall),
             colors = CardDefaults.cardColors(
                 containerColor = Color.White,
                 contentColor = MaterialTheme.colorScheme.onSurface
@@ -330,33 +328,33 @@ private fun ProgressCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                    .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.small),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
                     modifier = Modifier.weight(1f),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.small)
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Smartphone,
                         contentDescription = "Phone Agent",
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(AppSpacing.small + 4.dp)
                     )
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(AppSpacing.nano)
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano)
                         ) {
                             Icon(
                                 imageVector = statusIconFor(info.statusText),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall + 2.dp)
                             )
                             Text(
                                 text = "Phone Agent ${info.currentStep}/${info.totalSteps}",
@@ -374,13 +372,13 @@ private fun ProgressCard(
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano)
                 ) {
                     IconButton(onClick = { onToggleTakeOver(!isPaused) }) {
                         Icon(
                             imageVector = if (isPaused) Icons.Filled.PlayArrow else Icons.Filled.Pause,
                             contentDescription = if (isPaused) "恢复代理" else "接管",
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(AppSpacing.small + 4.dp)
                         )
                     }
 
@@ -388,7 +386,7 @@ private fun ProgressCard(
                         Icon(
                             imageVector = Icons.Filled.Close,
                             contentDescription = "取消",
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(AppSpacing.small + 4.dp)
                         )
                     }
                 }

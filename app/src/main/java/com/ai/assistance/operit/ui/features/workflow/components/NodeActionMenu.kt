@@ -8,6 +8,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import androidx.compose.ui.window.Dialog
 
 /**
@@ -25,18 +27,18 @@ fun NodeActionMenuDialog(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                .padding(AppSpacing.medium),
+            elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall + 4.dp)
         ) {
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(AppSpacing.medium)
             ) {
                 Text(
                     text = nodeName,
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = AppSpacing.medium)
                 )
-                
+
                 // 编辑按钮
                 TextButton(
                     onClick = {
@@ -48,12 +50,12 @@ fun NodeActionMenuDialog(
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = null,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(AppSizes.iconNormal)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                     Text("编辑节点")
                 }
-                
+
                 // 连接按钮
                 TextButton(
                     onClick = {
@@ -65,9 +67,9 @@ fun NodeActionMenuDialog(
                     Icon(
                         imageVector = Icons.Default.Link,
                         contentDescription = null,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(AppSizes.iconNormal)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                     Text("创建连接")
                 }
                 

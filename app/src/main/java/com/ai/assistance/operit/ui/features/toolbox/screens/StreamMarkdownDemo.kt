@@ -43,6 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ai.assistance.operit.ui.features.chat.components.part.CustomXmlRenderer
 import com.ai.assistance.operit.ui.common.markdown.StreamMarkdownRenderer
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.util.stream.asStream
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
@@ -139,7 +141,7 @@ fun StreamMarkdownDemoScreen(onBackClick: () -> Unit = {}) {
     ) { padding ->
         Column(
                 modifier =
-                Modifier.fillMaxSize().padding(padding).padding(16.dp).verticalScroll(scrollState)
+                Modifier.fillMaxSize().padding(padding).padding(AppSpacing.medium).verticalScroll(scrollState)
         ) {
             // 控制面板
             ControlPanel(
@@ -155,20 +157,20 @@ fun StreamMarkdownDemoScreen(onBackClick: () -> Unit = {}) {
                     onSpeedChange = { speedFactor = it }
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(AppSpacing.medium))
 
             // 流式渲染区域
             Card(
                     modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall / 2)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(AppSpacing.medium)) {
                     Text(
                             text = "流式渲染 (Streaming)",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                     StreamMarkdownRenderer(
                             markdownStream = markdownStream,
                             textColor = MaterialTheme.colorScheme.onSurface,
@@ -178,7 +180,7 @@ fun StreamMarkdownDemoScreen(onBackClick: () -> Unit = {}) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(AppSizes.floatingBallSize + 8.dp))
         }
     }
 }
@@ -199,17 +201,17 @@ private fun ControlPanel(
                         if (isStreaming) Icons.Default.Pause else Icons.Default.PlayArrow,
                         contentDescription = if (isStreaming) "Pause" else "Play"
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                 Text(if (isStreaming) "暂停" else if (hasStarted) "继续" else "开始")
             }
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.medium))
             Button(onClick = onReset) {
                 Icon(Icons.Default.Refresh, contentDescription = "Reset")
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                 Text("重置")
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
         Text("速度 (x${String.format("%.1f", speedFactor)})", fontSize = 14.sp)
         Slider(
                 value = speedFactor,
@@ -239,16 +241,16 @@ fun StreamMarkdownDemoScreenPreview() {
         }
         ```
     """.trimIndent()
-    
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+
+    Column(modifier = Modifier.fillMaxSize().padding(AppSpacing.medium)) {
         Text("流式Markdown渲染演示", style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(AppSpacing.medium))
 
         HorizontalDivider()
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(AppSpacing.medium))
 
         Text("静态渲染", style = MaterialTheme.typography.titleMedium)
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
         val context = LocalContext.current
         StreamMarkdownRenderer(
             content = staticContent,

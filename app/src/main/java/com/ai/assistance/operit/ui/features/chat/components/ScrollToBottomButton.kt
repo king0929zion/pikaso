@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 /**
  * 滚动到底部按钮组件
@@ -92,7 +93,7 @@ fun ScrollToBottomButton(
             modifier = Modifier
                 .background(
                     color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.75f),
-                    shape = RoundedCornerShape(50)
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusFull)
                 )
         ) {
             Icon(

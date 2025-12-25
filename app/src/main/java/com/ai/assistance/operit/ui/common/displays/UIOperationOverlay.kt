@@ -46,8 +46,10 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.lerp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
@@ -404,9 +406,9 @@ private fun TapIndicator(
 
     val p = progress.value
     // 波纹扩散并消失
-    val radius = lerp(10.dp, 50.dp, p)
+    val radius = lerp(AppSpacing.small, AppSizes.avatarMedium - 8.dp, p)
     val alpha = (1f - p).coerceIn(0f, 1f)
-    val strokeWidth = lerp(6.dp, 0.dp, p)
+    val strokeWidth = lerp(AppSizes.strokeMedium + 4.dp, AppSizes.none, p)
 
     Canvas(modifier = Modifier.fillMaxSize()) {
         val centerX = x.toFloat()
@@ -467,23 +469,23 @@ private fun SwipeIndicator(
                 color = Color(0xFFFFA726), // 鲜艳的橙色
                 start = startOffset,
                 end = currentOffset,
-                strokeWidth = 10.dp.toPx(),
+                strokeWidth = (AppSizes.avatarMedium - 8.dp).toPx(),
                 cap = StrokeCap.Round,
                 alpha = alpha
             )
-            
+
             // 2. 绘制彗星的头部
             drawCircle(
                 color = Color(0xFFFFE0B2), // 更亮的头部颜色
-                radius = 15.dp.toPx(),
+                radius = (AppSpacing.large - 4.dp).toPx(),
                 center = currentOffset,
                 alpha = alpha
             )
-            
+
             // 3. 绘制一个在滑动开始时可见，然后迅速消失的起点光环
             drawCircle(
                 color = Color(0xFFEF6C00),
-                radius = 12.dp.toPx(),
+                radius = AppSpacing.small.toPx(),
                 center = startOffset,
                 alpha = alpha * (1 - swipeProgress) // 随着滑动进程快速淡出
             )
@@ -524,21 +526,21 @@ private fun TextInputIndicator(
     Canvas(modifier = Modifier.fillMaxSize()) {
         with(density) {
             val centerX = x.toFloat()
-            val centerY = y.toFloat() - 60.dp.toPx() // 稍微上移一点
-            val bubbleWidth = 220.dp.toPx()
-            val bubbleHeight = 50.dp.toPx()
-            val cornerRadius = 12.dp.toPx()
+            val centerY = y.toFloat() - (AppSizes.avatarExtraLarge - 12.dp).toPx() // 稍微上移一点
+            val bubbleWidth = AppSizes.floatingMaxWidth - 180.dp.toPx()
+            val bubbleHeight = AppSizes.buttonMinHeightSmall + 2.dp.toPx()
+            val cornerRadius = AppSizes.cornerRadiusMedium.toPx()
             
             // 1. 绘制背景阴影提升可见性
             drawRoundRect(
                 color = Color.Black.copy(alpha = 0.25f),
-                topLeft = Offset(centerX - bubbleWidth/2 + 4.dp.toPx(), 
-                               centerY - bubbleHeight/2 + 4.dp.toPx()),
+                topLeft = Offset(centerX - bubbleWidth/2 + AppSizes.strokeMedium.toPx(),
+                               centerY - bubbleHeight/2 + AppSizes.strokeMedium.toPx()),
                 size = androidx.compose.ui.geometry.Size(bubbleWidth, bubbleHeight),
                 cornerRadius = androidx.compose.ui.geometry.CornerRadius(cornerRadius),
                 alpha = fadeIn * pulseAlpha
             )
-            
+
             // 2. 绘制气泡背景
             drawRoundRect(
                 color = Color(0xEE000000), // 更不透明的黑色
@@ -547,28 +549,28 @@ private fun TextInputIndicator(
                 cornerRadius = androidx.compose.ui.geometry.CornerRadius(cornerRadius),
                 alpha = fadeIn * pulseAlpha
             )
-            
+
             // 3. 绘制底部箭头指向输入位置
             val arrowPath = androidx.compose.ui.graphics.Path().apply {
-                moveTo(centerX, centerY + bubbleHeight/2 + 10.dp.toPx())
-                lineTo(centerX - 10.dp.toPx(), centerY + bubbleHeight/2)
-                lineTo(centerX + 10.dp.toPx(), centerY + bubbleHeight/2)
+                moveTo(centerX, centerY + bubbleHeight/2 + AppSpacing.small.toPx())
+                lineTo(centerX - AppSpacing.extraSmall.toPx(), centerY + bubbleHeight/2)
+                lineTo(centerX + AppSpacing.extraSmall.toPx(), centerY + bubbleHeight/2)
                 close()
             }
-            
+
             drawPath(
                 path = arrowPath,
                 color = Color(0xEE000000),
                 alpha = fadeIn * pulseAlpha
             )
-            
+
             // 4. 绘制亮边框增加可见性
             drawRoundRect(
                 color = Color(0x77FFFFFF),
                 topLeft = Offset(centerX - bubbleWidth/2, centerY - bubbleHeight/2),
                 size = androidx.compose.ui.geometry.Size(bubbleWidth, bubbleHeight),
                 cornerRadius = androidx.compose.ui.geometry.CornerRadius(cornerRadius),
-                style = Stroke(width = 1.5.dp.toPx()),
+                style = Stroke(width = AppSizes.strokeMedium.toPx()),
                 alpha = fadeIn * pulseAlpha
             )
         }
@@ -579,8 +581,8 @@ private fun TextInputIndicator(
         modifier = Modifier.fillMaxSize()
     ) {
         with(density) {
-            val bubbleWidth = 220.dp.toPx()
-            val targetY = y.toFloat() - 85.dp.toPx()
+            val bubbleWidth = AppSizes.floatingMaxWidth - 180.dp.toPx()
+            val targetY = y.toFloat() - (AppSizes.floatingMaxWidth - 15.dp).toPx()
             
             // 使用精确的像素计算，然后转换为dp
             Text(

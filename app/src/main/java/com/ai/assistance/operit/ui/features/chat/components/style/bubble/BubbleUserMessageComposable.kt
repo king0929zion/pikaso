@@ -44,6 +44,8 @@ import androidx.compose.ui.window.Dialog
 import coil.compose.rememberAsyncImagePainter
 import com.ai.assistance.operit.R
 import com.ai.assistance.operit.data.model.ChatMessage
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 import com.ai.assistance.operit.data.preferences.DisplayPreferencesManager
 import com.ai.assistance.operit.data.preferences.UserPreferencesManager
 import com.ai.assistance.operit.util.ImagePoolManager
@@ -106,34 +108,34 @@ fun BubbleUserMessageComposable(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 0.dp, vertical = 4.dp)
+            .padding(horizontal = AppSpacing.none, vertical = AppSpacing.nano)
     ) {
         // Display reply info above attachments if present
         replyInfo?.let { reply ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 4.dp),
+                    .padding(bottom = AppSpacing.nano),
                 horizontalArrangement = Arrangement.End
             ) {
                 Surface(
-                    modifier = Modifier.padding(start = 32.dp),
+                    modifier = Modifier.padding(start = AppSpacing.large),
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = RoundedCornerShape(8.dp, 8.dp, 2.dp, 8.dp)
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusMedium, AppSizes.cornerRadiusMedium, AppSizes.cornerRadiusSmall, AppSizes.cornerRadiusMedium)
                 ) {
                     Row(
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier.padding(AppSpacing.small),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Reply,
                             contentDescription = context.getString(R.string.reply),
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(12.dp)
+                            modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
                         )
-                        
-                        Spacer(modifier = Modifier.width(4.dp))
-                        
+
+                        Spacer(modifier = Modifier.width(AppSpacing.nano))
+
                         Text(
                             text = "${reply.sender}: ${reply.content}",
                             style = MaterialTheme.typography.bodySmall,
@@ -152,8 +154,8 @@ fun BubbleUserMessageComposable(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 4.dp, start = 32.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                    .padding(bottom = AppSpacing.nano, start = AppSpacing.large),
+                verticalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall),
                 horizontalAlignment = Alignment.End
             ) {
                 imageLinks.forEach { imageLink ->
@@ -161,13 +163,13 @@ fun BubbleUserMessageComposable(
                         // 图片还在池子里，显示图片
                         Card(
                             modifier = Modifier
-                                .size(120.dp)
+                                .size(AppSizes.avatarLarge * 3)
                                 .clickable {
                                     selectedImageBitmap.value = bitmap
                                     showImagePreview.value = true
                                 },
-                            shape = RoundedCornerShape(8.dp),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
+                            elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall)
                         ) {
                             Image(
                                 bitmap = bitmap.asImageBitmap(),
@@ -198,7 +200,7 @@ fun BubbleUserMessageComposable(
         if (trailingAttachments.isNotEmpty()) {
             // Display attachment row above the bubble
             Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
+                modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.nano),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -233,7 +235,7 @@ fun BubbleUserMessageComposable(
                             }
                         }
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.nano))
                 }
             }
         }
@@ -248,7 +250,7 @@ fun BubbleUserMessageComposable(
             Column(
                 modifier = Modifier
                     .weight(1f, fill = false)
-                    .padding(start = 32.dp),
+                    .padding(start = AppSpacing.large),
                 horizontalAlignment = Alignment.End
             ) {
                 // 显示用户名（如果开启了显示选项并且设置了用户名）
@@ -259,35 +261,35 @@ fun BubbleUserMessageComposable(
                                 text = userName,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = textColor.copy(alpha = 0.6f),
-                                modifier = Modifier.padding(bottom = 4.dp, end = 4.dp)
+                                modifier = Modifier.padding(bottom = AppSpacing.nano, end = AppSpacing.nano)
                             )
                         }
                     }
                 }
-                
+
                 // Message bubble
                 Surface(
-                    modifier = Modifier.defaultMinSize(minHeight = 44.dp),
-                    shape = RoundedCornerShape(20.dp, 4.dp, 20.dp, 20.dp),
+                    modifier = Modifier.defaultMinSize(minHeight = AppSizes.buttonMinHeight - 4.dp),
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusSmall, AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusExtraLarge),
                     color = backgroundColor,
-                    tonalElevation = 2.dp
+                    tonalElevation = AppSizes.elevationSmall
                 ) {
                     Text(
                         text = textContent,
-                        modifier = Modifier.padding(12.dp),
+                        modifier = Modifier.padding(AppSpacing.small),
                         color = textColor,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
             // Avatar
             if (!avatarUri.isNullOrEmpty()) {
                 Image(
                     painter = rememberAsyncImagePainter(model = Uri.parse(avatarUri)),
                     contentDescription = "User Avatar",
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(AppSizes.avatarMedium)
                         .clip(avatarShape),
                     contentScale = androidx.compose.ui.layout.ContentScale.Crop
                 )
@@ -296,7 +298,7 @@ fun BubbleUserMessageComposable(
                     imageVector = Icons.Default.Person,
                     contentDescription = "User Avatar",
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(AppSizes.avatarMedium)
                         .clip(avatarShape),
                     tint = MaterialTheme.colorScheme.primary
                 )
@@ -311,11 +313,11 @@ fun BubbleUserMessageComposable(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(max = 400.dp),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
                 color = MaterialTheme.colorScheme.surface,
-                tonalElevation = 4.dp
+                tonalElevation = AppSizes.elevationMedium
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(AppSpacing.medium)) {
                     // 头部
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -324,7 +326,7 @@ fun BubbleUserMessageComposable(
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Code,
@@ -351,7 +353,7 @@ fun BubbleUserMessageComposable(
                         }
                     }
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                     // 内容区域
                     Box(
@@ -360,11 +362,11 @@ fun BubbleUserMessageComposable(
                             .wrapContentHeight(align = Alignment.Top)
                             .weight(1f, fill = false)
                             .border(
-                                width = 1.dp,
+                                width = AppSizes.strokeThin,
                                 color = MaterialTheme.colorScheme.surfaceVariant,
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
                             )
-                            .padding(8.dp)
+                            .padding(AppSpacing.small)
                             .verticalScroll(rememberScrollState())
                     ) {
                         Text(
@@ -374,7 +376,7 @@ fun BubbleUserMessageComposable(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
 
                     // 复制按钮
                     Button(
@@ -385,8 +387,8 @@ fun BubbleUserMessageComposable(
                             showContentPreview.value = false
                         },
                         modifier = Modifier.align(Alignment.End)
-                    ) { 
-                        Text(context.getString(R.string.copy_content)) 
+                    ) {
+                        Text(context.getString(R.string.copy_content))
                     }
                 }
             }
@@ -400,11 +402,11 @@ fun BubbleUserMessageComposable(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 color = MaterialTheme.colorScheme.surface,
-                tonalElevation = 4.dp
+                tonalElevation = AppSizes.elevationMedium
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(AppSpacing.medium)) {
                     // 头部
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -413,7 +415,7 @@ fun BubbleUserMessageComposable(
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Image,
@@ -436,14 +438,14 @@ fun BubbleUserMessageComposable(
                         }
                     }
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                     // 图片显示区域
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(max = 500.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
                     ) {
                         selectedImageBitmap.value?.let { bitmap ->
                             Image(
@@ -721,27 +723,27 @@ private fun AttachmentTag(
 
     Surface(
         modifier =
-            Modifier.height(24.dp)
-                .padding(vertical = 2.dp)
+            Modifier.height(AppSizes.buttonMinHeightSmall - 16.dp)
+                .padding(vertical = AppSpacing.nano)
                 .clickable(
                     enabled = attachment.content.isNotEmpty() || attachment.id.startsWith("/storage/") || attachment.type.startsWith("image/"),
                     onClick = { onClick(attachment) }
                 ),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
         color = backgroundColor.copy(alpha = 0.5f)
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+            modifier = Modifier.padding(horizontal = AppSpacing.nano, vertical = AppSpacing.nano),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = Modifier.size(12.dp),
+                modifier = Modifier.size(AppSpacing.extraSmall + 4.dp),
                 tint = textColor.copy(alpha = 0.8f)
             )
 
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.nano))
 
             Text(
                 text = displayLabel,
@@ -749,7 +751,7 @@ private fun AttachmentTag(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = textColor,
-                modifier = Modifier.widthIn(max = 120.dp)
+                modifier = Modifier.widthIn(max = AppSizes.messageBubbleMinWidth - 40.dp)
             )
         }
     }

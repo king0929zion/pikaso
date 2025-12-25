@@ -31,6 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 private const val TAG = "TableBlock"
 
@@ -106,17 +108,17 @@ fun EnhancedTableBlock(
         modifier = modifier
             .fillMaxWidth()
             .semantics { contentDescription = tableBlockDesc },
-        shape = RoundedCornerShape(4.dp),
+        shape = RoundedCornerShape(AppSizes.cornerRadiusSmall),
         color = Color.Transparent
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(vertical = AppSpacing.extraSmall)
                 .border(
-                    width = 1.dp,
+                    width = AppSizes.strokeThin,
                     color = borderColor,
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
                 )
         ) {
             // 使用horizontalScroll包装表格内容
@@ -152,8 +154,8 @@ fun EnhancedTableBlock(
                                     Box(
                                         modifier = Modifier
                                             .width(columnWidth.dp)
-                                            .border(width = 0.5.dp, color = borderColor)
-                                            .padding(8.dp),
+                                            .border(width = AppSizes.strokeThin / 2, color = borderColor)
+                                            .padding(AppSpacing.extraSmall),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Text(

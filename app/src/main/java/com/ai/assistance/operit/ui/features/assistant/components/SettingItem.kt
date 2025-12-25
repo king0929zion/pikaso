@@ -33,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 @Composable
 fun SettingItem(
@@ -45,11 +47,11 @@ fun SettingItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clip(RoundedCornerShape(8.dp))
+            .padding(vertical = AppSpacing.nano)
+            .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f))
             .clickable(onClick = onClick)
-            .padding(8.dp),
+            .padding(AppSpacing.small),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -63,11 +65,11 @@ fun SettingItem(
                 imageVector = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(AppSpacing.extraSmall + 2.dp)
             )
-            
-            Spacer(modifier = Modifier.width(8.dp))
-            
+
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
+
             // 标题和值在一行
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -79,9 +81,9 @@ fun SettingItem(
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold
                 )
-                
-                Spacer(modifier = Modifier.width(8.dp))
-                
+
+                Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
+
                 Text(
                     text = value,
                     style = MaterialTheme.typography.bodySmall,
@@ -92,22 +94,22 @@ fun SettingItem(
                 )
             }
         }
-        
+
         // 箭头指示器
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
             contentDescription = stringResource(R.string.enter),
             tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-            modifier = Modifier.size(14.dp)
+            modifier = Modifier.size(AppSpacing.extraSmall)
         )
     }
-    
+
     // 如果有详情，则显示在下方
     if (details != null) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 26.dp, end = 8.dp, bottom = 4.dp)
+                .padding(start = AppSpacing.mediumLarge, end = AppSpacing.small, bottom = AppSpacing.nano)
         ) {
             details()
         }

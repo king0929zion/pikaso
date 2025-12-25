@@ -59,25 +59,89 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
-private val DarkColorScheme =
-        darkColorScheme(primary = Purple80, secondary = PurpleGrey80, tertiary = Pink80)
+/**
+ * Anthropic-inspired Dark Color Scheme
+ *
+ * Uses warm, muted tones with the primary orange accent
+ * for a human-centric, approachable feel
+ */
+private val DarkColorScheme = darkColorScheme(
+        primary = AnthropicOrange,
+        onPrimary = Color.White,
+        primaryContainer = Color(0xFF8c4a35),
+        onPrimaryContainer = Color(0xFFffe8e0),
 
-private val LightColorScheme =
-        lightColorScheme(
-                primary = Purple40,
-                secondary = PurpleGrey40,
-                tertiary = Pink40,
+        secondary = AnthropicBlue,
+        onSecondary = Color.White,
+        secondaryContainer = Color(0xFF4a6a8c),
+        onSecondaryContainer = Color(0xFFdce8f5),
 
-                /* Other default colors to override
-                background = Color(0xFFFFFBFE),
-                surface = Color(0xFFFFFBFE),
-                onPrimary = Color.White,
-                onSecondary = Color.White,
-                onTertiary = Color.White,
-                onBackground = Color(0xFF1C1B1F),
-                onSurface = Color(0xFF1C1B1F),
-                */
-                )
+        tertiary = AnthropicGreen,
+        onTertiary = Color.White,
+        tertiaryContainer = Color(0xFF4a5c35),
+        onTertiaryContainer = Color(0xFFe8ecd9),
+
+        error = Color(0xFFe68c8c),
+        onError = Color.White,
+        errorContainer = Color(0xFF8c3535),
+        onErrorContainer = Color(0xFFfadddd),
+
+        background = AnthropicDark,
+        onBackground = AnthropicLightGray,
+
+        surface = Color(0xFF1a1a19),
+        onSurface = AnthropicLightGray,
+
+        surfaceVariant = Color(0xFF2a2a27),
+        onSurfaceVariant = AnthropicMidGray,
+
+        outline = AnthropicMidGray,
+        outlineVariant = Color(0xFF3a3a36),
+
+        scrim = AppColors.Scrim
+)
+
+/**
+ * Anthropic-inspired Light Color Scheme
+ *
+ * Uses warm, light backgrounds with muted accents
+ * for a clean, minimalist aesthetic
+ */
+private val LightColorScheme = lightColorScheme(
+        primary = AnthropicOrange,
+        onPrimary = Color.White,
+        primaryContainer = Color(0xFFffe8e0),
+        onPrimaryContainer = Color(0xFF8c4a35),
+
+        secondary = AnthropicBlue,
+        onSecondary = Color.White,
+        secondaryContainer = Color(0xFFdce8f5),
+        onSecondaryContainer = Color(0xFF4a6a8c),
+
+        tertiary = AnthropicGreen,
+        onTertiary = Color.White,
+        tertiaryContainer = Color(0xFFe8ecd9),
+        onTertiaryContainer = Color(0xFF4a5c35),
+
+        error = Color(0xFFcc5c5c),
+        onError = Color.White,
+        errorContainer = Color(0xFFfadddd),
+        onErrorContainer = Color(0xFF8c3535),
+
+        background = AnthropicLight,
+        onBackground = AnthropicDark,
+
+        surface = Color(0xFFf5f3eb),
+        onSurface = AnthropicDark,
+
+        surfaceVariant = AnthropicLightGray,
+        onSurfaceVariant = AnthropicMidGray,
+
+        outline = AnthropicMidGray,
+        outlineVariant = Color(0xFFe0ded5),
+
+        scrim = AppColors.Scrim
+)
 
 
 @SuppressLint("UnusedBoxWithConstraintsScope")

@@ -40,6 +40,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.ai.assistance.operit.R
 import com.ai.assistance.operit.data.model.CharacterCard
 import com.ai.assistance.operit.data.preferences.UserPreferencesManager
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 @Composable
 fun CharacterCardAssignDialog(
@@ -56,7 +58,7 @@ fun CharacterCardAssignDialog(
         onDismissRequest = onDismiss,
         title = { Text(context.getString(R.string.assign_to_character_card_title)) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.small)) {
                 Text(
                     text = context.getString(R.string.unbound_chats_select_card, missingChatCount),
                     style = MaterialTheme.typography.bodyMedium
@@ -87,10 +89,10 @@ fun CharacterCardAssignDialog(
             ) {
                 if (inProgress) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp
+                        modifier = Modifier.size(AppSpacing.extraSmall),
+                        strokeWidth = AppSizes.strokeMedium
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                 }
                 Text(context.getString(R.string.assign_action))
             }
@@ -118,7 +120,7 @@ private fun CharacterCardAssignOption(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = AppSpacing.nano),
         onClick = onSelect,
         colors = CardDefaults.cardColors(
             containerColor = if (selected) {
@@ -128,25 +130,25 @@ private fun CharacterCardAssignOption(
             }
         ),
         border = if (selected) {
-            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+            BorderStroke(AppSizes.strokeMedium, MaterialTheme.colorScheme.primary)
         } else {
-            BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+            BorderStroke(AppSizes.strokeThin, MaterialTheme.colorScheme.outlineVariant)
         }
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(AppSpacing.small),
             verticalAlignment = Alignment.CenterVertically
         ) {
             RadioButton(
                 selected = selected,
                 onClick = onSelect
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
             Box(
                 modifier = Modifier
-                    .size(44.dp)
+                    .size(AppSizes.buttonMinHeightSmall + 4.dp)
                     .clip(CircleShape)
                     .background(
                         if (!avatarUri.isNullOrBlank()) Color.Unspecified
@@ -169,7 +171,7 @@ private fun CharacterCardAssignOption(
                     )
                 }
             }
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.small))
             Column {
                 Text(
                     text = card.name,

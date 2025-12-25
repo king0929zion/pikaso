@@ -10,14 +10,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 @Composable
 fun LoadingDotsIndicator(textColor: Color) {
         val infiniteTransition = rememberInfiniteTransition(label = "dots")
 
         Row(
-                modifier = Modifier.padding(vertical = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                modifier = Modifier.padding(vertical = AppSpacing.nano),
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano + 2.dp),
                 verticalAlignment = Alignment.CenterVertically
         ) {
                 val jumpHeight = -5f
@@ -50,7 +52,7 @@ fun LoadingDotsIndicator(textColor: Color) {
 
                         Box(
                                 modifier =
-                                        Modifier.size(6.dp)
+                                        Modifier.size(AppSizes.strokeThick + 2.dp)
                                                 .offset(y = offsetY.dp)
                                                 .background(
                                                         color = textColor.copy(alpha = 0.6f),

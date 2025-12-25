@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 /**
  * A selectable theme mode option button
@@ -42,10 +44,10 @@ fun ThemeModeOption(
                 MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
             else MaterialTheme.colorScheme.surface
         ),
-        border = if (selected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null
+        border = if (selected) BorderStroke(AppSizes.strokeMedium, MaterialTheme.colorScheme.primary) else null
     ) {
         Box(
-            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            modifier = Modifier.padding(AppSpacing.medium).fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -77,10 +79,10 @@ fun MediaTypeOption(
                 MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
             else MaterialTheme.colorScheme.surface
         ),
-        border = if (selected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null
+        border = if (selected) BorderStroke(AppSizes.strokeMedium, MaterialTheme.colorScheme.primary) else null
     ) {
         Column(
-            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            modifier = Modifier.padding(AppSpacing.medium).fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
@@ -88,7 +90,7 @@ fun MediaTypeOption(
                 contentDescription = null,
                 tint = if (selected) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(24.dp).padding(bottom = 4.dp)
+                modifier = Modifier.size(AppSizes.iconNormal).padding(bottom = AppSpacing.nano)
             )
 
             Text(
@@ -121,16 +123,16 @@ fun ColorSelectionItem(
         Text(
             text = title,
             style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(bottom = AppSpacing.extraSmall),
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = alpha)
         )
 
         Box(
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(AppSizes.avatarMedium)
                 .clip(CircleShape)
                 .background(color.copy(alpha = if (enabled) color.alpha else color.alpha * 0.5f))
                 .border(
-                    2.dp,
+                    AppSizes.strokeMedium,
                     MaterialTheme.colorScheme.outline.copy(alpha = alpha),
                     CircleShape
                 )
@@ -144,10 +146,10 @@ fun ColorSelectionItem(
 @Composable
 fun PresetColorItem(color: Color, onSelect: (Color) -> Unit) {
     Box(
-        modifier = Modifier.size(32.dp)
+        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 8.dp)
             .clip(CircleShape)
             .background(color)
-            .border(1.dp, Color.White, CircleShape)
+            .border(AppSizes.strokeThin, Color.White, CircleShape)
             .clickable { onSelect(color) }
     )
 } 

@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
@@ -29,21 +31,21 @@ fun AvatarPicker(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+        verticalArrangement = Arrangement.spacedBy(AppSpacing.nano + 2.dp)
     ) {
         Text(
-            text = label, 
+            text = label,
             style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(horizontal = 4.dp)
+            modifier = Modifier.padding(horizontal = AppSpacing.nano)
         )
 
         Box(
             modifier = Modifier
-                .size(70.dp)
+                .size(AppSizes.avatarExtraLarge - 2.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .clickable(onClick = onAvatarChange)
-                .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape),
+                .border(AppSizes.strokeMedium, MaterialTheme.colorScheme.primary, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             if (avatarUri != null) {
@@ -57,7 +59,7 @@ fun AvatarPicker(
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "Default Avatar",
-                    modifier = Modifier.size(35.dp),
+                    modifier = Modifier.size(AppSizes.avatarLarge - 1.dp),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -67,15 +69,15 @@ fun AvatarPicker(
             onClick = onAvatarReset,
             enabled = avatarUri != null,
             modifier = Modifier
-                .height(32.dp)
-                .padding(horizontal = 4.dp)
+                .height(AppSizes.buttonMinHeightSmall - 8.dp)
+                .padding(horizontal = AppSpacing.nano)
         ) {
             Icon(
-                imageVector = Icons.Default.Refresh, 
-                contentDescription = "Reset Avatar", 
-                modifier = Modifier.size(16.dp)
+                imageVector = Icons.Default.Refresh,
+                contentDescription = "Reset Avatar",
+                modifier = Modifier.size(AppSizes.iconSmall)
             )
-            Spacer(modifier = Modifier.width(3.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.micro))
             Text(
                 text = "重置",
                 style = MaterialTheme.typography.bodySmall

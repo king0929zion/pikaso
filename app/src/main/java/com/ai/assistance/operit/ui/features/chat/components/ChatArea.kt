@@ -54,6 +54,8 @@ import androidx.compose.ui.unit.sp
 import com.ai.assistance.operit.R
 import com.ai.assistance.operit.data.model.AiReference
 import com.ai.assistance.operit.data.model.ChatMessage
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 import androidx.compose.ui.window.PopupProperties
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -137,7 +139,7 @@ fun ChatArea(
     selectedMessageIndices: Set<Int> = emptySet(), // 已选中的消息索引集合
     onToggleMultiSelectMode: ((Int?) -> Unit)? = null, // 切换多选模式的回调，可传入要初始选中的消息索引
     onToggleMessageSelection: ((Int) -> Unit)? = null, // 切换消息选中状态的回调
-    horizontalPadding: Dp = 16.dp // 水平内边距，可自定义
+    horizontalPadding: Dp = AppSpacing.medium // 水平内边距，可自定义
 ) {
     // 记住当前深度状态，但当chatHistory发生变化时重置为1
     var currentDepth = remember(chatHistory) { mutableStateOf(1) }
@@ -178,12 +180,12 @@ fun ChatArea(
                     Modifier
                         .fillMaxWidth()
                         .clickable { currentDepth.value += 1 }
-                        .padding(vertical = 16.dp),
+                        .padding(vertical = AppSpacing.large),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.nano))
             }
 
             // 根据当前深度筛选显示的消息
@@ -225,7 +227,7 @@ fun ChatArea(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
             }
 
             // 当AI正在响应但尚未输出任何文本时，显示加载指示器
@@ -234,10 +236,10 @@ fun ChatArea(
                     ChatStyle.BUBBLE -> {
                         Column(modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 0.dp)
+                            .padding(vertical = AppSpacing.none)
                             .offset(y = (-24).dp)) {
                             // 加载指示器放在左侧，与标签对齐
-                            Box(modifier = Modifier.padding(start = 16.dp)) {
+                            Box(modifier = Modifier.padding(start = AppSpacing.medium)) {
                                 LoadingDotsIndicator(aiTextColor)
                             }
                         }
@@ -246,9 +248,9 @@ fun ChatArea(
                     ChatStyle.CURSOR -> {
                         Column(modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 0.dp)) {
+                            .padding(vertical = AppSpacing.none)) {
                             // 加载指示器放在左侧，与标签对齐
-                            Box(modifier = Modifier.padding(start = 16.dp)) {
+                            Box(modifier = Modifier.padding(start = AppSpacing.medium)) {
                                 LoadingDotsIndicator(aiTextColor)
                             }
                         }
@@ -257,7 +259,7 @@ fun ChatArea(
             }
 
             // 添加额外的空白区域，防止消息被输入框遮挡
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(AppSpacing.medium))
         }
     }
 }
@@ -308,7 +310,7 @@ private fun MessageItem(
                 if (isSelected) {
                     Modifier.background(
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
                     )
                 } else Modifier
             )
@@ -362,8 +364,8 @@ private fun MessageItem(
             expanded = showContextMenu,
             onDismissRequest = { showContextMenu = false },
             modifier = Modifier
-                .width(140.dp)
-                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(6.dp)),
+                .width(AppSizes.buttonMinHeight * 3)
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)),
             properties = PopupProperties(
                 focusable = true,
                 dismissOnBackPress = true,
@@ -375,8 +377,7 @@ private fun MessageItem(
                 text = {
                     Text(
                         stringResource(id = R.string.copy_message),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 13.sp
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 onClick = {
@@ -394,10 +395,9 @@ private fun MessageItem(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = stringResource(id = R.string.copy_message),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(AppSizes.iconSmall)
                     )
-                },
-                modifier = Modifier.height(36.dp)
+                }
             )
 
 
@@ -407,8 +407,7 @@ private fun MessageItem(
                 text = {
                     Text(
                         stringResource(R.string.read_message),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 13.sp
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 onClick = {
@@ -420,10 +419,9 @@ private fun MessageItem(
                         imageVector = Icons.AutoMirrored.Rounded.VolumeUp,
                         contentDescription = stringResource(R.string.read_message),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(AppSizes.iconSmall)
                     )
-                },
-                modifier = Modifier.height(36.dp)
+                }
             )
 
             // 根据消息发送者显示不同的操作
@@ -433,8 +431,7 @@ private fun MessageItem(
                     text = {
                         Text(
                             stringResource(id = R.string.edit_and_resend),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontSize = 13.sp
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     },
                     onClick = {
@@ -446,18 +443,16 @@ private fun MessageItem(
                             imageVector = Icons.Default.Edit,
                             contentDescription = stringResource(id = R.string.edit_and_resend),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(AppSizes.iconSmall)
                         )
-                    },
-                    modifier = Modifier.height(36.dp)
+                    }
                 )
                 // 回滚到此处
                 DropdownMenuItem(
                     text = {
                         Text(
                             stringResource(id = R.string.rollback_to_here),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontSize = 13.sp
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     },
                     onClick = {
@@ -469,10 +464,9 @@ private fun MessageItem(
                             imageVector = Icons.Default.DeleteSweep,
                             contentDescription = stringResource(id = R.string.rollback_to_here),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(AppSizes.iconSmall)
                         )
-                    },
-                    modifier = Modifier.height(36.dp)
+                    }
                 )
             } else if (message.sender == "ai") {
                 // 修改记忆选项
@@ -480,8 +474,7 @@ private fun MessageItem(
                     text = {
                         Text(
                             stringResource(id = R.string.modify_memory),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontSize = 13.sp
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     },
                     onClick = {
@@ -493,10 +486,9 @@ private fun MessageItem(
                             imageVector = Icons.Default.AutoFixHigh,
                             contentDescription = stringResource(id = R.string.modify_memory),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(AppSizes.iconSmall)
                         )
-                    },
-                    modifier = Modifier.height(36.dp)
+                    }
                 )
             }
 
@@ -505,8 +497,7 @@ private fun MessageItem(
                 text = {
                     Text(
                         stringResource(id = R.string.delete),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 13.sp
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 onClick = {
@@ -518,10 +509,9 @@ private fun MessageItem(
                         imageVector = Icons.Default.Delete,
                         contentDescription = stringResource(id = R.string.delete),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(AppSizes.iconSmall)
                     )
-                },
-                modifier = Modifier.height(36.dp)
+                }
             )
 
             // 回复选项
@@ -530,8 +520,7 @@ private fun MessageItem(
                 text = {
                         Text(
                             stringResource(R.string.reply_message),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontSize = 13.sp
+                            style = MaterialTheme.typography.bodyMedium
                        )
                 },
                 onClick = {
@@ -543,10 +532,9 @@ private fun MessageItem(
                             imageVector = Icons.Default.Reply,
                             contentDescription = stringResource(R.string.reply_message),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(AppSizes.iconSmall)
                         )
-                    },
-                    modifier = Modifier.height(36.dp)
+                    }
                 )
             }
 
@@ -555,8 +543,7 @@ private fun MessageItem(
                 text = {
                     Text(
                         stringResource(id = R.string.insert_summary),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 13.sp
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 onClick = {
@@ -568,10 +555,9 @@ private fun MessageItem(
                         imageVector = Icons.Default.Summarize,
                         contentDescription = stringResource(id = R.string.insert_summary),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(AppSizes.iconSmall)
                     )
-                },
-                modifier = Modifier.height(36.dp)
+                }
             )
 
             // 创建分支
@@ -579,8 +565,7 @@ private fun MessageItem(
                 text = {
                     Text(
                         stringResource(id = R.string.create_branch),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 13.sp
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 onClick = {
@@ -592,10 +577,9 @@ private fun MessageItem(
                         imageVector = Icons.Default.AccountTree,
                         contentDescription = stringResource(id = R.string.create_branch),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(AppSizes.iconSmall)
                     )
-                },
-                modifier = Modifier.height(36.dp)
+                }
             )
 
             // 多选
@@ -603,8 +587,7 @@ private fun MessageItem(
                 text = {
                     Text(
                         stringResource(id = R.string.multi_select),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 13.sp
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 onClick = {
@@ -616,10 +599,9 @@ private fun MessageItem(
                         imageVector = Icons.Default.CheckCircle,
                         contentDescription = stringResource(id = R.string.multi_select),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(AppSizes.iconSmall)
                     )
-                },
-                modifier = Modifier.height(36.dp)
+                }
             )
         }
     }
@@ -632,8 +614,8 @@ private fun LoadingDotsIndicator(textColor: Color) {
     val infiniteTransition = rememberInfiniteTransition()
 
     Row(
-        modifier = Modifier.padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        modifier = Modifier.padding(vertical = AppSpacing.nano),
+        horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val jumpHeight = -5f
@@ -666,7 +648,7 @@ private fun LoadingDotsIndicator(textColor: Color) {
             Box(
                 modifier =
                 Modifier
-                    .size(6.dp)
+                    .size(AppSpacing.nano)
                     .offset(y = offsetY.dp)
                     .background(
                         color = textColor.copy(alpha = 0.6f),

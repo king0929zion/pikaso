@@ -48,6 +48,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.ai.assistance.operit.data.model.AttachmentInfo
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 import com.ai.assistance.operit.data.model.InputProcessingState
 import com.ai.assistance.operit.data.model.ChatMessage
 import com.ai.assistance.operit.ui.common.animations.SimpleAnimatedVisibility
@@ -185,13 +187,13 @@ fun ChatInputSection(
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                        .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.nano),
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(AppSpacing.small)
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -199,11 +201,11 @@ fun ChatInputSection(
                             imageVector = Icons.AutoMirrored.Filled.Reply,
                             contentDescription = context.getString(R.string.reply_message),
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(AppSizes.iconSmall)
                         )
-                        
-                        Spacer(modifier = Modifier.width(8.dp))
-                        
+
+                        Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
+
                         val previewText = message.content
                             .replace(Regex("<[^>]*>"), "") // 移除XML标签
                             .trim()
@@ -216,16 +218,16 @@ fun ChatInputSection(
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.weight(1f)
                         )
-                        
+
                         IconButton(
                             onClick = { onClearReply?.invoke() },
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(AppSizes.buttonMinHeightSmall)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = context.getString(R.string.cancel_reply),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(16.dp)
+                                modifier = Modifier.size(AppSizes.iconSmall)
                             )
                         }
                     }
@@ -265,8 +267,8 @@ fun ChatInputSection(
                         Modifier
                             .fillMaxWidth()
                             .padding(
-                                horizontal = 16.dp,
-                                vertical = 4.dp
+                                horizontal = AppSpacing.medium,
+                                vertical = AppSpacing.nano
                             ),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -290,10 +292,10 @@ fun ChatInputSection(
                     Modifier
                         .fillMaxWidth()
                         .padding(
-                            horizontal = 16.dp,
-                            vertical = 4.dp
+                            horizontal = AppSpacing.medium,
+                            vertical = AppSpacing.nano
                         ),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano)
                 ) {
                     items(attachments) { attachment ->
                         AttachmentChip(
@@ -316,8 +318,8 @@ fun ChatInputSection(
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 8.dp, bottom = 8.dp)
+                    .padding(horizontal = AppSpacing.medium)
+                    .padding(top = AppSpacing.small, bottom = AppSpacing.small)
                     .wrapContentHeight(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -334,7 +336,7 @@ fun ChatInputSection(
                     },
                     modifier = Modifier
                         .weight(1f)
-                        .heightIn(min = 38.dp),
+                        .heightIn(min = AppSizes.inputMinHeightSmall),
                     textStyle = modernTextStyle,
                     maxLines = 5,
                     minLines = 1,
@@ -349,7 +351,7 @@ fun ChatInputSection(
                         unfocusedBorderColor =
                         MaterialTheme.colorScheme.outline
                     ),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                     trailingIcon = {
                         if (userMessage.text.contains("\n")) {
                             IconButton(onClick = { showFullscreenInput.value = true }) {
@@ -364,14 +366,14 @@ fun ChatInputSection(
                     enabled = !isProcessing || allowTextInputWhileProcessing
                 )
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(AppSpacing.small))
 
                 // Attachment button (+ 按钮) - 确保圆形
 
                 Box(
                     modifier =
                     Modifier
-                        .size(42.dp)
+                        .size(AppSizes.buttonMinHeightSmall + 2.dp)
                         .clip(CircleShape)
                         .background(
                             if (showAttachmentPanel)
@@ -400,17 +402,17 @@ fun ChatInputSection(
                         else
                             MaterialTheme.colorScheme
                                 .onSurfaceVariant,
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(AppSizes.iconNormal)
                     )
                 }
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(AppSpacing.small))
 
                 // Send button (发送按钮) - 确保圆形
                 Box(
                     modifier =
                     Modifier
-                        .size(42.dp)
+                        .size(AppSizes.buttonMinHeightSmall + 2.dp)
                         .clip(CircleShape)
                         .background(
                             when {
@@ -488,7 +490,7 @@ fun ChatInputSection(
                             else -> context.getString(R.string.voice_input)
                         },
                         tint = iconTint,
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(AppSizes.iconNormal)
                     )
                 }
 
@@ -506,8 +508,8 @@ fun ChatInputSection(
                     modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(bottom = 4.dp)
+                        .padding(horizontal = AppSpacing.medium)
+                        .padding(bottom = AppSpacing.nano)
                 )
             }
 
@@ -554,57 +556,57 @@ fun AttachmentChip(attachmentInfo: AttachmentInfo, onRemove: () -> Unit, onInser
     Surface(
         modifier =
         Modifier
-            .height(26.dp)
+            .height(AppSizes.buttonMinHeightSmall - 14.dp)
             .border(
-                width = 1.dp,
+                width = AppSizes.strokeThin,
                 color =
                 MaterialTheme.colorScheme.outline.copy(
                     alpha = 0.5f
                 ),
-                shape = RoundedCornerShape(13.dp)
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)
             ),
-        shape = RoundedCornerShape(13.dp),
+        shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f)
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+            modifier = Modifier.padding(horizontal = AppSpacing.nano, vertical = AppSpacing.nano),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = Modifier.size(14.dp),
+                modifier = Modifier.size(AppSpacing.small + 2.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
 
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.nano))
 
             Text(
                 text = attachmentInfo.fileName,
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.widthIn(max = 80.dp)
+                modifier = Modifier.widthIn(max = AppSizes.messageBubbleMinWidth - 40.dp)
             )
 
-            Spacer(modifier = Modifier.width(2.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.nano))
 
-            IconButton(onClick = onInsert, modifier = Modifier.size(14.dp)) {
+            IconButton(onClick = onInsert, modifier = Modifier.size(AppSpacing.small + 2.dp)) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = context.getString(R.string.insert_attachment),
-                    modifier = Modifier.size(10.dp),
+                    modifier = Modifier.size(AppSpacing.extraSmall + 2.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
 
-            Spacer(modifier = Modifier.width(2.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.nano))
 
-            IconButton(onClick = onRemove, modifier = Modifier.size(14.dp)) {
+            IconButton(onClick = onRemove, modifier = Modifier.size(AppSpacing.small + 2.dp)) {
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = context.getString(R.string.remove_attachment),
-                    modifier = Modifier.size(10.dp),
+                    modifier = Modifier.size(AppSpacing.extraSmall + 2.dp),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

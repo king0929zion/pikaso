@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.sp
 import com.ai.assistance.operit.core.workflow.NodeExecutionState
 import com.ai.assistance.operit.data.model.WorkflowNode
 import com.ai.assistance.operit.data.model.WorkflowNodeConnection
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlin.math.roundToInt
 
 // 画布配置常量
@@ -406,16 +408,16 @@ fun GridWorkflowCanvas(
             Card(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(16.dp),
+                    .padding(AppSpacing.medium),
                 colors = CardDefaults.cardColors(
                     containerColor = Color(0xE0FFFFFF)
                 ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                shape = RoundedCornerShape(8.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
             ) {
                 Text(
                     text = "${(scale * 100).toInt()}%",
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    modifier = Modifier.padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.nano),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = 14.sp,
                         color = Color(0xFF1A73E8)

@@ -15,6 +15,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -107,7 +109,7 @@ fun ScheduleConfigDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(AppSpacing.medium)
             ) {
                 // Schedule type selector
                 ExposedDropdownMenuBox(
@@ -151,7 +153,7 @@ fun ScheduleConfigDialog(
                         
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                         ) {
                             OutlinedTextField(
                                 value = intervalValue,
@@ -243,7 +245,7 @@ fun ScheduleConfigDialog(
                             )
                         }
                         
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                         
                         // 时间选择器
                         Box(
@@ -282,7 +284,7 @@ fun ScheduleConfigDialog(
                             )
                         }
                         
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                         
                         // 显示完整的日期时间
                         Text(
@@ -337,7 +339,7 @@ fun ScheduleConfigDialog(
                             }
                         }
                         
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                         
                         OutlinedTextField(
                             value = cronExpression,

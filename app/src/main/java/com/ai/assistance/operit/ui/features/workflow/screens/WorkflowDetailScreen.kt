@@ -42,6 +42,8 @@ import com.ai.assistance.operit.ui.features.workflow.components.GridWorkflowCanv
 import com.ai.assistance.operit.ui.features.workflow.components.ConnectionMenuDialog
 import com.ai.assistance.operit.ui.features.workflow.components.NodeActionMenuDialog
 import com.ai.assistance.operit.ui.features.workflow.components.ScheduleConfigDialog
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +74,7 @@ fun WorkflowDetailScreen(
             if (workflow != null) {
                 Column(
                     horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement.spacedBy(AppSpacing.medium)
                 ) {
                     // Animated secondary actions
                     AnimatedVisibility(
@@ -82,7 +84,7 @@ fun WorkflowDetailScreen(
                     ) {
                         Column(
                             horizontalAlignment = Alignment.End,
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                            verticalArrangement = Arrangement.spacedBy(AppSpacing.medium)
                         ) {
                             if (workflow.enabled) {
                                 SpeedDialAction(
@@ -163,8 +165,8 @@ fun WorkflowDetailScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f)
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                                    .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall),
+                                elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall / 4),
                                 colors = CardDefaults.cardColors(
                                     containerColor = MaterialTheme.colorScheme.surfaceVariant
                                 )
@@ -172,7 +174,7 @@ fun WorkflowDetailScreen(
                                 Column(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .padding(48.dp),
+                                        .padding(AppSizes.floatingBallSize + 16.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                     verticalArrangement = Arrangement.Center
                                 ) {
@@ -180,13 +182,13 @@ fun WorkflowDetailScreen(
                                         text = "📋",
                                         style = MaterialTheme.typography.displayMedium
                                     )
-                                    Spacer(modifier = Modifier.height(12.dp))
+                                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                                     Text(
                                         text = stringResource(R.string.workflow_nodes_empty),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
-                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                                     Text(
                                         text = "点击右上角 + 按钮添加节点",
                                         style = MaterialTheme.typography.bodyMedium,
@@ -212,7 +214,7 @@ fun WorkflowDetailScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f)
-                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                                    .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall)
                             )
                         }
                     }
@@ -411,16 +413,16 @@ private fun SpeedDialAction(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(AppSpacing.medium)
     ) {
         Card(
             shape = MaterialTheme.shapes.small,
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall / 2)
         ) {
             Text(
                 text = text,
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                modifier = Modifier.padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.extraSmall),
                 style = MaterialTheme.typography.labelLarge
             )
         }

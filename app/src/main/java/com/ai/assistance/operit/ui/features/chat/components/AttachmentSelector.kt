@@ -60,6 +60,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import androidx.core.content.FileProvider
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 /** 简约风格的附件选择器组件 */
 @Composable
@@ -152,27 +154,27 @@ fun AttachmentSelectorPanel(
     ) {
         Surface(
                 color = MaterialTheme.colorScheme.surface,
-                shadowElevation = 1.dp,
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                shadowElevation = AppSizes.strokeThin,
+                shape = RoundedCornerShape(topStart = AppSizes.cornerRadiusLarge, topEnd = AppSizes.cornerRadiusLarge),
                 modifier = Modifier.fillMaxWidth()
         ) {
-            Column(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(vertical = AppSpacing.medium)) {
                 // 顶部指示器
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     HorizontalDivider(
                             modifier =
-                                    Modifier.width(32.dp)
-                                            .height(3.dp)
-                                            .clip(RoundedCornerShape(1.5.dp)),
+                                    Modifier.width(AppSpacing.mediumLarge * 2)
+                                            .height(AppSizes.strokeThick)
+                                            .clip(RoundedCornerShape(AppSizes.strokeThick / 2)),
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // 第一行选项
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = AppSpacing.medium),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -198,7 +200,7 @@ fun AttachmentSelectorPanel(
                     AttachmentOption(
                             icon = Icons.Default.Memory,
                             label = context.getString(R.string.attachment_memory),
-                            onClick = { 
+                            onClick = {
                                 onAttachMemory()
                                 onDismiss()
                             }
@@ -212,11 +214,11 @@ fun AttachmentSelectorPanel(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // 第二行选项
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = AppSpacing.medium),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -306,14 +308,14 @@ private fun AttachmentOption(icon: ImageVector, label: String, onClick: () -> Un
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier =
                     Modifier.clickable(onClick = onClick)
-                            .width(70.dp)
-                            .padding(horizontal = 8.dp, vertical = 8.dp)
+                            .width(AppSizes.buttonMinHeight + AppSpacing.extraSmall)
+                            .padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.extraSmall)
     ) {
         // 图标区域 - 改为圆角方形
         Box(
                 modifier =
-                        Modifier.size(56.dp)
-                                .clip(RoundedCornerShape(12.dp))
+                        Modifier.size(AppSizes.floatingBallSize)
+                                .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
                                 .background(
                                         MaterialTheme.colorScheme.secondaryContainer.copy(
                                                 alpha = 0.7f
@@ -325,11 +327,11 @@ private fun AttachmentOption(icon: ImageVector, label: String, onClick: () -> Un
                     imageVector = icon,
                     contentDescription = label,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(AppSizes.iconNormal)
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
 
         // 标签
         Text(

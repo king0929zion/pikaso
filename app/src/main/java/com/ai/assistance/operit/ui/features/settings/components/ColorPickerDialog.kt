@@ -22,6 +22,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ai.assistance.operit.ui.theme.getTextColorForBackground
 import com.ai.assistance.operit.ui.theme.isHighContrast
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.github.skydoves.colorpicker.compose.*
 import kotlinx.coroutines.launch
 import kotlin.math.*
@@ -221,12 +223,12 @@ fun ColorPickerDialog(
                 // Live color preview - use solid backgrounds
                 Box(
                     modifier = Modifier.fillMaxWidth()
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = AppSpacing.medium)
                         .background(
                             MaterialTheme.colorScheme.surface.copy(alpha = 1f),
-                            RoundedCornerShape(8.dp)
+                            RoundedCornerShape(AppSizes.cornerRadiusMedium)
                         )
-                        .padding(8.dp)
+                        .padding(AppSpacing.extraSmall)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -235,26 +237,26 @@ fun ColorPickerDialog(
                     ) {
                         // Color sample
                         Box(
-                            modifier = Modifier.size(80.dp)
-                                .clip(RoundedCornerShape(8.dp))
+                            modifier = Modifier.size(AppSizes.avatarExtraLarge)
+                                .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
                                 .background(pickedColor)
                                 .border(
-                                    1.dp,
+                                    AppSizes.strokeThin,
                                     MaterialTheme.colorScheme.outline,
-                                    RoundedCornerShape(8.dp)
+                                    RoundedCornerShape(AppSizes.cornerRadiusMedium)
                                 )
                         )
 
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.width(AppSpacing.medium))
 
                         // Text preview
                         Column {
                             // Show contrast example
                             val textColor = getTextColorForBackground(pickedColor)
                             Surface(
-                                modifier = Modifier.width(120.dp).height(40.dp),
+                                modifier = Modifier.width(AppSizes.floatingBallSize + 48.dp).height(AppSizes.buttonMinHeightSmall - 8.dp),
                                 color = pickedColor,
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
                             ) {
                                 Box(
                                     modifier = Modifier.fillMaxSize(),
@@ -279,7 +281,7 @@ fun ColorPickerDialog(
                                 text = contrastRating,
                                 style = MaterialTheme.typography.bodySmall,
                                 color = contrastColor,
-                                modifier = Modifier.padding(top = 4.dp)
+                                modifier = Modifier.padding(top = AppSpacing.nano)
                             )
                         }
                     }
@@ -287,22 +289,22 @@ fun ColorPickerDialog(
 
                 // Manual input section
                 Card(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                     )
                 ) {
-                    Column(modifier = Modifier.padding(12.dp)) {
+                    Column(modifier = Modifier.padding(AppSpacing.small)) {
                         Text(
                             text = "手动输入颜色",
                             style = MaterialTheme.typography.titleSmall,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                         )
 
                         // Input mode selection
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                         ) {
                             listOf("HEX", "RGB", "HSV").forEach { mode ->
                                 FilterChip(
@@ -341,7 +343,7 @@ fun ColorPickerDialog(
                                             }
                                         }
                                     )
-                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                                     TextButton(onClick = { applyManualColor() }) {
                                         Text("应用")
                                     }
@@ -351,7 +353,7 @@ fun ColorPickerDialog(
                                 Column {
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                                     ) {
                                         OutlinedTextField(
                                             value = rgbR,
@@ -393,7 +395,7 @@ fun ColorPickerDialog(
                                 Column {
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                                     ) {
                                         OutlinedTextField(
                                             value = hsvH,
@@ -427,7 +429,7 @@ fun ColorPickerDialog(
                                         text = "H: 0-360°, S: 0-100%, V: 0-100%",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        modifier = Modifier.padding(top = 4.dp)
+                                        modifier = Modifier.padding(top = AppSpacing.nano)
                                     )
                                     TextButton(
                                         onClick = { applyManualColor() },
@@ -444,17 +446,17 @@ fun ColorPickerDialog(
                 // Color display preview with alpha tiles
                 AlphaTile(
                     modifier = Modifier.fillMaxWidth()
-                        .height(60.dp)
-                        .padding(bottom = 16.dp)
-                        .clip(RoundedCornerShape(8.dp)),
+                        .height(AppSizes.floatingBallSize + 4.dp)
+                        .padding(bottom = AppSpacing.medium)
+                        .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium)),
                     controller = pickerController
                 )
 
                 // HSV Color Picker
                 HsvColorPicker(
                     modifier = Modifier.fillMaxWidth()
-                        .height(220.dp)
-                        .padding(vertical = 8.dp),
+                        .height(AppSizes.floatingMaxWidth - 180.dp)
+                        .padding(vertical = AppSpacing.extraSmall),
                     controller = pickerController,
                     onColorChanged = {
                         // Intentionally left blank. The controller updates its own state.
@@ -462,39 +464,39 @@ fun ColorPickerDialog(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // Brightness slider
                 BrightnessSlider(
                     modifier = Modifier.fillMaxWidth()
-                        .height(30.dp)
-                        .padding(vertical = 4.dp),
+                        .height(AppSpacing.large + 6.dp)
+                        .padding(vertical = AppSpacing.nano),
                     controller = pickerController
                 )
 
                 // Alpha slider
                 AlphaSlider(
                     modifier = Modifier.fillMaxWidth()
-                        .height(30.dp)
-                        .padding(vertical = 4.dp),
+                        .height(AppSpacing.large + 6.dp)
+                        .padding(vertical = AppSpacing.nano),
                     controller = pickerController,
                     tileOddColor = Color.White,
                     tileEvenColor = Color.LightGray
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // Recent colors section
                 if (recentColors.isNotEmpty()) {
                     Text(
                         text = "最近使用",
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                     )
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                         horizontalArrangement = Arrangement.spacedBy(
-                            space = 8.dp,
+                            space = AppSpacing.extraSmall,
                             alignment = Alignment.Start
                         )
                     ) {
@@ -507,9 +509,9 @@ fun ColorPickerDialog(
                     }
                     if (recentColors.size > 7) {
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                            modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                             horizontalArrangement = Arrangement.spacedBy(
-                                space = 8.dp,
+                                space = AppSpacing.extraSmall,
                                 alignment = Alignment.Start
                             )
                         ) {
@@ -521,19 +523,19 @@ fun ColorPickerDialog(
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                 }
 
                 // Preset colors title
                 Text(
                     text = "推荐颜色",
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
 
                 // Preset colors grid
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     materialColors.take(7).forEach { color ->
@@ -569,7 +571,7 @@ fun ColorPickerDialog(
                     }
                     onDismiss()
                 },
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
             ) { Text("确定") }
         },
         dismissButton = {

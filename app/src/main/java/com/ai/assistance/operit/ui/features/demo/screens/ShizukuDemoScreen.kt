@@ -35,6 +35,8 @@ import com.ai.assistance.operit.ui.features.demo.wizards.AccessibilityWizardCard
 import com.ai.assistance.operit.ui.features.demo.wizards.OperitTerminalWizardCard
 import com.ai.assistance.operit.ui.features.demo.wizards.RootWizardCard
 import com.ai.assistance.operit.ui.features.demo.wizards.ShizukuWizardCard
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -108,18 +110,18 @@ fun ShizukuDemoScreen(
     }
 
     Column(
-            modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState),
+            modifier = Modifier.fillMaxSize().padding(AppSpacing.medium).verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // 加载指示器
         if (uiState.isLoading.value) {
             Box(
-                    modifier = Modifier.fillMaxWidth().height(120.dp),
+                    modifier = Modifier.fillMaxWidth().height(AppSizes.avatarExtraLarge),
                     contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator()
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                     Text(context.getString(R.string.loading_app_state), style = MaterialTheme.typography.bodyMedium)
                 }
             }
@@ -308,11 +310,11 @@ fun ShizukuDemoScreen(
         val needSetupGuide = needOperitTerminalSetupGuide || needShizukuSetupGuide || needRootSetupGuide || needAccessibilitySetupGuide
 
         if (needSetupGuide) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(AppSpacing.medium))
 
             // 修改为左对齐带图标的标题样式
             Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = AppSpacing.extraSmall),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
             ) {
@@ -320,10 +322,10 @@ fun ShizukuDemoScreen(
                         imageVector = Icons.Default.Build,
                         contentDescription = context.getString(R.string.setup_wizard_icon_desc),
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(AppSizes.iconNormal)
                 )
 
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(AppSpacing.nano))
 
                 Text(
                         text = context.getString(R.string.setup_wizard),
@@ -334,7 +336,7 @@ fun ShizukuDemoScreen(
 
             // 添加分割线
             HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                    modifier = Modifier.padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.extraSmall),
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
             )
 
@@ -367,7 +369,7 @@ fun ShizukuDemoScreen(
                         }
                     }
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.small))
             }
 
 
@@ -394,7 +396,7 @@ fun ShizukuDemoScreen(
                         }
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.small))
             }
 
             // Shizuku向导卡片 - 如果正在浏览DEBUGGER权限级别且Shizuku未完全设置则显示
@@ -661,7 +663,7 @@ fun ShizukuDemoScreen(
                         bundledVersion = bundledVersion
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.small))
             }
 
             // NodeJS和Python环境配置向导卡片

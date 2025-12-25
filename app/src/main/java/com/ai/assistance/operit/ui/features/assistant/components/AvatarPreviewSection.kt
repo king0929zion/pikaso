@@ -32,6 +32,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.core.avatar.common.view.AvatarView
 import com.ai.assistance.operit.core.avatar.impl.factory.AvatarControllerFactoryImpl
 import com.ai.assistance.operit.core.avatar.impl.factory.AvatarRendererFactoryImpl
@@ -53,11 +55,11 @@ fun AvatarPreviewSection(
         
         Surface(
                 modifier = modifier,
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusExtraLarge),
                 color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                 border =
                         BorderStroke(
-                                width = 1.dp,
+                                width = AppSizes.strokeThin,
                                 brush =
                                         Brush.verticalGradient(
                                                 colors =
@@ -110,15 +112,15 @@ fun AvatarPreviewSection(
                                 FlowRow(
                                         modifier =
                                                 Modifier.align(Alignment.BottomCenter)
-                                                        .padding(8.dp)
+                                                        .padding(AppSpacing.extraSmall)
                                                         .background(
                                                                 MaterialTheme.colorScheme.surface
                                                                         .copy(alpha = 0.3f),
-                                                                RoundedCornerShape(16.dp)
+                                                                RoundedCornerShape(AppSizes.cornerRadiusExtraLarge)
                                                         )
                                                         .padding(
-                                                                horizontal = 8.dp,
-                                                                vertical = 4.dp
+                                                                horizontal = AppSpacing.extraSmall,
+                                                                vertical = AppSpacing.nano
                                                         ),
                                         horizontalArrangement = Arrangement.Center,
                                         verticalArrangement = Arrangement.Center,
@@ -127,7 +129,7 @@ fun AvatarPreviewSection(
                                                         avatarController.availableAnimations.forEach { name ->
                                                 FilterChip(
                                                         modifier =
-                                                                Modifier.padding(horizontal = 4.dp),
+                                                                Modifier.padding(horizontal = AppSpacing.nano),
                                                         selected = selectedAnim == name,
                                                         onClick = {
                                                                 selectedAnim = name

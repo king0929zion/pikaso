@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlinx.coroutines.flow.Flow
 import kotlin.math.sin
 
@@ -112,7 +114,7 @@ fun WaveVisualizer(
     
     Box(
         modifier = modifier
-            .size(if (isActive) 200.dp else 120.dp)
+            .size(if (isActive) AppSizes.floatingMaxWidth else AppSizes.floatingBallSize + 32.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null, // Disable the ripple effect to prevent visual artifacts

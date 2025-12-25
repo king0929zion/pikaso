@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
 
@@ -90,9 +92,9 @@ fun FpsCounter(
     // FPS显示UI
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(4.dp))
+            .clip(RoundedCornerShape(AppSizes.cornerRadiusSmall))
             .background(Color(0x88000000))
-            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.micro)
             .alpha(0.8f)
     ) {
         Text(

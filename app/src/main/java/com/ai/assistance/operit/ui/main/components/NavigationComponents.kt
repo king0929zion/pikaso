@@ -19,6 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 /** Displays a header in the navigation drawer */
 @Composable
@@ -28,7 +30,7 @@ fun NavigationDrawerItemHeader(title: String) {
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 28.dp, top = 16.dp, bottom = 8.dp)
+            modifier = Modifier.padding(start = AppSpacing.mediumLarge, top = AppSpacing.medium, bottom = AppSpacing.extraSmall)
     )
 }
 
@@ -43,14 +45,14 @@ fun CompactNavigationDrawerItem(
     Surface(
             modifier =
                     Modifier.fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 4.dp)
-                            .height(40.dp),
+                            .padding(horizontal = AppSpacing.small, vertical = AppSpacing.micro)
+                            .height(AppSizes.buttonMinHeightSmall),
             onClick = onClick,
             color = if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
             shape = MaterialTheme.shapes.small
     ) {
         Row(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                modifier = Modifier.fillMaxSize().padding(horizontal = AppSpacing.medium),
                 verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -59,10 +61,10 @@ fun CompactNavigationDrawerItem(
                     tint =
                             if (selected) MaterialTheme.colorScheme.primary
                             else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(AppSpacing.small + 4.dp)
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.small))
 
             Text(
                     text = label,

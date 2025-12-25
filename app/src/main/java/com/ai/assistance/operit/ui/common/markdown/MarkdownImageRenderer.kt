@@ -57,6 +57,8 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -138,7 +140,7 @@ fun MarkdownImageRenderer(
     Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(vertical = 2.dp)
+                .padding(vertical = AppSpacing.micro)
                 .semantics { contentDescription = accessibilityDesc }
     ) {
         // 图片容器 - 移除容器的圆角，只保留基本的布局
@@ -146,7 +148,7 @@ fun MarkdownImageRenderer(
                 modifier =
                         Modifier.wrapContentHeight()
                             .fillMaxWidth()
-                                .clip(RoundedCornerShape(12.dp)) // 增加圆角大小为12dp
+                                .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
                                 .clickable { showFullScreen = true }
         ) {
             SubcomposeAsyncImage(
@@ -157,7 +159,7 @@ fun MarkdownImageRenderer(
                                     .build(),
                     contentDescription = null,
                     modifier =
-                            Modifier.clip(RoundedCornerShape(12.dp))
+                            Modifier.clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
                                 .align(Alignment.Center)
                                     .heightIn(max = maxImageHeight.dp),
                     contentScale = ContentScale.Fit,
@@ -166,15 +168,15 @@ fun MarkdownImageRenderer(
                         Box(
                                 modifier =
                                         Modifier.fillMaxWidth()
-                                                .height(50.dp) // 更小的加载区域
+                                                .height(AppSpacing.medium + 2.dp) // 更小的加载区域
                                                 .background(
                                                         Color.LightGray.copy(alpha = 0.1f)
                                                 ), // 更淡的背景
                                 contentAlignment = Alignment.Center
                         ) {
                             CircularProgressIndicator(
-                                    modifier = Modifier.size(20.dp), // 更小的加载指示器
-                                    strokeWidth = 2.dp, // 更细的加载指示器
+                                    modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 16.dp), // 更小的加载指示器
+                                    strokeWidth = AppSizes.strokeMedium, // 更细的加载指示器
                                     color = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -199,7 +201,7 @@ fun MarkdownImageRenderer(
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     modifier =
                             Modifier.fillMaxWidth() // 确保文本占据整个宽度
-                                    .padding(horizontal = 2.dp, vertical = 1.dp),
+                                    .padding(horizontal = AppSpacing.nano, vertical = AppSizes.none),
                     textAlign = TextAlign.Center, // 居中对齐
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -300,7 +302,7 @@ private fun FullScreenImageDialog(imageUrl: String, imageAlt: String, onDismiss:
                             ) {
                                 CircularProgressIndicator(
                                         color = Color.White,
-                                        modifier = Modifier.size(48.dp)
+                                        modifier = Modifier.size(AppSizes.avatarLarge)
                                 )
                             }
                         },
@@ -323,7 +325,7 @@ private fun FullScreenImageDialog(imageUrl: String, imageAlt: String, onDismiss:
                         modifier =
                                 Modifier.fillMaxWidth()
                                         .background(Color.Black.copy(alpha = 0.6f))
-                                        .padding(8.dp)
+                                        .padding(AppSpacing.extraSmall)
                                         .align(Alignment.TopCenter)
                 ) {
                     IconButton(onClick = onDismiss, modifier = Modifier.align(Alignment.TopStart)) {
@@ -380,7 +382,7 @@ private fun FullScreenImageDialog(imageUrl: String, imageAlt: String, onDismiss:
                                     Modifier.align(Alignment.BottomCenter)
                                             .fillMaxWidth()
                                             .background(Color.Black.copy(alpha = 0.6f))
-                                            .padding(vertical = 8.dp),
+                                            .padding(vertical = AppSpacing.extraSmall),
                             contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -398,7 +400,7 @@ private fun FullScreenImageDialog(imageUrl: String, imageAlt: String, onDismiss:
                                 scale = 1f
                                 offset = Offset.Zero
                             },
-                            modifier = Modifier.align(Alignment.BottomEnd).padding(12.dp)
+                            modifier = Modifier.align(Alignment.BottomEnd).padding(AppSpacing.small)
                     ) {
                         Icon(
                                 imageVector = Icons.Default.ArrowBack,

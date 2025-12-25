@@ -30,6 +30,8 @@ import com.ai.assistance.operit.core.workflow.NodeExecutionState
 import com.ai.assistance.operit.data.model.WorkflowNode
 import com.ai.assistance.operit.data.model.TriggerNode
 import com.ai.assistance.operit.data.model.ExecuteNode
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -89,8 +91,8 @@ fun DraggableNodeCard(
     
     Box(
         modifier = modifier
-            .width(120.dp)
-            .height(80.dp)
+            .width(AppSizes.avatarLarge + 48.dp)
+            .height(AppSizes.avatarExtraLarge - 16.dp)
     ) {
         Card(
             modifier = Modifier
@@ -148,13 +150,13 @@ fun DraggableNodeCard(
                     )
                 }
                 .border(
-                    width = if (executionBorderColor != null) 3.dp else 2.dp,
+                    width = if (executionBorderColor != null) AppSizes.strokeMedium else AppSizes.strokeMedium,
                     color = executionBorderColor ?: (if (isDragging) nodeStyle.primaryColor else nodeStyle.borderColor),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
                 ),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
             elevation = CardDefaults.cardElevation(
-                defaultElevation = if (isDragging) 12.dp else 3.dp
+                defaultElevation = if (isDragging) AppSizes.elevationSmall + 8.dp else AppSizes.elevationSmall - 1.dp
             ),
             colors = CardDefaults.cardColors(
                 containerColor = if (isDragging) 
@@ -166,18 +168,18 @@ fun DraggableNodeCard(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(8.dp),
+                    .padding(AppSpacing.extraSmall),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 // 顶部：类型标签
                 Surface(
-                    shape = RoundedCornerShape(4.dp),
+                    shape = RoundedCornerShape(AppSizes.none),
                     color = nodeStyle.primaryColor.copy(alpha = 0.15f),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        modifier = Modifier.padding(horizontal = AppSpacing.nano, vertical = AppSizes.none),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -185,9 +187,9 @@ fun DraggableNodeCard(
                             imageVector = nodeStyle.icon,
                             contentDescription = null,
                             tint = nodeStyle.primaryColor,
-                            modifier = Modifier.size(12.dp)
+                            modifier = Modifier.size(AppSizes.iconSmall)
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(AppSizes.none))
                         Text(
                             text = nodeStyle.label,
                             fontSize = 10.sp,
@@ -223,11 +225,11 @@ fun DraggableNodeCard(
                         when (executionState) {
                             is NodeExecutionState.Running -> {
                                 CircularProgressIndicator(
-                                    modifier = Modifier.size(12.dp),
-                                    strokeWidth = 2.dp,
+                                    modifier = Modifier.size(AppSizes.iconSmall),
+                                    strokeWidth = AppSizes.strokeMedium,
                                     color = Color(0xFF2196F3)
                                 )
-                                Spacer(modifier = Modifier.width(4.dp))
+                                Spacer(modifier = Modifier.width(AppSizes.none))
                                 Text(
                                     text = "执行中",
                                     fontSize = 9.sp,
@@ -240,9 +242,9 @@ fun DraggableNodeCard(
                                     imageVector = Icons.Default.Check,
                                     contentDescription = null,
                                     tint = Color(0xFF4CAF50),
-                                    modifier = Modifier.size(12.dp)
+                                    modifier = Modifier.size(AppSizes.iconSmall)
                                 )
-                                Spacer(modifier = Modifier.width(4.dp))
+                                Spacer(modifier = Modifier.width(AppSizes.none))
                                 Text(
                                     text = "成功",
                                     fontSize = 9.sp,
@@ -255,9 +257,9 @@ fun DraggableNodeCard(
                                     imageVector = Icons.Default.Close,
                                     contentDescription = null,
                                     tint = Color(0xFFF44336),
-                                    modifier = Modifier.size(12.dp)
+                                    modifier = Modifier.size(AppSizes.iconSmall)
                                 )
-                                Spacer(modifier = Modifier.width(4.dp))
+                                Spacer(modifier = Modifier.width(AppSizes.none))
                                 Text(
                                     text = "失败",
                                     fontSize = 9.sp,

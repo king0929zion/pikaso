@@ -11,6 +11,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 /**
  * 文件操作按钮组件，显示一个带有图标和文本的按钮
@@ -24,17 +26,17 @@ fun FileActionButton(icon: ImageVector, text: String, onClick: () -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
         color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(8.dp),
-        tonalElevation = 1.dp
+        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
+        tonalElevation = AppSizes.elevationSmall / 2
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp, horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(vertical = AppSpacing.small, horizontal = AppSpacing.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 图标背景
             Surface(
-                modifier = Modifier.size(36.dp),
-                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
             ) {
                 Box(
@@ -45,12 +47,12 @@ fun FileActionButton(icon: ImageVector, text: String, onClick: () -> Unit) {
                         imageVector = icon,
                         contentDescription = text,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(AppSpacing.small + 4.dp)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.medium))
 
             Text(
                 text = text,

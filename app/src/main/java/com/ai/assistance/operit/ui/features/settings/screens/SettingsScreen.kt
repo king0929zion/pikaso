@@ -35,6 +35,8 @@ import com.ai.assistance.operit.data.model.FunctionType
 import com.ai.assistance.operit.data.preferences.ApiPreferences
 import com.ai.assistance.operit.data.preferences.UserPreferencesManager
 import com.ai.assistance.operit.data.repository.ChatHistoryManager
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlinx.coroutines.launch
 import androidx.compose.ui.graphics.Color
 
@@ -95,7 +97,7 @@ fun SettingsScreen(
 
         Column(
                 modifier = Modifier.fillMaxSize()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall)
                         .verticalScroll(scrollState)
         ) {
                 // ======= 个性化配置 =======
@@ -255,7 +257,7 @@ fun SettingsScreen(
                 }
 
                 // 底部间距
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
         }
 }
 
@@ -266,19 +268,19 @@ private fun SettingsSection(
         containerColor: Color,
         content: @Composable ColumnScope.() -> Unit
 ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.small)) {
                 // 分组标题
                 Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = 6.dp)
+                        modifier = Modifier.padding(vertical = AppSpacing.nano)
                 ) {
                         Icon(
                                 imageVector = icon,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(AppSpacing.small + 6.dp)
                         )
-                        Spacer(modifier = Modifier.width(6.dp))
+                        Spacer(modifier = Modifier.width(AppSpacing.nano))
                         Text(
                                 text = title,
                                 style = MaterialTheme.typography.titleSmall,
@@ -286,7 +288,7 @@ private fun SettingsSection(
                                 color = MaterialTheme.colorScheme.primary
                         )
                 }
-                
+
                 // 内容区域
                 Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -295,7 +297,7 @@ private fun SettingsSection(
                         )
                 ) {
                         Column(
-                                modifier = Modifier.padding(12.dp),
+                                modifier = Modifier.padding(AppSpacing.small),
                                 content = content
                         )
                 }
@@ -312,20 +314,20 @@ private fun CompactSettingsItem(
         Row(
                 modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(6.dp))
+                        .clip(RoundedCornerShape(AppSizes.cornerRadiusSmall))
                         .clickable { onClick() }
-                        .padding(8.dp),
+                        .padding(AppSpacing.extraSmall),
                 verticalAlignment = Alignment.CenterVertically
         ) {
                 Icon(
                         imageVector = icon,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(AppSpacing.small + 8.dp)
                 )
-                
-                Spacer(modifier = Modifier.width(12.dp))
-                
+
+                Spacer(modifier = Modifier.width(AppSpacing.small))
+
                 Column(modifier = Modifier.weight(1f)) {
                         Text(
                                 text = title,
@@ -342,12 +344,12 @@ private fun CompactSettingsItem(
                                 overflow = TextOverflow.Ellipsis
                         )
                 }
-                
+
                 Icon(
                         imageVector = Icons.Default.ChevronRight,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(AppSpacing.extraSmall)
                 )
         }
 }
@@ -362,11 +364,11 @@ private fun CompactToggleWithDescription(
         Row(
                 modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp),
+                        .padding(vertical = AppSpacing.nano),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
         ) {
-                Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
+                Column(modifier = Modifier.weight(1f).padding(end = AppSpacing.small)) {
                         Text(
                                 text = title,
                                 style = MaterialTheme.typography.bodySmall,
@@ -409,10 +411,10 @@ private fun CompactSlider(
         Column(
                 modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 4.dp)
-                        .clip(RoundedCornerShape(6.dp))
+                        .padding(bottom = AppSpacing.nano)
+                        .clip(RoundedCornerShape(AppSizes.cornerRadiusSmall))
                         .background(backgroundColor)
-                        .padding(8.dp)
+                        .padding(AppSpacing.extraSmall)
         ) {
                 Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -443,12 +445,12 @@ private fun CompactSlider(
                                                 }
                                         },
                                         modifier = Modifier
-                                                .width(40.dp)
+                                                .width(AppSizes.buttonMinHeightSmall)
                                                 .background(
                                                         MaterialTheme.colorScheme.surfaceVariant,
-                                                        RoundedCornerShape(4.dp)
+                                                        RoundedCornerShape(AppSizes.cornerRadiusSmall)
                                                 )
-                                                .padding(horizontal = 4.dp, vertical = 2.dp),
+                                                .padding(horizontal = AppSpacing.nano, vertical = AppSpacing.micro),
                                         textStyle = TextStyle(
                                                 color = MaterialTheme.colorScheme.primary,
                                                 fontWeight = FontWeight.Bold,
@@ -478,7 +480,7 @@ private fun CompactSlider(
                                                         fontWeight = FontWeight.Bold,
                                                         fontSize = 10.sp
                                                 ),
-                                                modifier = Modifier.padding(start = 2.dp)
+                                                modifier = Modifier.padding(start = AppSpacing.micro)
                                         )
                                 }
                         }

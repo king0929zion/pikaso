@@ -23,6 +23,8 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.rememberAsyncImagePainter
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 @Composable
 fun ChatHeader(
@@ -39,12 +41,12 @@ fun ChatHeader(
 ) {
         Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall),
                 modifier = modifier
         ) {
                 Box(
                         modifier =
-                                Modifier.size(32.dp)
+                                Modifier.size(AppSizes.avatarMedium)
                                         .background(
                                                 color =
                                                         if (showChatHistorySelector)
@@ -69,14 +71,14 @@ fun ChatHeader(
                                                         else
                                                                 MaterialTheme.colorScheme.onSurface
                                                                         .copy(alpha = 0.7f),
-                                        modifier = Modifier.size(20.dp)
+                                        modifier = Modifier.size(AppSpacing.small + 4.dp)
                                 )
                         }
                 }
 
                 Box(
                         modifier =
-                                Modifier.size(32.dp)
+                                Modifier.size(AppSizes.avatarMedium)
                                         .background(
                                                 color =
                                                         if (isFloatingMode)
@@ -101,7 +103,7 @@ fun ChatHeader(
                                                         else
                                                                 MaterialTheme.colorScheme.onSurface
                                                                         .copy(alpha = 0.7f),
-                                        modifier = Modifier.size(20.dp)
+                                        modifier = Modifier.size(AppSpacing.small + 4.dp)
                                 )
                         }
                 }
@@ -112,15 +114,15 @@ fun ChatHeader(
                                 Modifier
                                         .clip(CircleShape)
                                         .clickable(onClick = onCharacterClick)
-                                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                                        .padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.nano),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano)
                 ) {
                         // Placeholder for Avatar
                         Box(
                                 modifier =
                                         Modifier
-                                                .size(24.dp)
+                                                .size(AppSpacing.small + 4.dp)
                                                 .clip(CircleShape)
                                                 .background(MaterialTheme.colorScheme.secondaryContainer),
                                 contentAlignment = Alignment.Center
@@ -137,7 +139,7 @@ fun ChatHeader(
                                     Icon(
                                         Icons.Rounded.Person,
                                         contentDescription = "Character Avatar",
-                                        modifier = Modifier.padding(4.dp)
+                                        modifier = Modifier.padding(AppSpacing.nano)
                                     )
                                 }
                         }

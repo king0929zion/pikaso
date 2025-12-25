@@ -34,6 +34,8 @@ import com.ai.assistance.operit.data.model.CharacterCard
 import com.ai.assistance.operit.data.model.PromptTag
 import com.ai.assistance.operit.data.preferences.UserPreferencesManager
 import com.ai.assistance.operit.api.chat.EnhancedAIService
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlinx.coroutines.launch
 import android.content.Context
 
@@ -83,19 +85,19 @@ fun CharacterCardDialog(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .wrapContentHeight(),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
             ),
             border = BorderStroke(
-                width = 1.dp,
+                width = AppSizes.strokeThin,
                 color = MaterialTheme.colorScheme.outlineVariant
             )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(AppSpacing.medium)
             ) {
                 // 名片头部区域 - 头像 + 基本信息
                 Row(
@@ -108,9 +110,9 @@ fun CharacterCardDialog(
                         onAvatarChange = onAvatarChange,
                         onAvatarReset = onAvatarReset
                     )
-                    
-                    Spacer(modifier = Modifier.width(12.dp))
-                    
+
+                    Spacer(modifier = Modifier.width(AppSpacing.small))
+
                     // 基本信息
                     Column(
                         modifier = Modifier.weight(1f)
@@ -145,15 +147,15 @@ fun CharacterCardDialog(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.small))
 
                 // 可滚动内容区域
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 320.dp)
+                        .heightIn(max = AppSizes.floatingMaxWidth - 80.dp)
                         .verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                 ) {
                     // 角色设定
                     Text(
@@ -209,18 +211,18 @@ fun CharacterCardDialog(
                                 }
                             },
                             enabled = openingStatement.isNotBlank() && !isTranslating,
-                            modifier = Modifier.size(28.dp)
+                            modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 12.dp)
                         ) {
                             if (isTranslating) {
                                 CircularProgressIndicator(
-                                    modifier = Modifier.size(14.dp),
-                                    strokeWidth = 2.dp
+                                    modifier = Modifier.size(AppSpacing.small + 2.dp),
+                                    strokeWidth = AppSizes.strokeMedium
                                 )
                             } else {
                                 Icon(
                                     imageVector = Icons.Default.Translate,
                                     contentDescription = stringResource(R.string.character_card_translate_opening_statement),
-                                    modifier = Modifier.size(14.dp),
+                                    modifier = Modifier.size(AppSpacing.small + 2.dp),
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                             }
@@ -272,8 +274,8 @@ fun CharacterCardDialog(
                     val customTags = allTags.filter { !it.isSystemTag }
                     if (customTags.isNotEmpty()) {
                         FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano),
+                            verticalArrangement = Arrangement.spacedBy(AppSpacing.micro)
                         ) {
                             customTags.forEach { tag ->
                                 val isSelected = attachedTagIds.contains(tag.id)
@@ -287,7 +289,7 @@ fun CharacterCardDialog(
                                         }
                                     },
                                     label = { Text(tag.name, fontSize = 10.sp) },
-                                    modifier = Modifier.height(28.dp)
+                                    modifier = Modifier.height(AppSizes.buttonMinHeightSmall - 12.dp)
                                 )
                             }
                         }
@@ -298,7 +300,7 @@ fun CharacterCardDialog(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 8.dp),
+                                .padding(vertical = AppSpacing.extraSmall),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -308,16 +310,16 @@ fun CharacterCardDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { showAdvanced = !showAdvanced }
-                            .padding(vertical = 4.dp),
+                            .padding(vertical = AppSpacing.nano),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             imageVector = if (showAdvanced) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp),
+                            modifier = Modifier.size(AppSpacing.extraSmall),
                             tint = MaterialTheme.colorScheme.primary
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(AppSpacing.nano))
                         Text(
                             text = stringResource(R.string.character_card_advanced_options),
                             fontSize = 12.sp,
@@ -343,7 +345,7 @@ fun CharacterCardDialog(
                             }
                         )
 
-                        Spacer(modifier = Modifier.height(6.dp))
+                        Spacer(modifier = Modifier.height(AppSpacing.nano))
 
                         // 备注
                         CompactTextFieldWithExpand(
@@ -363,17 +365,17 @@ fun CharacterCardDialog(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.small))
 
                 // 操作按钮
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                 ) {
                     OutlinedButton(
                         onClick = onDismiss,
                         modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(6.dp)
+                        shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
                     ) {
                         Text(stringResource(R.string.cancel), fontSize = 13.sp)
                     }
@@ -394,7 +396,7 @@ fun CharacterCardDialog(
                             )
                         },
                         modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(6.dp)
+                        shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
                     ) {
                         Text(stringResource(R.string.save), fontSize = 13.sp)
                     }
@@ -447,26 +449,26 @@ fun CompactTextFieldWithExpand(
             placeholder = placeholder?.let { { Text(it, fontSize = 11.sp) } },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 32.dp), // 为右上角按钮留空间
+                .padding(end = AppSpacing.large), // 为右上角按钮留空间
             textStyle = LocalTextStyle.current.copy(fontSize = 12.sp),
             singleLine = singleLine,
             minLines = minLines,
             maxLines = maxLines,
-            shape = RoundedCornerShape(6.dp)
+            shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
         )
-        
+
         // 右上角展开按钮
         IconButton(
             onClick = onExpandClick,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .size(28.dp)
-                .offset(x = (-2).dp, y = 2.dp)
+                .size(AppSizes.buttonMinHeightSmall - 12.dp)
+                .offset(x = (-2).dp, y = AppSpacing.nano)
         ) {
             Icon(
                 imageVector = Icons.Default.OpenInFull,
                 contentDescription = stringResource(R.string.character_card_fullscreen_edit),
-                modifier = Modifier.size(14.dp),
+                modifier = Modifier.size(AppSpacing.small + 2.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
         }
@@ -492,8 +494,8 @@ fun FullScreenEditDialog(
         Card(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
-            shape = RoundedCornerShape(12.dp),
+                .padding(AppSpacing.extraSmall),
+            shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
             )
@@ -501,7 +503,7 @@ fun FullScreenEditDialog(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
+                    .padding(AppSpacing.medium)
             ) {
                 // 标题栏
                 Row(
@@ -522,9 +524,9 @@ fun FullScreenEditDialog(
                         )
                     }
                 }
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
+
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
+
                 // 编辑区域
                 OutlinedTextField(
                     value = editValue,
@@ -532,16 +534,16 @@ fun FullScreenEditDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
                     placeholder = { Text(stringResource(R.string.character_card_fullscreen_edit_placeholder)) }
                 )
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
+
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
+
                 // 底部按钮
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.small)
                 ) {
                     OutlinedButton(
                         onClick = onDismiss,
@@ -571,16 +573,16 @@ fun CompactAvatarPicker(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(AppSpacing.nano)
     ) {
         // 头像
         Box(
             modifier = Modifier
-                .size(60.dp)
+                .size(AppSizes.avatarLarge + 4.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .clickable(onClick = onAvatarChange)
-                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape),
+                .border(AppSizes.strokeMedium + 0.5.dp, MaterialTheme.colorScheme.primary, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             if (avatarUri != null) {
@@ -594,7 +596,7 @@ fun CompactAvatarPicker(
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = stringResource(R.string.character_card_default_avatar),
-                    modifier = Modifier.size(30.dp),
+                    modifier = Modifier.size(AppSpacing.small + 18.dp),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -604,29 +606,29 @@ fun CompactAvatarPicker(
         if (avatarUri != null) {
             TextButton(
                 onClick = onAvatarReset,
-                modifier = Modifier.height(24.dp),
-                contentPadding = PaddingValues(horizontal = 6.dp, vertical = 0.dp)
+                modifier = Modifier.height(AppSpacing.extraSmall + 16.dp),
+                contentPadding = PaddingValues(horizontal = AppSpacing.nano, vertical = AppSizes.none)
             ) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
                     contentDescription = null,
-                    modifier = Modifier.size(12.dp)
+                    modifier = Modifier.size(AppSpacing.nano + 8.dp)
                 )
-                Spacer(modifier = Modifier.width(2.dp))
+                Spacer(modifier = Modifier.width(AppSpacing.micro))
                 Text(stringResource(R.string.character_card_reset), fontSize = 10.sp)
             }
         } else {
             TextButton(
                 onClick = onAvatarChange,
-                modifier = Modifier.height(24.dp),
-                contentPadding = PaddingValues(horizontal = 6.dp, vertical = 0.dp)
+                modifier = Modifier.height(AppSpacing.extraSmall + 16.dp),
+                contentPadding = PaddingValues(horizontal = AppSpacing.nano, vertical = AppSizes.none)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null,
-                    modifier = Modifier.size(12.dp)
+                    modifier = Modifier.size(AppSpacing.nano + 8.dp)
                 )
-                Spacer(modifier = Modifier.width(2.dp))
+                Spacer(modifier = Modifier.width(AppSpacing.micro))
                 Text(stringResource(R.string.character_card_add), fontSize = 10.sp)
             }
         }

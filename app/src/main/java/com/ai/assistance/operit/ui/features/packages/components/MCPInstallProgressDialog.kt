@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.ai.assistance.operit.data.mcp.InstallProgress
 import com.ai.assistance.operit.data.mcp.InstallResult
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 /**
  * MCP 安装/卸载进度对话框
@@ -82,7 +84,7 @@ fun MCPInstallProgressDialog(
                                                 color = MaterialTheme.colorScheme.primary
                                         )
                                         if (result.pluginPath.isNotEmpty()) {
-                                            Spacer(modifier = Modifier.height(8.dp))
+                                            Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                                             Text("插件已${operationType}到：", style = MaterialTheme.typography.bodyMedium)
                                             Text(
                                                     text = result.pluginPath,
@@ -99,7 +101,7 @@ fun MCPInstallProgressDialog(
                                             style = MaterialTheme.typography.bodyLarge,
                                             color = MaterialTheme.colorScheme.error
                                     )
-                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                                     Text(
                                             text = result.message,
                                             style = MaterialTheme.typography.bodyMedium,
@@ -115,10 +117,10 @@ fun MCPInstallProgressDialog(
                                 InstallProgress.Preparing -> {
                                     Box(
                                             contentAlignment = Alignment.Center,
-                                            modifier = Modifier.padding(16.dp)
+                                            modifier = Modifier.padding(AppSpacing.medium)
                                     ) {
                                         CircularProgressIndicator(
-                                                modifier = Modifier.size(48.dp),
+                                                modifier = Modifier.size(AppSizes.avatarExtraLarge),
                                         )
                                     }
                                     Text(
@@ -133,8 +135,7 @@ fun MCPInstallProgressDialog(
                                             style = MaterialTheme.typography.bodyLarge,
                                             textAlign = TextAlign.Center
                                     )
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                    if (progress.progress >= 0) {
+                                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                                         LinearProgressIndicator(
                                                 progress = { progress.progress / 100f },
                                                 modifier = Modifier.fillMaxWidth()
@@ -142,7 +143,7 @@ fun MCPInstallProgressDialog(
                                         Text(
                                                 "${progress.progress}%",
                                                 style = MaterialTheme.typography.bodyMedium,
-                                                modifier = Modifier.padding(top = 8.dp)
+                                                modifier = Modifier.padding(top = AppSpacing.extraSmall)
                                         )
                                     } else {
                                         LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
@@ -155,8 +156,7 @@ fun MCPInstallProgressDialog(
                                             style = MaterialTheme.typography.bodyLarge,
                                             textAlign = TextAlign.Center
                                     )
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                    if (progress.progress >= 0) {
+                                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                                         LinearProgressIndicator(
                                                 progress = { progress.progress / 100f },
                                                 modifier = Modifier.fillMaxWidth()
@@ -164,7 +164,7 @@ fun MCPInstallProgressDialog(
                                         Text(
                                                 "${progress.progress}%",
                                                 style = MaterialTheme.typography.bodyMedium,
-                                                modifier = Modifier.padding(top = 8.dp)
+                                                modifier = Modifier.padding(top = AppSpacing.extraSmall)
                                         )
                                     } else {
                                         LinearProgressIndicator(modifier = Modifier.fillMaxWidth())

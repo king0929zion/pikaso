@@ -29,6 +29,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 /**
  * 顶部工具栏
@@ -63,13 +65,13 @@ fun FileManagerToolbar(
                 Row(
                     modifier = Modifier
                         .horizontalScroll(scrollState)
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                        .padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.nano),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // 返回按钮
                     IconButton(
                         onClick = onNavigateUp,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -79,7 +81,7 @@ fun FileManagerToolbar(
                     }
 
                     // 前进按钮
-                    IconButton(onClick = { /* 前进功能 */ }, modifier = Modifier.size(36.dp)) {
+                    IconButton(onClick = { /* 前进功能 */ }, modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                             contentDescription = null,
@@ -90,7 +92,7 @@ fun FileManagerToolbar(
                     // 向上按钮
                     IconButton(
                         onClick = onNavigateUp,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowUpward,
@@ -102,7 +104,7 @@ fun FileManagerToolbar(
                     // 刷新按钮
                     IconButton(
                         onClick = onRefresh,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
@@ -111,20 +113,20 @@ fun FileManagerToolbar(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 分隔线
                     HorizontalDivider(
-                        modifier = Modifier.height(24.dp).width(1.dp),
+                        modifier = Modifier.height(AppSpacing.small).width(AppSizes.strokeThin),
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
                     )
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 缩小按钮
                     IconButton(
                         onClick = { onZoomOut(true) },
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.ZoomOut,
@@ -136,7 +138,7 @@ fun FileManagerToolbar(
                     // 放大按钮
                     IconButton(
                         onClick = { onZoomIn(true) },
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.ZoomIn,
@@ -145,20 +147,20 @@ fun FileManagerToolbar(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 分隔线
                     HorizontalDivider(
-                        modifier = Modifier.height(24.dp).width(1.dp),
+                        modifier = Modifier.height(AppSpacing.small).width(AppSizes.strokeThin),
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
                     )
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 多选模式切换按钮
                     IconButton(
                         onClick = onToggleMultiSelect,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                     ) {
                         Icon(
                             imageVector = if (isMultiSelectMode) Icons.Default.CheckBox else Icons.Outlined.CheckBoxOutlineBlank,
@@ -167,12 +169,12 @@ fun FileManagerToolbar(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 粘贴按钮
                     IconButton(
                         onClick = onPaste,
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp),
                         enabled = !clipboardEmpty
                     ) {
                         Icon(
@@ -182,20 +184,20 @@ fun FileManagerToolbar(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 分隔线
                     HorizontalDivider(
-                        modifier = Modifier.height(24.dp).width(1.dp),
+                        modifier = Modifier.height(AppSpacing.small).width(AppSizes.strokeThin),
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
                     )
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 显示模式选择按钮
                     IconButton(
                         onClick = onChangeDisplayMode,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                     ) {
                         Icon(
                             imageVector = when (displayMode) {
@@ -208,20 +210,20 @@ fun FileManagerToolbar(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 分隔线
                     HorizontalDivider(
-                        modifier = Modifier.height(24.dp).width(1.dp),
+                        modifier = Modifier.height(AppSpacing.small).width(AppSizes.strokeThin),
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
                     )
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 搜索按钮
                     IconButton(
                         onClick = onShowSearchDialog,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Search,
@@ -230,13 +232,13 @@ fun FileManagerToolbar(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
                     // 返回按钮 - 在搜索模式下显示
                     if (isSearching) {
                         IconButton(
                             onClick = onExitSearch,
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -244,14 +246,14 @@ fun FileManagerToolbar(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
-                        
-                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                     }
 
                     // 新建文件夹按钮
                     IconButton(
                         onClick = onNewFolder,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 4.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.CreateNewFolder,
@@ -279,25 +281,25 @@ fun PathNavigationBar(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
+            .padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.nano),
         color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(8.dp),
-        tonalElevation = 1.dp
+        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
+        tonalElevation = AppSizes.elevationSmall / 4
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp),
+                .padding(horizontal = AppSpacing.small, vertical = AppSpacing.extraSmall),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = Icons.Default.Folder,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(AppSizes.iconSmall)
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
             if (isEditing) {
                 // 编辑模式下显示TextField
@@ -351,7 +353,7 @@ fun PathNavigationBar(
                             onNavigateToPath(editablePath)
                         }
                     },
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 8.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Done,
@@ -378,7 +380,7 @@ fun FileManagerTabRow(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 1.dp
+        tonalElevation = AppSizes.elevationSmall / 4
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -386,13 +388,13 @@ fun FileManagerTabRow(
         ) {
             ScrollableTabRow(
                 selectedTabIndex = activeTabIndex,
-                edgePadding = 0.dp,
+                edgePadding = AppSizes.none,
                 modifier = Modifier.weight(1f),
                 indicator = { tabPositions ->
                     if (tabPositions.isNotEmpty() && activeTabIndex < tabPositions.size) {
                         TabRowDefaults.Indicator(
                             modifier = Modifier.tabIndicatorOffset(tabPositions[activeTabIndex]),
-                            height = 2.dp,
+                            height = AppSizes.strokeThin * 2,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -406,13 +408,13 @@ fun FileManagerTabRow(
                         text = {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano)
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Folder,
                                     contentDescription = null,
                                     tint = if (index == activeTabIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.size(16.dp)
+                                    modifier = Modifier.size(AppSizes.iconSmall)
                                 )
 
                                 Text(
@@ -424,13 +426,13 @@ fun FileManagerTabRow(
                                 if (tabs.size > 1) {
                                     IconButton(
                                         onClick = { onCloseTab(index) },
-                                        modifier = Modifier.size(24.dp)
+                                        modifier = Modifier.size(AppSpacing.extraSmall)
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Close,
                                             contentDescription = null,
                                             tint = if (index == activeTabIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                            modifier = Modifier.size(16.dp)
+                                            modifier = Modifier.size(AppSizes.iconSmall)
                                         )
                                     }
                                 }
@@ -441,7 +443,7 @@ fun FileManagerTabRow(
             }
 
             // 添加新标签按钮
-            IconButton(onClick = onAddTab, modifier = Modifier.padding(end = 8.dp)) {
+            IconButton(onClick = onAddTab, modifier = Modifier.padding(end = AppSpacing.extraSmall)) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null,
@@ -466,12 +468,12 @@ fun StatusBar(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surfaceVariant,
-        tonalElevation = 2.dp
+        tonalElevation = AppSizes.elevationSmall / 2
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (isMultiSelectMode) {
@@ -503,17 +505,17 @@ fun StatusBar(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .clip(RoundedCornerShape(4.dp))
+                            .clip(RoundedCornerShape(AppSizes.cornerRadiusSmall))
                             .background(MaterialTheme.colorScheme.primaryContainer)
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.nano)
                     ) {
                         Icon(
                             imageVector = com.ai.assistance.operit.ui.features.toolbox.screens.filemanager.utils.getFileIcon(file),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(AppSizes.iconSmall)
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(AppSpacing.nano))
                         Text(
                             text = file.name,
                             style = MaterialTheme.typography.bodySmall,

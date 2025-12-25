@@ -48,6 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.ai.assistance.operit.ui.common.displays.LatexCache
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.util.markdown.MarkdownNode
 import com.ai.assistance.operit.util.markdown.MarkdownNodeStable
 import com.ai.assistance.operit.util.markdown.MarkdownProcessorType
@@ -430,19 +432,19 @@ private fun renderNodeContent(
         // ========== 引用块：使用 Canvas 绘制文本 + 边框 ==========
         MarkdownProcessorType.BLOCK_QUOTE -> {
             Surface(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
+                modifier = Modifier.fillMaxWidth().padding(vertical = AppSizes.none),
                 color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .border(
-                            width = 2.dp,
+                            width = AppSizes.strokeMedium,
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                            shape = RoundedCornerShape(4.dp)
+                            shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
                         )
-                        .padding(4.dp)
+                        .padding(AppSpacing.nano)
                 ) {
                     val quoteText = content.lines().joinToString("\n") {
                         it.removePrefix("> ").removePrefix(">")
@@ -463,8 +465,8 @@ private fun renderNodeContent(
         // ========== 分隔线 ==========
         MarkdownProcessorType.HORIZONTAL_RULE -> {
             HorizontalDivider(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
-                thickness = 1.dp,
+                modifier = Modifier.fillMaxWidth().padding(vertical = AppSpacing.micro),
+                thickness = AppSizes.strokeThin,
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
             )
         }
@@ -494,7 +496,7 @@ private fun renderNodeContent(
             if (isCompleteImageMarkdown(imageContent)) {
                 // 不使用 key()，让 Compose 根据位置自然识别组件
                 Box(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp)
+                    modifier = Modifier.fillMaxWidth().padding(vertical = AppSizes.none)
                 ) {
                     MarkdownImageRenderer(
                         imageMarkdown = imageContent,
@@ -517,14 +519,14 @@ private fun renderNodeContent(
         // ========== 块级 LaTeX：保留原组件 ==========
         MarkdownProcessorType.BLOCK_LATEX -> {
             Surface(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+                modifier = Modifier.fillMaxWidth().padding(vertical = AppSpacing.micro),
                 color = Color.Transparent,
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 0.dp, horizontal = 8.dp),
+                        .padding(vertical = AppSizes.none, horizontal = AppSpacing.extraSmall),
                     contentAlignment = Alignment.Center
                 ) {
                     // 提取LaTeX内容，移除各种分隔符

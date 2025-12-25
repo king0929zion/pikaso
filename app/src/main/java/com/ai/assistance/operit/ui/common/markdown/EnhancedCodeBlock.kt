@@ -27,6 +27,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import androidx.compose.ui.viewinterop.AndroidView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -93,15 +95,15 @@ fun EnhancedCodeBlock(code: String, language: String = "", modifier: Modifier = 
     Surface(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(vertical = 2.dp)
+                .padding(vertical = AppSpacing.micro)
                 .semantics { contentDescription = accessibilityDesc },
             color = codeBlockBackground,
-            shape = RoundedCornerShape(4.dp)
+            shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
     ) {
         Column {
             // 顶部工具栏
             Row(
-                    modifier = Modifier.fillMaxWidth().background(toolbarBackground).padding(4.dp),
+                    modifier = Modifier.fillMaxWidth().background(toolbarBackground).padding(AppSpacing.nano),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
             ) {
@@ -111,18 +113,18 @@ fun EnhancedCodeBlock(code: String, language: String = "", modifier: Modifier = 
                             text = language,
                             style = MaterialTheme.typography.bodySmall,
                             color = Color(0xFFAAAAAA),
-                            modifier = Modifier.padding(start = 8.dp)
+                            modifier = Modifier.padding(start = AppSpacing.extraSmall)
                     )
                 }
 
                 // 工具栏按钮
                 Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano)
                 ) {
                     // Mermaid渲染按钮（如果是Mermaid图表则显示）
                     if (isMermaid) {
-                        IconButton(onClick = handleToggleMermaid, modifier = Modifier.size(28.dp)) {
+                        IconButton(onClick = handleToggleMermaid, modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 12.dp)) {
                             Icon(
                                     imageVector = Icons.Default.PlayArrow,
                                     contentDescription =
@@ -131,18 +133,18 @@ fun EnhancedCodeBlock(code: String, language: String = "", modifier: Modifier = 
                                             if (showRenderedMermaid)
                                                     MaterialTheme.colorScheme.primary
                                             else Color(0xFFAAAAAA),
-                                    modifier = Modifier.size(16.dp)
+                                    modifier = Modifier.size(AppSpacing.small + 4.dp)
                             )
                         }
                 }
 
                 // 复制按钮
-                IconButton(onClick = handleCopy, modifier = Modifier.size(28.dp)) {
+                IconButton(onClick = handleCopy, modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 12.dp)) {
                     Icon(
                             imageVector = Icons.Default.ContentCopy,
                             contentDescription = "复制代码",
                             tint = Color(0xFFAAAAAA),
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(AppSpacing.small + 4.dp)
                     )
                     }
                 }
@@ -151,10 +153,10 @@ fun EnhancedCodeBlock(code: String, language: String = "", modifier: Modifier = 
             // 代码内容
             if (isMermaid && showRenderedMermaid) {
                 // 渲染Mermaid图表
-                MermaidRenderer(code = code, modifier = Modifier.fillMaxWidth().height(300.dp))
+                MermaidRenderer(code = code, modifier = Modifier.fillMaxWidth().height(AppSizes.floatingMaxWidth - 100.dp))
             } else {
                 // 显示代码
-            Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+            Row(modifier = Modifier.fillMaxWidth().padding(vertical = AppSpacing.extraSmall)) {
                 // 行号列
                 val digits = codeLines.size.toString().length.coerceAtLeast(2) // 至少2位数的宽度
 
@@ -162,7 +164,7 @@ fun EnhancedCodeBlock(code: String, language: String = "", modifier: Modifier = 
                 Column(
                             modifier =
                                     Modifier.background(Color(0xFF252526))
-                                .padding(horizontal = 8.dp, vertical = 8.dp),
+                                .padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.extraSmall),
                         horizontalAlignment = Alignment.End
                 ) {
                     codeLines.forEachIndexed { index, _ ->
@@ -172,12 +174,12 @@ fun EnhancedCodeBlock(code: String, language: String = "", modifier: Modifier = 
                                 fontSize = 12.sp,
                                 lineHeight = 16.sp,
                                 color = Color(0xFF6A737D),
-                                modifier = Modifier.padding(end = 4.dp)
+                                modifier = Modifier.padding(end = AppSpacing.nano)
                         )
-                        
+
                         // 添加与代码内容相同的间距
                         if (index < codeLines.size - 1) {
-                            Spacer(modifier = Modifier.height(4.dp))
+                            Spacer(modifier = Modifier.height(AppSpacing.nano))
                         }
                     }
                 }
@@ -188,18 +190,18 @@ fun EnhancedCodeBlock(code: String, language: String = "", modifier: Modifier = 
                 ) {
                     Column(
                         modifier = Modifier
-                            .padding(end = 8.dp, top = 8.dp)
+                            .padding(end = AppSpacing.extraSmall, top = AppSpacing.extraSmall)
                     ) {
                         // 使用key为每行建立记忆
                         // Compose会高效地只更新变化的行
                         codeLines.forEachIndexed { index, line ->
                             val lineHash = line.hashCode()
                             val lineKey = "$index:$lineHash"
-                            
+
                             key(lineKey) {
                                 // 删除渲染代码行的日志，减少噪音
                                 if (index > 0) {
-                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Spacer(modifier = Modifier.height(AppSpacing.nano))
                                 }
                                 
                                 // 渲染单行代码，利用行缓存机制
@@ -219,15 +221,15 @@ fun EnhancedCodeBlock(code: String, language: String = "", modifier: Modifier = 
                     // 显示复制成功提示
                     if (showCopiedToast) {
                         Surface(
-                                modifier = Modifier.align(Alignment.End).padding(4.dp),
+                                modifier = Modifier.align(Alignment.End).padding(AppSpacing.nano),
                                 color = Color(0xFF0366D6), // GitHub 蓝色
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
                         ) {
                             Text(
                                     text = "已复制",
                                     color = Color.White,
                                     style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                    modifier = Modifier.padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.nano)
                             )
                         }
                     }

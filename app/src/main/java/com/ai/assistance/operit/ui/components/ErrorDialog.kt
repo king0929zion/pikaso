@@ -20,8 +20,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
-/** 
+/**
  * 错误弹窗组件，完整显示错误消息内容，包括堆栈跟踪
  * 不做任何简化或截取处理，保持错误消息的原始格式
  */
@@ -31,7 +33,7 @@ fun ErrorDialog(
         onDismiss: () -> Unit,
         properties: DialogProperties =
                 DialogProperties(
-                    dismissOnBackPress = true, 
+                    dismissOnBackPress = true,
                     dismissOnClickOutside = true
                 )
 ) {
@@ -44,8 +46,8 @@ fun ErrorDialog(
             text = {
                 Box(
                         modifier =
-                                Modifier.padding(vertical = 8.dp)
-                                        .heightIn(max = 350.dp) // 恢复适当的最大高度
+                                Modifier.padding(vertical = AppSpacing.extraSmall)
+                                        .heightIn(max = 400.dp) // 最大高度
                                         .verticalScroll(scrollState) // 添加垂直滚动功能
                 ) {
                     Text(
@@ -63,7 +65,7 @@ fun ErrorDialog(
             },
             containerColor = MaterialTheme.colorScheme.surface,
             titleContentColor = MaterialTheme.colorScheme.onSurface,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
             properties = properties
     )
 }

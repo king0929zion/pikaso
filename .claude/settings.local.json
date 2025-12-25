@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Skill(document-skills:brand-guidelines)",
+      "Bash(git config:*)"
+    ]
+  }
+}

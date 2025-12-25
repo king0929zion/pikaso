@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.ai.assistance.operit.R
 import com.ai.assistance.operit.data.model.WorkflowNode
 import com.ai.assistance.operit.data.model.WorkflowNodeConnection
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 /**
  * 连接菜单对话框
@@ -45,7 +47,7 @@ fun ConnectionMenuDialog(
         title = {
             Column {
                 Text(stringResource(R.string.workflow_manage_connections))
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(AppSizes.none))
                 Text(
                     text = "源节点: ${sourceNode.name}",
                     style = MaterialTheme.typography.bodyMedium,
@@ -57,7 +59,7 @@ fun ConnectionMenuDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 400.dp)
+                    .heightIn(max = AppSizes.floatingMaxWidth + 200.dp)
             ) {
                 // 已有连接列表
                 if (connectionsFromSource.isNotEmpty()) {
@@ -66,8 +68,8 @@ fun ConnectionMenuDialog(
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.primary
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
+                    Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
+
                     connectionsFromSource.forEach { connection ->
                         val targetNode = allNodes.find { it.id == connection.targetNodeId }
                         if (targetNode != null) {
@@ -75,13 +77,13 @@ fun ConnectionMenuDialog(
                                 targetNode = targetNode,
                                 onDelete = { onDeleteConnection(connection.id) }
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                         }
                     }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                     HorizontalDivider()
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                 }
                 
                 // 可连接的节点列表
@@ -94,7 +96,7 @@ fun ConnectionMenuDialog(
                     Spacer(modifier = Modifier.height(8.dp))
                     
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                     ) {
                         items(availableTargets) { targetNode ->
                             AvailableTargetItem(
@@ -139,13 +141,13 @@ private fun ExistingConnectionItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(AppSpacing.extraSmall),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall),
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
@@ -197,13 +199,13 @@ private fun AvailableTargetItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(AppSpacing.extraSmall),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall),
                 modifier = Modifier.weight(1f)
             ) {
                 Text(

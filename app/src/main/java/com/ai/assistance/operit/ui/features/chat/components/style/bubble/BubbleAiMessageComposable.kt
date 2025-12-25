@@ -42,6 +42,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import kotlinx.coroutines.runBlocking
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 @Composable
 fun BubbleAiMessageComposable(
@@ -136,7 +138,7 @@ fun BubbleAiMessageComposable(
 
     Row(
         modifier = Modifier
-            .padding(horizontal = 0.dp, vertical = 4.dp)
+            .padding(horizontal = AppSpacing.none, vertical = AppSpacing.nano)
             .alpha(alpha)
             .offset(y = offsetY.dp),
         horizontalArrangement = Arrangement.Start,
@@ -148,7 +150,7 @@ fun BubbleAiMessageComposable(
                 painter = rememberAsyncImagePainter(model = Uri.parse(aiAvatarUri)),
                 contentDescription = "AI Avatar",
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(AppSizes.avatarMedium)
                     .clip(avatarShape),
                 contentScale = androidx.compose.ui.layout.ContentScale.Crop
             )
@@ -157,17 +159,17 @@ fun BubbleAiMessageComposable(
                 imageVector = Icons.Default.Assistant,
                 contentDescription = "AI Avatar",
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(AppSizes.avatarMedium)
                     .clip(avatarShape),
                 tint = MaterialTheme.colorScheme.secondary
             )
         }
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
         // 使用Column来垂直排列名称和消息气泡
         Column(
             modifier = Modifier
-                .padding(end = 32.dp)
+                .padding(end = AppSizes.avatarMedium)
                 .weight(1f, fill = false)
         ) {
             // 根据用户设置显示角色名称、模型名称和供应商信息
@@ -176,13 +178,13 @@ fun BubbleAiMessageComposable(
                 if (showRoleName && message.roleName.isNotEmpty()) {
                     append(message.roleName)
                 }
-                
+
                 // 根据用户设置添加模型名称
                 if (showModelName && message.modelName.isNotEmpty()) {
                     if (isNotEmpty()) append(" | ")
                     append(message.modelName)
                 }
-                
+
                 // 根据用户设置添加供应商
                 if (showModelProvider && message.provider.isNotEmpty()) {
                     if (showModelName && message.modelName.isNotEmpty()) {
@@ -193,33 +195,33 @@ fun BubbleAiMessageComposable(
                     append(message.provider)
                 }
             }
-            
+
             if (displayText.isNotEmpty()) {
                 Text(
                     text = displayText,
                     style = MaterialTheme.typography.labelSmall,
                     color = textColor.copy(alpha = 0.6f),
-                    modifier = Modifier.padding(bottom = 4.dp, start = 4.dp)
+                    modifier = Modifier.padding(bottom = AppSpacing.nano, start = AppSpacing.nano)
                 )
             }
-            
+
             if (imageUrl != null) {
                 AsyncImage(
                     model = Uri.parse(imageUrl),
                     contentDescription = "Image from AI",
                     modifier = Modifier
-                        .heightIn(max = 80.dp)
-                        .clip(RoundedCornerShape(16.dp)),
+                        .heightIn(max = AppSizes.avatarLarge * 2)
+                        .clip(RoundedCornerShape(AppSizes.cornerRadiusLarge)),
                     contentScale = ContentScale.Fit
                 )
             } else {
                 // Message bubble
                 Surface(
                     modifier = Modifier
-                        .defaultMinSize(minHeight = 44.dp),
-                    shape = RoundedCornerShape(4.dp, 20.dp, 20.dp, 20.dp),
+                        .defaultMinSize(minHeight = AppSizes.buttonMinHeight - 4.dp),
+                    shape = RoundedCornerShape(AppSizes.cornerRadiusSmall, AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusExtraLarge),
                     color = backgroundColor,
-                    tonalElevation = 2.dp
+                    tonalElevation = AppSizes.elevationSmall
                 ) {
                 // 使用 message.timestamp 作为 key，确保在重组期间，
                 // 只要是同一条消息，StreamMarkdownRenderer就不会被销毁和重建。
@@ -233,7 +235,7 @@ fun BubbleAiMessageComposable(
                             backgroundColor = backgroundColor,
                             onLinkClick = rememberedOnLinkClick,
                             xmlRenderer = xmlRenderer,
-                            modifier = Modifier.padding(12.dp),
+                            modifier = Modifier.padding(AppSpacing.small),
                             state = rendererState,
                             fillMaxWidth = false  // bubble模式：横向缩紧
                         )
@@ -246,7 +248,7 @@ fun BubbleAiMessageComposable(
                             backgroundColor = backgroundColor,
                             onLinkClick = rememberedOnLinkClick,
                             xmlRenderer = xmlRenderer,
-                            modifier = Modifier.padding(12.dp),
+                            modifier = Modifier.padding(AppSpacing.small),
                             state = rendererState,
                             fillMaxWidth = false  // bubble模式：横向缩紧
                         )

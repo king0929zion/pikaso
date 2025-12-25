@@ -61,6 +61,8 @@ import com.ai.assistance.operit.data.model.PromptFunctionType
 import com.ai.assistance.operit.ui.features.chat.components.AttachmentChip
 import com.ai.assistance.operit.ui.floating.FloatContext
 import com.ai.assistance.operit.ui.floating.ui.window.viewmodel.FloatingChatWindowModeViewModel
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -101,15 +103,15 @@ private fun BottomInputBar(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 6.dp, vertical = 4.dp)
+            .padding(horizontal = AppSpacing.nano, vertical = AppSpacing.nano)
     ) {
         // 附件列表
         if (floatContext.attachments.isNotEmpty()) {
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 3.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    .padding(bottom = AppSpacing.nano),
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano)
             ) {
                 items(floatContext.attachments) { attachmentInfo ->
                     AttachmentChip(
@@ -161,15 +163,15 @@ private fun BottomInputBar(
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = MaterialTheme.colorScheme.outline
                 ),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
             )
-            
-            Spacer(modifier = Modifier.width(8.dp))
+
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
             
             // 附件按钮 (+)
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(AppSizes.buttonMinHeightSmall - 4.dp)
                     .clip(CircleShape)
                     .background(
                         if (floatContext.showAttachmentPanel)
@@ -187,16 +189,16 @@ private fun BottomInputBar(
                         MaterialTheme.colorScheme.onPrimary
                     else
                         MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(AppSpacing.small + 2.dp)
                 )
             }
-            
-            Spacer(modifier = Modifier.width(8.dp))
-            
+
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
+
             // 发送/取消按钮
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(AppSizes.buttonMinHeightSmall - 4.dp)
                     .clip(CircleShape)
                     .background(
                         when {
@@ -233,7 +235,7 @@ private fun BottomInputBar(
                         hasContent || floatContext.attachments.isNotEmpty() -> MaterialTheme.colorScheme.onPrimary
                         else -> MaterialTheme.colorScheme.onSurfaceVariant
                     },
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(AppSizes.iconSmall)
                 )
             }
         }

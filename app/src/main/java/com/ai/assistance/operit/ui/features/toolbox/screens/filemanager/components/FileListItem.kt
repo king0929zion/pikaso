@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.text.style.TextOverflow
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.ui.features.toolbox.screens.filemanager.models.FileItem
 import com.ai.assistance.operit.ui.features.toolbox.screens.filemanager.utils.formatDate
 import com.ai.assistance.operit.ui.features.toolbox.screens.filemanager.utils.formatFileSize
@@ -38,21 +40,21 @@ fun FileListItem(
     itemSize: Float = 1f,
     displayMode: DisplayMode = DisplayMode.SINGLE_COLUMN
 ) {
-    val baseHeight = 72.dp  // 所有模式使用相同的高度
+    val baseHeight = AppSizes.listItemHeightDouble  // 所有模式使用相同的高度
     val baseIconSize = when (displayMode) {
-        DisplayMode.SINGLE_COLUMN -> 40.dp
-        DisplayMode.TWO_COLUMNS -> 36.dp
-        DisplayMode.THREE_COLUMNS -> 32.dp
+        DisplayMode.SINGLE_COLUMN -> AppSizes.iconNormal
+        DisplayMode.TWO_COLUMNS -> AppSizes.iconNormal - 4.dp
+        DisplayMode.THREE_COLUMNS -> AppSizes.iconMedium
     }
     val basePadding = when (displayMode) {
-        DisplayMode.SINGLE_COLUMN -> 12.dp
-        DisplayMode.TWO_COLUMNS -> 8.dp
-        DisplayMode.THREE_COLUMNS -> 6.dp
+        DisplayMode.SINGLE_COLUMN -> AppSpacing.small
+        DisplayMode.TWO_COLUMNS -> AppSpacing.extraSmall
+        DisplayMode.THREE_COLUMNS -> AppSpacing.nano
     }
     val baseSpacing = when (displayMode) {
-        DisplayMode.SINGLE_COLUMN -> 8.dp
-        DisplayMode.TWO_COLUMNS -> 6.dp
-        DisplayMode.THREE_COLUMNS -> 4.dp
+        DisplayMode.SINGLE_COLUMN -> AppSpacing.extraSmall
+        DisplayMode.TWO_COLUMNS -> AppSpacing.nano
+        DisplayMode.THREE_COLUMNS -> AppSpacing.micro
     }
     val baseTextSize = when (displayMode) {
         DisplayMode.SINGLE_COLUMN -> 16.sp
@@ -70,8 +72,8 @@ fun FileListItem(
             ),
         color = if (isSelected) MaterialTheme.colorScheme.primaryContainer
                 else MaterialTheme.colorScheme.surface,
-        tonalElevation = if (isSelected) 2.dp else 1.dp,
-        shape = RoundedCornerShape(12.dp)
+        tonalElevation = if (isSelected) AppSizes.elevationSmall / 2 else AppSizes.elevationSmall / 4,
+        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
     ) {
         when (displayMode) {
             DisplayMode.SINGLE_COLUMN -> {
@@ -85,8 +87,8 @@ fun FileListItem(
                         modifier = Modifier.size(baseIconSize * itemSize),
                         color = if (isSelected) MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(8.dp),
-                        tonalElevation = 1.dp
+                        shape = RoundedCornerShape(AppSizes.cornerRadiusSmall),
+                        tonalElevation = AppSizes.elevationSmall / 4
                     ) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -165,8 +167,8 @@ fun FileListItem(
                         modifier = Modifier.size(baseIconSize * itemSize),
                         color = if (isSelected) MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(8.dp),
-                        tonalElevation = 1.dp
+                        shape = RoundedCornerShape(AppSizes.cornerRadiusSmall),
+                        tonalElevation = AppSizes.elevationSmall / 4
                     ) {
                         Box(
                             modifier = Modifier.fillMaxSize(),

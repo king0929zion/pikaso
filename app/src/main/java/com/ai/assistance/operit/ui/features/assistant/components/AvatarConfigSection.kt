@@ -41,6 +41,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.ui.features.assistant.viewmodel.AssistantConfigViewModel
 
 @Composable
@@ -51,7 +53,7 @@ fun AvatarConfigSection(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp, start = 4.dp)) {
+    Column(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.nano, start = AppSpacing.nano)) {
         Row(
             modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded },
             verticalAlignment = Alignment.CenterVertically,
@@ -69,10 +71,10 @@ fun AvatarConfigSection(
     if (expanded) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f)
         ) {
-            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+            Column(modifier = Modifier.padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(modifier = Modifier.weight(1f)) {
                         ModelSelector(
@@ -82,7 +84,7 @@ fun AvatarConfigSection(
                             onModelDelete = { viewModel.deleteAvatar(it) }
                         )
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                     IconButton(onClick = onImportClick) {
                         Icon(
                             imageVector = Icons.Default.AddPhotoAlternate,
@@ -92,7 +94,7 @@ fun AvatarConfigSection(
                 }
 
                 if (uiState.currentAvatarConfig != null && uiState.config != null) {
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
 
                     // Scale Slider
                     Text(

@@ -77,6 +77,8 @@ import com.ai.assistance.operit.R
 import com.ai.assistance.operit.api.chat.plan.ExecutionGraph
 import com.ai.assistance.operit.api.chat.plan.PlanParser
 import com.ai.assistance.operit.api.chat.plan.TaskNode
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.google.gson.Gson
 import java.util.regex.Pattern
 
@@ -149,22 +151,22 @@ fun PlanExecutionRenderer(
         Card(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = 2.dp),
+                .padding(horizontal = AppSpacing.nano, vertical = AppSpacing.none),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
             ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall / 4)
         ) {
             Row(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(AppSpacing.extraSmall),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano)
             ) {
                 Icon(
                     imageVector = Icons.Default.Error,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
                 )
                 Text(
                     text = "Error: ${state.error}",
@@ -178,22 +180,22 @@ fun PlanExecutionRenderer(
         Card(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = 2.dp),
+                .padding(horizontal = AppSpacing.nano, vertical = AppSpacing.none),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)
             ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall / 4)
         ) {
             Row(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(AppSpacing.extraSmall),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano)
             ) {
                 Icon(
                     imageVector = Icons.Default.HourglassEmpty,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
                 )
                 Text(
                     text = "Preparing execution plan...",
@@ -219,26 +221,26 @@ private fun ExecutionGraphDisplay(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 2.dp)
+            .padding(horizontal = AppSpacing.nano, vertical = AppSpacing.none)
             .semantics { contentDescription = planGraphDesc },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationSmall / 2),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
         ),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
     ) {
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = Modifier.padding(AppSpacing.small)) {
             // Header with icon
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                modifier = Modifier.padding(bottom = 8.dp)
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.nano),
+                modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
             ) {
                 Icon(
                     imageVector = Icons.Default.AccountTree,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + 2.dp)
                 )
             Text(
                 text = "Execution Plan",
@@ -253,8 +255,8 @@ private fun ExecutionGraphDisplay(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
-                    .clip(RoundedCornerShape(6.dp))
+                    .height(AppSizes.floatingMaxWidth - 20.dp)
+                    .clip(RoundedCornerShape(AppSpacing.small))
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(
@@ -263,7 +265,7 @@ private fun ExecutionGraphDisplay(
                             )
                         )
                     )
-                    .padding(4.dp)
+                    .padding(AppSpacing.nano)
             ) {
                 WorkflowGraph(
                     graph = graph,
@@ -274,24 +276,24 @@ private fun ExecutionGraphDisplay(
 
             // Summary section
             if (summary != null) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
                     ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                    elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.none)
                 ) {
                     Text(
                         text = summary,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontSize = 11.sp,
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier.padding(AppSpacing.extraSmall)
                         )
                     }
             } else {
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.nano))
                 Text(
                     text = "Target: ${graph.finalSummaryInstruction}",
                     style = MaterialTheme.typography.bodySmall,
@@ -304,10 +306,10 @@ private fun ExecutionGraphDisplay(
 
             // Compact logs
             if (logs.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.nano))
                 LazyColumn(
-                    modifier = Modifier.height(36.dp),
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                    modifier = Modifier.height(AppSizes.avatarMedium - 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(AppSpacing.none)
                 ) {
                     items(logs.takeLast(3)) { log ->
                         Text(

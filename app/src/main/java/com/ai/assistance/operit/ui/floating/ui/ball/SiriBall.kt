@@ -24,6 +24,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ai.assistance.operit.ui.floating.FloatContext
+import com.ai.assistance.operit.ui.theme.AppSizes
 import kotlin.math.*
 
 import androidx.compose.ui.platform.LocalContext
@@ -486,7 +487,7 @@ fun SiriBall(
                      useCenter = false,
                      topLeft = Offset(center.x - baseRadius * 0.5f, center.y - baseRadius * 0.5f),
                      size = Size(baseRadius, baseRadius),
-                     style = Stroke(width = 4.dp.toPx(), cap = StrokeCap.Round)
+                     style = Stroke(width = AppSizes.strokeThick.toPx(), cap = StrokeCap.Round)
                  )
             }
         }

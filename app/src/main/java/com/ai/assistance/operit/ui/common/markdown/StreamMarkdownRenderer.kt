@@ -52,6 +52,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.ai.assistance.operit.ui.common.displays.LatexCache
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.util.markdown.MarkdownNode
 import com.ai.assistance.operit.util.markdown.MarkdownNodeStable
 import com.ai.assistance.operit.util.markdown.MarkdownProcessorType
@@ -100,24 +102,24 @@ class DefaultXmlRenderer : XmlContentRenderer {
         Surface(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(vertical = 4.dp)
+                    .padding(vertical = AppSpacing.nano)
                     .semantics { contentDescription = xmlBlockDesc },
                 color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)
         ) {
             Column(
                     modifier =
                             Modifier.fillMaxWidth()
-                                    .padding(2.dp)
+                                    .padding(AppSpacing.nano)
                                     .border(
-                                            width = 1.dp,
+                                            width = AppSizes.strokeThin,
                                             color =
                                                     MaterialTheme.colorScheme.outline.copy(
                                                             alpha = 0.5f
                                                     ),
-                                            shape = RoundedCornerShape(2.dp)
+                                            shape = RoundedCornerShape(AppSizes.none)
                                     )
-                                    .padding(8.dp)
+                                    .padding(AppSpacing.extraSmall)
             ) {
                 Text(
                         text = "XML内容",
@@ -133,7 +135,7 @@ class DefaultXmlRenderer : XmlContentRenderer {
                                         fontFamily = FontFamily.Monospace
                                 ),
                         color = textColor,
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier.padding(top = AppSpacing.nano)
                 )
             }
         }
@@ -399,7 +401,7 @@ fun StreamMarkdownRenderer(
     }
 
     // 渲染Markdown内容 - 使用统一的Canvas渲染器
-    Surface(modifier = modifier, color = Color.Transparent, shape = RoundedCornerShape(4.dp)) {
+    Surface(modifier = modifier, color = Color.Transparent, shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)) {
         key(rendererId) {
             UnifiedMarkdownCanvas(
                 nodes = renderNodes,
@@ -660,7 +662,7 @@ fun StreamMarkdownRenderer(
     }
 
     // 渲染Markdown内容 - 使用统一的Canvas渲染器
-    Surface(modifier = modifier, color = Color.Transparent, shape = RoundedCornerShape(4.dp)) {
+    Surface(modifier = modifier, color = Color.Transparent, shape = RoundedCornerShape(AppSizes.cornerRadiusSmall)) {
         key(rendererId) {
             UnifiedMarkdownCanvas(
                 nodes = renderNodes,

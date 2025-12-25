@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 /**
  * A simple custom linear progress indicator that avoids using the problematic Material3 animation features.
@@ -25,11 +26,11 @@ fun SimpleLinearProgressIndicator(
 ) {
     Box(
         modifier = modifier
-            .height(4.dp)
+            .height(AppSizes.strokeThin)
             .fillMaxWidth()
             .background(
                 color = trackColor,
-                shape = RoundedCornerShape(2.dp)
+                shape = RoundedCornerShape(AppSizes.strokeThin)
             )
     ) {
         if (progress in 0.0f..1.0f) {
@@ -40,7 +41,7 @@ fun SimpleLinearProgressIndicator(
                     .fillMaxHeight()
                     .background(
                         color = color,
-                        shape = RoundedCornerShape(2.dp)
+                        shape = RoundedCornerShape(AppSizes.strokeThin)
                     )
             )
         } else {
@@ -52,7 +53,7 @@ fun SimpleLinearProgressIndicator(
                     .fillMaxHeight()
                     .background(
                         color = color,
-                        shape = RoundedCornerShape(2.dp)
+                        shape = RoundedCornerShape(AppSizes.strokeThin)
                     )
             )
         }

@@ -46,6 +46,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.ai.assistance.operit.ui.floating.FloatContext
 import com.ai.assistance.operit.ui.floating.FloatingMode
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import kotlinx.coroutines.withTimeoutOrNull
 
 /**
@@ -74,7 +76,7 @@ fun BottomControlBar(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 64.dp, start = 32.dp, end = 32.dp)
+                .padding(bottom = AppSizes.floatingBallSize, start = AppSizes.avatarLarge, end = AppSizes.avatarLarge)
         ) {
             // 返回按钮 - 左侧
             BackButton(
@@ -123,13 +125,13 @@ private fun BackButton(
             }
             floatContext.onModeChange(targetMode)
         },
-        modifier = modifier.size(42.dp)
+        modifier = modifier.size(AppSizes.buttonMinHeightSmall + 2.dp)
     ) {
         Icon(
             imageVector = Icons.Default.KeyboardArrowDown,
             contentDescription = "返回窗口模式",
             tint = Color.White,
-            modifier = Modifier.size(28.dp)
+            modifier = Modifier.size(AppSizes.avatarMedium - 4.dp)
         )
     }
 }
@@ -144,13 +146,13 @@ private fun MinimizeToVoiceBallButton(
 ) {
     IconButton(
         onClick = { floatContext.onModeChange(FloatingMode.VOICE_BALL) },
-        modifier = modifier.size(42.dp)
+        modifier = modifier.size(AppSizes.buttonMinHeightSmall + 2.dp)
     ) {
         Icon(
             imageVector = Icons.Default.Chat,
             contentDescription = "缩小成语音球",
             tint = Color.White,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(AppSizes.iconNormal)
         )
     }
 }
@@ -185,7 +187,7 @@ private fun MicrophoneButtonWithHints(
             isLeft = true,
             modifier = Modifier
                 .align(Alignment.CenterStart)
-                .offset(x = (-80).dp)
+                .offset(x = (-AppSizes.floatingBallSize + 16.dp).dp)
         )
 
         // 右侧取消提示
@@ -197,7 +199,7 @@ private fun MicrophoneButtonWithHints(
             isLeft = false,
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .offset(x = 80.dp)
+                .offset(x = AppSizes.floatingBallSize + 16.dp)
         )
 
         // 麦克风按钮
@@ -247,7 +249,7 @@ private fun DragHint(
                     imageVector = icon,
                     contentDescription = description,
                     tint = iconColor,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(AppSizes.iconNormal)
                 )
                 DashedLine()
             } else {
@@ -257,7 +259,7 @@ private fun DragHint(
                     imageVector = icon,
                     contentDescription = description,
                     tint = iconColor,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(AppSizes.iconNormal)
                 )
             }
         }
@@ -271,15 +273,15 @@ private fun DragHint(
 private fun DashedLine() {
     Canvas(
         modifier = Modifier
-            .width(40.dp)
-            .height(2.dp)
+            .width(AppSizes.avatarMedium - 8.dp)
+            .height(AppSizes.strokeMedium)
     ) {
         val pathEffect = PathEffect.dashPathEffect(floatArrayOf(8f, 4f), 0f)
         drawLine(
             color = Color.White.copy(alpha = 0.7f),
             start = Offset(0f, size.height / 2),
             end = Offset(size.width, size.height / 2),
-            strokeWidth = 2.dp.toPx(),
+            strokeWidth = AppSizes.strokeMedium.toPx(),
             pathEffect = pathEffect
         )
     }
@@ -307,8 +309,8 @@ private fun MicrophoneButton(
 ) {
     Box(
         modifier = modifier
-            .size(80.dp)
-            .shadow(elevation = 8.dp, shape = CircleShape)
+            .size(AppSizes.avatarExtraLarge)
+            .shadow(elevation = AppSizes.elevationSmall, shape = CircleShape)
             .clip(CircleShape)
             .background(
                 brush = Brush.radialGradient(
@@ -412,7 +414,7 @@ private fun MicrophoneButton(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "取消录音",
                     tint = Color.White,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(AppSizes.avatarMedium - 4.dp)
                 )
             }
             isRecording && isDraggingToEdit.value -> {
@@ -420,7 +422,7 @@ private fun MicrophoneButton(
                     imageVector = Icons.Default.Edit,
                     contentDescription = "编辑录音",
                     tint = Color.White,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(AppSizes.avatarMedium - 4.dp)
                 )
             }
             else -> {
@@ -428,7 +430,7 @@ private fun MicrophoneButton(
                     imageVector = Icons.Default.Mic,
                     contentDescription = "按住说话",
                     tint = Color.White,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(AppSizes.avatarMedium - 4.dp)
                 )
             }
         }

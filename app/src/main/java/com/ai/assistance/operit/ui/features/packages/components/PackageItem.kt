@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 @Composable
 fun PackageItem(
@@ -28,24 +30,24 @@ fun PackageItem(
                         )
         ) {
                 Row(
-            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            modifier = Modifier.fillMaxWidth().padding(AppSpacing.extraSmall),
             verticalAlignment = Alignment.CenterVertically
                 ) {
             // 图标
                                         Icon(
                                                 imageVector = Icons.Default.Extension,
                                                 contentDescription = null,
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(AppSizes.iconNormal),
                                                 tint = MaterialTheme.colorScheme.primary
                                         )
-            
-            Spacer(modifier = Modifier.width(8.dp))
+
+            Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
 
             // 文本内容 - 添加右侧边距防止撞到开关
                         Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 8.dp)
+                    .padding(end = AppSpacing.extraSmall)
                         ) {
                                 Text(
                                         text = name,
@@ -65,7 +67,7 @@ fun PackageItem(
                         Switch(
                                 checked = isImported,
                                 onCheckedChange = onToggleImport,
-                modifier = Modifier.size(width = 32.dp, height = 20.dp),
+                modifier = Modifier.size(width = AppSizes.iconNormal - 4.dp, height = AppSizes.buttonMinHeightSmall - 32.dp),
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = MaterialTheme.colorScheme.primary,
                     checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,

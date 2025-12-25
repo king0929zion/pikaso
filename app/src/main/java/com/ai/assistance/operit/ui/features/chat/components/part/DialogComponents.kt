@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 /**
  * 通用的内容详情弹窗
@@ -49,12 +51,12 @@ fun ContentDetailDialog(
         properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
     ) {
         Card(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+            modifier = Modifier.fillMaxWidth().padding(AppSpacing.medium),
+            shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
+            elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationMedium),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 // 标题栏
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -64,9 +66,9 @@ fun ContentDetailDialog(
                         imageVector = icon,
                         contentDescription = title,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(AppSpacing.small + 4.dp)
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(AppSpacing.small))
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleMedium,
@@ -90,20 +92,20 @@ fun ContentDetailDialog(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // 内容区域
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(min = 50.dp, max = 400.dp) // 增加最大高度
+                        .heightIn(min = AppSizes.avatarLarge, max = 400.dp) // 增加最大高度
                         .background(
                             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
                         )
-                        .padding(8.dp)
+                        .padding(AppSpacing.extraSmall)
                 ) {
                     val dialogListState = rememberLazyListState()
                     val lines = remember(content) { content.lines() }
@@ -130,7 +132,7 @@ fun ContentDetailDialog(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                 // 关闭按钮
                 Button(
@@ -160,7 +162,7 @@ fun DiffContentLazyColumn(
     LazyColumn(
         modifier = modifier,
         state = listState,
-        verticalArrangement = Arrangement.spacedBy(0.dp)
+        verticalArrangement = Arrangement.spacedBy(AppSpacing.none)
     ) {
         items(diffLines) { line ->
             val (backgroundColor, textColor) = when {
@@ -174,7 +176,7 @@ fun DiffContentLazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(backgroundColor)
-                    .padding(horizontal = 12.dp)
+                    .padding(horizontal = AppSpacing.small)
             ) {
                 Text(
                     text = line.trimEnd(),

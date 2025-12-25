@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 @Composable
 fun FullscreenInputDialog(
@@ -41,7 +43,7 @@ fun FullscreenInputDialog(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 8.dp),
+                        .padding(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.extraSmall),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -51,9 +53,9 @@ fun FullscreenInputDialog(
                             contentDescription = stringResource(R.string.workflow_close)
                         )
                     }
-                    
+
                     Text(
-                        text = "全屏输入", 
+                        text = "全屏输入",
                         style = MaterialTheme.typography.titleMedium
                     )
 
