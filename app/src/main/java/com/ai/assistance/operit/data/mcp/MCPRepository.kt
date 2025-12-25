@@ -113,32 +113,25 @@ class MCPRepository(private val context: Context) {
     private fun loadPluginsFromMCPLocalServer() {
         try {
             val pluginMetadata = mcpLocalServer.getAllPluginMetadata()
-            val mcpServers = mcpLocalServer.getAllMCPServers()
-            
-            // 构建插件列表
+
+            // 构建插件列表 - 只支持远程插件
             val servers = mutableListOf<MCPLocalServer.PluginMetadata>()
             val installedIds = mutableSetOf<String>()
-            
+
             pluginMetadata.values.forEach { metadata ->
-                // 统一检查：根据 command 判断是否需要物理安装
-                val isInstalled = if (metadata.type == "remote") {
-                    true // 远程服务器
-                } else {
-                    isPluginPhysicallyInstalled(metadata.id) // 自动处理 npx/uvx/uv
-                }
-                
+                val isInstalled = metadata.type == "remote"
+
                 if (isInstalled) {
                     installedIds.add(metadata.id)
                 }
-                
-                // 创建更新的metadata，确保isInstalled字段正确
+
                 val updatedMetadata = metadata.copy(isInstalled = isInstalled)
                 servers.add(updatedMetadata)
             }
-            
+
             _mcpServers.value = servers.sortedBy { it.name }
             _installedPluginIds.value = installedIds
-            
+
         } catch (e: Exception) {
             AppLogger.e(TAG, "从MCPLocalServer加载插件失败", e)
         }
@@ -225,33 +218,11 @@ class MCPRepository(private val context: Context) {
     }
 
     /**
-     * 检查插件是否在文件系统中物理存在
-     */
-    private fun isPluginPhysicallyInstalled(serverId: String): Boolean {
-        // 如果不需要物理安装，直接返回 true
-        if (!needsPhysicalInstallation(serverId)) {
-            return true
-        }
-        
-        val pluginDir = File(pluginsBaseDir, serverId)
-        return if (pluginDir.exists() && pluginDir.isDirectory) {
-            val hasContent = pluginDir.listFiles()?.isNotEmpty() ?: false
-            if (hasContent) checkForRequiredFiles(pluginDir) else false
-        } else false
-    }
-
-    /**
-     * 检查插件是否已安装（优先从MCPLocalServer检查）
+     * 检查插件是否已安装（仅支持远程插件）
      */
     fun isPluginInstalled(serverId: String): Boolean {
         val metadata = mcpLocalServer.getPluginMetadata(serverId)
-        return if (metadata == null) {
-            false // 没有元数据记录
-        } else if (metadata.type == "remote") {
-            true // 远程服务器配置后即为已安装
-        } else {
-            isPluginPhysicallyInstalled(serverId) // 自动处理 npx/uvx/uv
-        }
+        return metadata?.type == "remote" // 只支持远程插件
     }
 
     /**

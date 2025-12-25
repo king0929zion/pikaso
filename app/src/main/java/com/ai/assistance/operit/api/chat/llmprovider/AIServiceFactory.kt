@@ -61,7 +61,7 @@ object AIServiceFactory {
      * @param config 模型配置数据
      * @param customHeadersJson 自定义请求头的JSON字符串
      * @param modelConfigManager 模型配置管理器，用于多API Key模式
-     * @param context Android上下文，用于MNN等需要访问本地资源的提供商
+     * @param context Android上下文
      * @return 对应的AIService实现
      */
     fun createService(
@@ -99,16 +99,6 @@ object AIServiceFactory {
 
             // LM Studio使用OpenAI兼容格式
             ApiProviderType.LMSTUDIO -> OpenAIProvider(config.apiEndpoint, apiKeyProvider, config.modelName, httpClient, customHeaders, config.apiProviderType, supportsVision, enableToolCall)
-
-            // MNN本地推理引擎
-            ApiProviderType.MNN -> MNNProvider(
-                context = context,
-                modelName = config.modelName,  // 使用modelName而不是mnnModelPath
-                forwardType = config.mnnForwardType,
-                threadCount = config.mnnThreadCount,
-                providerType = config.apiProviderType,
-                enableToolCall = enableToolCall
-            )
 
             // 阿里云（通义千问）使用专用的QwenProvider
             ApiProviderType.ALIYUN -> QwenAIProvider(config.apiEndpoint, apiKeyProvider, config.modelName, httpClient, customHeaders, config.apiProviderType, supportsVision, enableToolCall)

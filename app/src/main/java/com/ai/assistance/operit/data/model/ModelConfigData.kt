@@ -24,7 +24,6 @@ enum class ApiProviderType {
         ALIPAY_BAILING, // 支付宝百灵大模型
         DOUBAO, // 豆包（火山模型）
         LMSTUDIO, // LM Studio本地模型服务
-        MNN, // MNN本地推理引擎
         PPINFRA, // 派欧云
         OTHER // 其他提供商（自定义端点）
 }
@@ -91,11 +90,6 @@ data class ModelConfigData(
                 ModelConfigDefaults.DEFAULT_ENABLE_SUMMARY_BY_MESSAGE_COUNT,
         val summaryMessageCountThreshold: Int =
                 ModelConfigDefaults.DEFAULT_SUMMARY_MESSAGE_COUNT_THRESHOLD,
-
-        // MNN特定配置
-        // 注意：MNN模型路径会根据modelName自动构建，不需要单独存储
-        val mnnForwardType: Int = 0, // 前向计算类型 (CPU/GPU等)
-        val mnnThreadCount: Int = 4, // 推理线程数
 
         // 图片处理配置
         val enableDirectImageProcessing: Boolean = false, // 是否启用直接图片处理

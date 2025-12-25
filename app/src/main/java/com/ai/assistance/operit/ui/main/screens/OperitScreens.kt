@@ -53,7 +53,6 @@ import com.ai.assistance.operit.ui.features.settings.screens.ToolPermissionSetti
 import com.ai.assistance.operit.ui.features.settings.screens.UserPreferencesGuideScreen
 import com.ai.assistance.operit.ui.features.settings.screens.UserPreferencesSettingsScreen
 import com.ai.assistance.operit.ui.features.settings.screens.CustomHeadersSettingsScreen
-import com.ai.assistance.operit.ui.features.settings.screens.MnnModelDownloadScreen
 import com.ai.assistance.operit.ui.features.settings.screens.TokenUsageStatisticsScreen
 import com.ai.assistance.operit.ui.features.token.TokenConfigWebViewScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.AppPermissionsToolScreen
@@ -61,8 +60,6 @@ import com.ai.assistance.operit.ui.features.toolbox.screens.FileManagerToolScree
 import com.ai.assistance.operit.ui.features.toolbox.screens.LogcatToolScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.ShellExecutorToolScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.StreamMarkdownDemoScreen
-import com.ai.assistance.operit.ui.features.toolbox.screens.TerminalAutoConfigToolScreen
-import com.ai.assistance.operit.ui.features.toolbox.screens.TerminalToolScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.ToolboxScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.UIDebuggerToolScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.DefaultAssistantGuideToolScreen
@@ -285,7 +282,6 @@ sealed class Screen(
             ToolboxScreen(
                     navController = navController,
                     onFileManagerSelected = { navigateTo(FileManager) },
-                    onTerminalSelected = { navigateTo(Terminal) },
                     onAppPermissionsSelected = { navigateTo(AppPermissions) },
                     onUIDebuggerSelected = { navigateTo(UIDebugger) },
                     onFFmpegToolboxSelected = { navigateTo(FFmpegToolbox) },
@@ -575,8 +571,7 @@ sealed class Screen(
                 onGestureConsumed: (Boolean) -> Unit
         ) {
             ModelConfigScreen(
-                onBackPressed = onGoBack,
-                navigateToMnnModelDownload = { navigateTo(MnnModelDownload) }
+                onBackPressed = onGoBack
             )
         }
     }
@@ -618,25 +613,6 @@ sealed class Screen(
             CustomHeadersSettingsScreen(onBackPressed = onGoBack)
         }
     }
-    
-    // MNN模型下载屏幕
-    data object MnnModelDownload :
-        Screen(parentScreen = Settings, navItem = NavItem.Settings, titleRes = R.string.screen_title_mnn_model_download) {
-        @Composable
-        override fun Content(
-            navController: NavController,
-            navigateTo: ScreenNavigationHandler,
-            updateNavItem: NavItemChangeHandler,
-            onGoBack: () -> Unit,
-            hasBackgroundImage: Boolean,
-            onLoading: (Boolean) -> Unit,
-            onError: (String) -> Unit,
-            onGestureConsumed: (Boolean) -> Unit
-        ) {
-            MnnModelDownloadScreen(onBackPressed = onGoBack)
-        }
-    }
-    
     // 新增：人设卡生成页面
     data object PersonaCardGeneration :
         Screen(parentScreen = Settings, navItem = NavItem.Settings, titleRes = R.string.screen_title_persona_card_generation) {
@@ -912,57 +888,6 @@ sealed class Screen(
                 onGestureConsumed: (Boolean) -> Unit
         ) {
             FileManagerToolScreen(navController = navController)
-        }
-    }
-
-    data object Terminal :
-            Screen(parentScreen = Toolbox, navItem = NavItem.Toolbox, titleRes = R.string.screen_title_terminal) {
-        @Composable
-        override fun Content(
-                navController: NavController,
-                navigateTo: ScreenNavigationHandler,
-                updateNavItem: NavItemChangeHandler,
-                onGoBack: () -> Unit,
-                hasBackgroundImage: Boolean,
-                onLoading: (Boolean) -> Unit,
-                onError: (String) -> Unit,
-                onGestureConsumed: (Boolean) -> Unit
-        ) {
-            TerminalToolScreen(navController = navController)
-        }
-    }
-
-    data object TerminalSetup :
-            Screen(parentScreen = Toolbox, navItem = NavItem.Toolbox, titleRes = R.string.screen_title_terminal) {
-        @Composable
-        override fun Content(
-                navController: NavController,
-                navigateTo: ScreenNavigationHandler,
-                updateNavItem: NavItemChangeHandler,
-                onGoBack: () -> Unit,
-                hasBackgroundImage: Boolean,
-                onLoading: (Boolean) -> Unit,
-                onError: (String) -> Unit,
-                onGestureConsumed: (Boolean) -> Unit
-        ) {
-            TerminalToolScreen(navController = navController, forceShowSetup = true)
-        }
-    }
-
-    data object TerminalAutoConfig :
-            Screen(parentScreen = Toolbox, navItem = NavItem.Toolbox, titleRes = R.string.screen_title_terminal_auto_config) {
-        @Composable
-        override fun Content(
-                navController: NavController,
-                navigateTo: ScreenNavigationHandler,
-                updateNavItem: NavItemChangeHandler,
-                onGoBack: () -> Unit,
-                hasBackgroundImage: Boolean,
-                onLoading: (Boolean) -> Unit,
-                onError: (String) -> Unit,
-                onGestureConsumed: (Boolean) -> Unit
-        ) {
-            TerminalAutoConfigToolScreen(navController = navController)
         }
     }
 
