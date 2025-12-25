@@ -1495,10 +1495,22 @@ open class StandardFileSystemTools(protected val context: Context) {
             )
 
             // 1. 检查源文件是否存在
-            val sourceExists = if (isLinuxEnvironment(sourceEnvironment)) {
-            } else {
-                File(sourcePath).exists()
+            // Linux environment is no longer supported after Terminal removal
+            if (isLinuxEnvironment(sourceEnvironment) || isLinuxEnvironment(destEnvironment)) {
+                return ToolResult(
+                    toolName = toolName,
+                    success = false,
+                    result = FileOperationData(
+                        operation = "copy",
+                        path = sourcePath,
+                        successful = false,
+                        details = "Linux environment is not supported. Please use Android environment only."
+                    ),
+                    error = "Linux environment is not supported"
+                )
             }
+
+            val sourceExists = File(sourcePath).exists()
 
             if (!sourceExists) {
                 return ToolResult(
@@ -1515,10 +1527,7 @@ open class StandardFileSystemTools(protected val context: Context) {
             }
 
             // 2. 检查是否是目录
-            val isDirectory = if (isLinuxEnvironment(sourceEnvironment)) {
-            } else {
-                File(sourcePath).isDirectory
-            }
+            val isDirectory = File(sourcePath).isDirectory
 
             if (isDirectory) {
                 if (!recursive) {
@@ -1546,81 +1555,23 @@ open class StandardFileSystemTools(protected val context: Context) {
             }
 
             // 3. 获取文件大小
-            val fileSize = if (isLinuxEnvironment(sourceEnvironment)) {
-            } else {
-                File(sourcePath).length()
-            }
+            val fileSize = File(sourcePath).length()
 
             // 4. 统一分块传输（10MB 缓冲）
             val BUFFER_SIZE = 10 * 1024 * 1024
             var totalBytes = 0L
 
-            if (isLinuxEnvironment(sourceEnvironment)) {
-                // 从 Linux 读取并写入
-                    toolName = toolName,
-                    success = false,
-                    result = FileOperationData(
-                        operation = "copy",
-                        path = sourcePath,
-                        successful = false,
-                        details = "Failed to read source file"
-                    ),
-                    error = "Failed to read source file"
-                )
-                val bytes = content.toByteArray(Charsets.UTF_8)
+            // 从 Android 读取并写入
+            val sourceFile = File(sourcePath)
+            sourceFile.inputStream().use { input ->
+                val buffer = ByteArray(BUFFER_SIZE)
+                val outputStream = File(finalDestPath).apply { parentFile?.mkdirs() }.outputStream()
 
-                if (isLinuxEnvironment(destEnvironment)) {
-                    if (!result.success) {
-                        return ToolResult(
-                            toolName = toolName,
-                            success = false,
-                            result = FileOperationData(
-                                operation = "copy",
-                                path = sourcePath,
-                                successful = false,
-                                details = result.message
-                            ),
-                            error = result.message
-                        )
-                    }
-                } else {
-                    File(finalDestPath).apply { parentFile?.mkdirs() }.writeBytes(bytes)
-                }
-                totalBytes = bytes.size.toLong()
-            } else {
-                // 从 Android 读取并写入
-                val sourceFile = File(sourcePath)
-                sourceFile.inputStream().use { input ->
-                    val buffer = ByteArray(BUFFER_SIZE)
-                    val outputStream = if (isLinuxEnvironment(destEnvironment)) {
-                        java.io.ByteArrayOutputStream()
-                    } else {
-                        File(finalDestPath).apply { parentFile?.mkdirs() }.outputStream()
-                    }
-
-                    outputStream.use { output ->
-                        var bytesRead: Int
-                        while (input.read(buffer).also { bytesRead = it } != -1) {
-                            output.write(buffer, 0, bytesRead)
-                            totalBytes += bytesRead
-                        }
-                    }
-
-                    if (isLinuxEnvironment(destEnvironment)) {
-                        val bytes = (outputStream as java.io.ByteArrayOutputStream).toByteArray()
-                        if (!result.success) {
-                            return ToolResult(
-                                toolName = toolName,
-                                success = false,
-                                result = FileOperationData(
-                                    operation = "copy",
-                                    path = sourcePath,
-                                    successful = false,
-                                    details = result.message
-                                ),
-                                error = result.message
-                            )
-                        }
+                outputStream.use { output ->
+                    var bytesRead: Int
+                    while (input.read(buffer).also { bytesRead = it } != -1) {
+                        output.write(buffer, 0, bytesRead)
+                        totalBytes += bytesRead
                     }
                 }
             }
@@ -1674,36 +1625,15 @@ open class StandardFileSystemTools(protected val context: Context) {
             )
 
             // 1. 创建目标目录
-            if (isLinuxEnvironment(destEnvironment)) {
-                if (!result.success) {
-                    return ToolResult(
-                        toolName = toolName,
-                        success = false,
-                        result = FileOperationData(
-                            operation = "copy",
-                            path = sourcePath,
-                            successful = false,
-                            details = "Failed to create destination directory: ${result.message}"
-                        ),
-                        error = "Failed to create destination directory: ${result.message}"
-                    )
-                }
-            } else {
-                val destDir = File(finalDestPath)
-                if (!destDir.exists()) {
-                    destDir.mkdirs()
-                }
+            val destDir = File(finalDestPath)
+            if (!destDir.exists()) {
+                destDir.mkdirs()
             }
 
             // 2. 列出源目录内容
-            val entries = if (isLinuxEnvironment(sourceEnvironment)) {
-                    Pair(fileInfo.name, fileInfo.isDirectory)
-                } ?: emptyList()
-            } else {
-                File(sourcePath).listFiles()?.map { file ->
-                    Pair(file.name, file.isDirectory)
-                } ?: emptyList()
-            }
+            val entries = File(sourcePath).listFiles()?.map { file ->
+                Pair(file.name, file.isDirectory)
+            } ?: emptyList()
 
             // 3. 递归复制每个条目
             var copiedFiles = 0
