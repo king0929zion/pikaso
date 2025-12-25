@@ -116,7 +116,7 @@ class VirtualDisplayOverlay private constructor(private val context: Context) {
     // The video region itself still uses 0.4x of the screen width; this extra width
     // is only used to host controls without changing the video size.
     private val automationPanelWidthPx: Int by lazy {
-        (AppSpacing.mediumLarge * context.resources.displayMetrics.density).roundToInt()
+        (AppSpacing.mediumLarge.value * context.resources.displayMetrics.density).roundToInt()
     }
     private val automationPanelWidthDp = AppSpacing.mediumLarge
 

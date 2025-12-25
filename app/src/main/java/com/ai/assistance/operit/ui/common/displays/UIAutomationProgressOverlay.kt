@@ -127,7 +127,7 @@ class UIAutomationProgressOverlay private constructor(private val context: Conte
                         WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
                 format = PixelFormat.TRANSLUCENT
                 gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                y = (AppSpacing.small * context.resources.displayMetrics.density).toInt()
+                y = (AppSpacing.small.value * context.resources.displayMetrics.density).toInt()
             }
 
             layoutParams = params
