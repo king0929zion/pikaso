@@ -3,7 +3,9 @@
     "allow": [
       "WebSearch",
       "Skill(document-skills:brand-guidelines)",
-      "Bash(git config:*)"
+      "Bash(git config:*)",
+      "Bash(\"C:\\\\Program Files\\\\Java\\\\jdk-21\\\\bin\\\\keytool.exe\":*)",
+      "Bash(\"C:/Program Files/Java/jdk-21/bin/keytool.exe\" -list -v -keystore \"G:/Open-AutoGLM/Operit/app/release.keystore\" -storepass Operit2025!)"
     ]
   }
 }
