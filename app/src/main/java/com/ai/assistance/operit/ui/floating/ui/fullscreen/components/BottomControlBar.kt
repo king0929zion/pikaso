@@ -187,7 +187,7 @@ private fun MicrophoneButtonWithHints(
             isLeft = true,
             modifier = Modifier
                 .align(Alignment.CenterStart)
-                .offset(x = (-AppSizes.floatingBallSize + 16.dp).dp)
+                .offset(x = -AppSizes.floatingBallSize + 16.dp)
         )
 
         // 右侧取消提示
