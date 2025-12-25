@@ -21,7 +21,7 @@ import com.ai.assistance.operit.ui.components.CustomScaffold
 @Composable
 fun MCPManageScreen(
     onNavigateBack: () -> Unit,
-    onNavigateToEdit: (Any) -> Unit = {},
+    onNavigateToEdit: (((Any) -> Unit)?)? = null,
     onNavigateToPublish: () -> Unit = {},
     viewModel: Any? = null
 ) {

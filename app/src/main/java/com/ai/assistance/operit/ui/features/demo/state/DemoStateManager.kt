@@ -285,7 +285,6 @@ suspend fun refreshPermissionsAndStatus(
     updateShizukuRunning: (Boolean) -> Unit,
     updateShizukuPermission: (Boolean) -> Unit,
     updateOperitTerminalInstalled: (Boolean) -> Unit,
-    updateOperitTerminalRunning: (Boolean) -> Unit,
     updateStoragePermission: (Boolean) -> Unit,
     updateLocationPermission: (Boolean) -> Unit,
     updateOverlayPermission: (Boolean) -> Unit,

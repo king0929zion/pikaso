@@ -203,9 +203,7 @@ sealed class Screen(
                 onNavigateBack = onGoBack,
                 onNavigateToPublish = { navigateTo(MCPPublish) },
                 onNavigateToManage = { navigateTo(MCPManage) },
-                onNavigateToDetail = { issue ->
-                    navigateTo(MCPPluginDetail(issue))
-                }
+                onNavigateToDetail = null // GitHub market functionality removed
             )
         }
     }
@@ -240,9 +238,7 @@ sealed class Screen(
         ) {
             MCPManageScreen(
                 onNavigateBack = onGoBack,
-                onNavigateToEdit = { issue ->
-                    navigateTo(MCPEditPlugin(issue))
-                },
+                onNavigateToEdit = null, // GitHub market functionality removed
                 onNavigateToPublish = { navigateTo(MCPPublish) }
             )
         }
@@ -1152,7 +1148,7 @@ sealed class Screen(
                 onGestureConsumed: (Boolean) -> Unit
         ) {
             MCPPluginDetailScreen(
-                issue = issue,
+                issueNumber = issue.number.toString(),
                 onNavigateBack = onGoBack
             )
         }
