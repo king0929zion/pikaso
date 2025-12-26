@@ -1307,7 +1307,7 @@ fun ChatHistorySelector(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeThin)
                     .clickable { showSwipeHint = false },
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
@@ -1316,9 +1316,9 @@ fun ChatHistorySelector(
                     imageVector = Icons.Default.SwapHoriz,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
                 Text(
                     text = stringResource(R.string.swipe_hint),
                     style = MaterialTheme.typography.bodySmall,
@@ -1327,13 +1327,13 @@ fun ChatHistorySelector(
             }
         }
         HorizontalDivider()
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
 
         LazyColumn(
             state = actualLazyListState,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp)
+                .padding(horizontal = AppSpacing.small + AppSizes.strokeThin)
         ) {
             items(
                 items = flatItems,
@@ -1352,18 +1352,18 @@ fun ChatHistorySelector(
                         val avatarUri by userPreferencesManager.getAiAvatarForCharacterCardFlow(
                             characterCard?.id ?: ""
                         ).collectAsState(initial = null)
-                        
+
                         val isExpanded = !collapsedCharacters.contains(item.key)
                         val stateDescription = if (isExpanded) {
                             stringResource(R.string.expanded)
                         } else {
                             stringResource(R.string.collapsed)
                         }
-                        
+
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 16.dp, bottom = 8.dp)
+                                .padding(top = AppSpacing.medium, bottom = AppSizes.strokeMedium)
                                 .semantics {
                                     contentDescription = "${item.name}, $stateDescription"
                                 }
@@ -1383,21 +1383,21 @@ fun ChatHistorySelector(
                         ) {
                             Row(
                                 modifier = Modifier
-                                    .padding(start = 8.dp)
+                                    .padding(start = AppSizes.strokeMedium)
                                     .background(
                                         color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
-                                        shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp, topStart = 4.dp, bottomStart = 4.dp)
+                                        shape = RoundedCornerShape(topEnd = AppSpacing.medium, bottomEnd = AppSpacing.medium, topStart = AppSpacing.nano, bottomStart = AppSpacing.nano)
                                     )
-                                    .padding(start = 8.dp, end = 16.dp, top = 6.dp, bottom = 6.dp),
+                                    .padding(start = AppSizes.strokeMedium, end = AppSpacing.medium, top = AppSizes.strokeThin, bottom = AppSizes.strokeThin),
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                horizontalArrangement = Arrangement.spacedBy(AppSizes.strokeMedium)
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .size(24.dp)
+                                        .size(AppSizes.iconNormal)
                                         .clip(CircleShape)
                                         .background(
-                                            if (avatarUri != null) Color.Transparent 
+                                            if (avatarUri != null) Color.Transparent
                                             else MaterialTheme.colorScheme.primaryContainer
                                         ),
                                     contentAlignment = Alignment.Center
@@ -1417,7 +1417,7 @@ fun ChatHistorySelector(
                                             contentDescription = null,
                                             tint = MaterialTheme.colorScheme.primary,
                                             modifier = Modifier
-                                                .size(16.dp)
+                                                .size(AppSpacing.extraSmall)
                                                 .clearAndSetSemantics {}
                                         )
                                     }
@@ -1430,12 +1430,12 @@ fun ChatHistorySelector(
                                     modifier = Modifier.clearAndSetSemantics {}
                                 )
                             }
-                            
+
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .height(2.dp)
-                                    .padding(horizontal = 8.dp)
+                                    .height(AppSizes.strokeMedium)
+                                    .padding(horizontal = AppSizes.strokeMedium)
                                     .background(
                                         brush = Brush.horizontalGradient(
                                             colors = listOf(
@@ -1451,8 +1451,8 @@ fun ChatHistorySelector(
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier
-                                    .padding(end = 16.dp)
-                                    .size(24.dp)
+                                    .padding(end = AppSpacing.medium)
+                                    .size(AppSizes.iconNormal)
                                     .clearAndSetSemantics {}
                             )
                         }
