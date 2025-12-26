@@ -237,7 +237,7 @@ fun ChatArea(
                         Column(modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = AppSpacing.none)
-                            .offset(y = -AppSizes.large)) {
+                            .offset(y = -AppSpacing.large)) {
                             // 加载指示器放在左侧，与标签对齐
                             Box(modifier = Modifier.padding(start = AppSpacing.medium)) {
                                 LoadingDotsIndicator(aiTextColor)
