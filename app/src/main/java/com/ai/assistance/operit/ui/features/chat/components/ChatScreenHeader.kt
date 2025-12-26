@@ -50,6 +50,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.text.font.FontWeight
 import com.ai.assistance.operit.data.preferences.CharacterCardManager
 import com.ai.assistance.operit.data.preferences.UserPreferencesManager
+import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -126,12 +128,12 @@ fun ChatScreenHeader(
                                     if (chatHeaderTransparent) Color.Transparent
                                     else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
                             )
-                            .padding(horizontal = 16.dp, vertical = 6.dp)
+                            .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.nano)
     ) {
         // 左侧：聊天历史按钮
         Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.small),
                 modifier = Modifier.align(Alignment.CenterStart)
         ) {
             ChatHeader(
@@ -151,7 +153,7 @@ fun ChatScreenHeader(
         // 右侧：统计信息，水平排列
         Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.small),
                 modifier = Modifier.align(Alignment.CenterEnd)
         ) {
             // 统计信息
@@ -185,15 +187,15 @@ fun ChatScreenHeader(
                 Box(
                     modifier = Modifier
                         .clickable { setShowDetailedStats(!showDetailedStats) }
-                        .size(32.dp)
-                        .padding(3.dp),
+                        .size(AppSizes.iconLarge),
+                        .padding(AppSpacing.nano),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(
                         progress = animatedProgress,
                         modifier = Modifier.fillMaxSize(),
                         color = progressColor,
-                        strokeWidth = 3.dp,
+                        strokeWidth = AppSizes.strokeMedium,
                         trackColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                     )
                     Text(

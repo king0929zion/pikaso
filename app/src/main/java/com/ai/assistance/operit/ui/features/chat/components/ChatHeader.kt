@@ -71,7 +71,7 @@ fun ChatHeader(
                                                         else
                                                                 MaterialTheme.colorScheme.onSurface
                                                                         .copy(alpha = 0.7f),
-                                        modifier = Modifier.size(AppSpacing.small + 4.dp)
+                                        modifier = Modifier.size(AppSizes.iconSmall)
                                 )
                         }
                 }
@@ -103,7 +103,7 @@ fun ChatHeader(
                                                         else
                                                                 MaterialTheme.colorScheme.onSurface
                                                                         .copy(alpha = 0.7f),
-                                        modifier = Modifier.size(AppSpacing.small + 4.dp)
+                                        modifier = Modifier.size(AppSizes.iconSmall)
                                 )
                         }
                 }
@@ -122,7 +122,7 @@ fun ChatHeader(
                         Box(
                                 modifier =
                                         Modifier
-                                                .size(AppSpacing.small + 4.dp)
+                                                .size(AppSizes.iconSmall)
                                                 .clip(CircleShape)
                                                 .background(MaterialTheme.colorScheme.secondaryContainer),
                                 contentAlignment = Alignment.Center
