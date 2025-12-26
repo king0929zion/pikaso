@@ -154,7 +154,7 @@ fun AiMessageComposable(
                     backgroundColor = backgroundColor,
                     onLinkClick = rememberedOnLinkClick,
                     xmlRenderer = xmlRenderer,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = AppSpacing.medium),
                     state = rendererState
                 )
             } else {
@@ -166,7 +166,7 @@ fun AiMessageComposable(
                     backgroundColor = backgroundColor,
                     onLinkClick = rememberedOnLinkClick,
                     xmlRenderer = xmlRenderer,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = AppSpacing.medium),
                     state = rendererState
                 )
             }

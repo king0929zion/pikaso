@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.ai.assistance.operit.R
 import com.ai.assistance.operit.data.model.ChatMessage
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 /**
  * A composable function for rendering memory summarization messages as a compact divider. This
@@ -42,7 +44,7 @@ fun SummaryMessageComposable(
     val haptic = LocalHapticFeedback.current
 
     // 创建一个不占空间的分隔符
-    Box(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+    Box(modifier = Modifier.fillMaxWidth().padding(vertical = AppSizes.strokeThin)) {
         Row(
             modifier =
                 Modifier.fillMaxWidth()
@@ -50,14 +52,14 @@ fun SummaryMessageComposable(
                         // 仅在启用弹窗时才允许点击
                         if (enableDialog) showSummaryDialog = true
                     }
-                    .padding(vertical = 2.dp),
+                    .padding(vertical = AppSizes.strokeThin / 2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                thickness = 1.dp
+                thickness = AppSizes.strokeThin
             )
 
             Box(
@@ -66,9 +68,9 @@ fun SummaryMessageComposable(
                         color =
                             MaterialTheme.colorScheme.primary
                                 .copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
                     )
-                    .padding(horizontal = 8.dp, vertical = 2.dp)
+                    .padding(horizontal = AppSpacing.extraSmall, vertical = AppSizes.strokeThin / 2)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -78,9 +80,9 @@ fun SummaryMessageComposable(
                         imageVector = Icons.Default.Info,
                         contentDescription = context.getString(R.string.history_dialog_summary),
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(14.dp)
+                        modifier = Modifier.size(AppSpacing.extraSmall + 2.dp)
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(AppSizes.strokeThin))
                     Text(
                         text = context.getString(R.string.history_dialog_summary),
                         color = MaterialTheme.colorScheme.primary,
@@ -93,7 +95,7 @@ fun SummaryMessageComposable(
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                thickness = 1.dp
+                thickness = AppSizes.strokeThin
             )
         }
     }
@@ -102,11 +104,11 @@ fun SummaryMessageComposable(
     if (showSummaryDialog && enableDialog) {
         Dialog(onDismissRequest = { showSummaryDialog = false }) {
             Surface(
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 color = MaterialTheme.colorScheme.surface,
-                shadowElevation = 8.dp
+                shadowElevation = AppSizes.elevationMedium * 2
             ) {
-                Column(modifier = Modifier.padding(16.dp).widthIn(max = 480.dp)) {
+                Column(modifier = Modifier.padding(AppSpacing.medium).widthIn(max = AppSizes.floatingMaxWidth * 12)) {
                     Text(
                         text = context.getString(R.string.history_dialog_summary),
                         style = MaterialTheme.typography.titleMedium,
@@ -114,7 +116,7 @@ fun SummaryMessageComposable(
                         fontWeight = FontWeight.Bold,
                         modifier =
                             Modifier.fillMaxWidth()
-                                .padding(bottom = 8.dp),
+                                .padding(bottom = AppSpacing.extraSmall),
                         textAlign = TextAlign.Center
                     )
 
@@ -123,8 +125,8 @@ fun SummaryMessageComposable(
                             MaterialTheme.colorScheme.primary.copy(
                                 alpha = 0.2f
                             ),
-                        thickness = 1.dp,
-                        modifier = Modifier.padding(bottom = 12.dp)
+                        thickness = AppSizes.strokeThin,
+                        modifier = Modifier.padding(bottom = AppSpacing.small)
                     )
 
                     // 添加滚动功能到摘要内容
@@ -142,11 +144,11 @@ fun SummaryMessageComposable(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                     Row(
                         modifier = Modifier.align(Alignment.End),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(AppSizes.strokeMedium)
                     ) {
                         TextButton(
                             onClick = {

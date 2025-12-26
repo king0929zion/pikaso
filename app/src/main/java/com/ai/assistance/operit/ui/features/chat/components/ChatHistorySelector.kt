@@ -106,6 +106,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.rememberAsyncImagePainter
 import com.ai.assistance.operit.data.preferences.UserPreferencesManager
+import com.ai.assistance.operit.ui.theme.AppSizes
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 private data class GroupTarget(
     val groupName: String,
@@ -363,42 +365,42 @@ fun ChatHistorySelector(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
+                    .padding(AppSpacing.medium),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
+                    defaultElevation = AppSizes.elevationMedium
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(vertical = 16.dp),
+                    modifier = Modifier.padding(vertical = AppSpacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = stringResource(R.string.chat_history),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 24.dp)
+                        modifier = Modifier.padding(horizontal = AppSpacing.large)
                     )
 
                     Text(
                         text = chatItemActionTarget!!.title,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp),
+                        modifier = Modifier.padding(horizontal = AppSpacing.large, vertical = AppSizes.strokeThin),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                     
                     // 编辑选项
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeThin)
                             .clip(MaterialTheme.shapes.medium)
                             .semantics {
                                 contentDescription = context.getString(R.string.edit_title)
@@ -412,7 +414,7 @@ fun ChatHistorySelector(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(AppSpacing.medium),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
@@ -420,24 +422,24 @@ fun ChatHistorySelector(
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier
-                                    .size(24.dp)
+                                    .size(AppSizes.iconNormal)
                                     .clearAndSetSemantics {}
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(AppSpacing.medium))
                             Text(
-                                stringResource(R.string.edit_title), 
+                                stringResource(R.string.edit_title),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.clearAndSetSemantics {}
                             )
                         }
                     }
-                    
+
                     // 上移选项
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeThin)
                             .clip(MaterialTheme.shapes.medium)
                             .semantics {
                                 contentDescription = context.getString(R.string.move_up)
@@ -461,7 +463,7 @@ fun ChatHistorySelector(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(AppSpacing.medium),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
@@ -469,10 +471,10 @@ fun ChatHistorySelector(
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier
-                                    .size(24.dp)
+                                    .size(AppSizes.iconNormal)
                                     .clearAndSetSemantics {}
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(AppSpacing.medium))
                             Text(
                                 stringResource(R.string.move_up), 
                                 style = MaterialTheme.typography.bodyLarge,
@@ -486,7 +488,7 @@ fun ChatHistorySelector(
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeThin)
                             .clip(MaterialTheme.shapes.medium)
                             .semantics {
                                 contentDescription = context.getString(R.string.move_down)
@@ -510,7 +512,7 @@ fun ChatHistorySelector(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(AppSpacing.medium),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
@@ -518,24 +520,24 @@ fun ChatHistorySelector(
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier
-                                    .size(24.dp)
+                                    .size(AppSizes.iconNormal)
                                     .clearAndSetSemantics {}
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(AppSpacing.medium))
                             Text(
-                                stringResource(R.string.move_down), 
+                                stringResource(R.string.move_down),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.clearAndSetSemantics {}
                             )
                         }
                     }
-                    
+
                     // 删除选项
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeThin)
                             .clip(MaterialTheme.shapes.medium)
                             .semantics {
                                 contentDescription = context.getString(R.string.delete)
@@ -549,7 +551,7 @@ fun ChatHistorySelector(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(AppSpacing.medium),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
@@ -557,24 +559,24 @@ fun ChatHistorySelector(
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.error,
                                 modifier = Modifier
-                                    .size(24.dp)
+                                    .size(AppSizes.iconNormal)
                                     .clearAndSetSemantics {}
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(AppSpacing.medium))
                             Text(
-                                stringResource(R.string.delete), 
+                                stringResource(R.string.delete),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onErrorContainer,
                                 modifier = Modifier.clearAndSetSemantics {}
                             )
                         }
                     }
-                    
-                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
 
                     TextButton(
                         onClick = { chatItemActionTarget = null },
-                        modifier = Modifier.align(Alignment.End).padding(horizontal = 16.dp)
+                        modifier = Modifier.align(Alignment.End).padding(horizontal = AppSpacing.medium)
                     ) {
                         Text(stringResource(R.string.cancel))
                     }
@@ -588,34 +590,34 @@ fun ChatHistorySelector(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
+                    .padding(AppSpacing.medium),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
+                    defaultElevation = AppSizes.elevationMedium
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(vertical = 16.dp),
+                    modifier = Modifier.padding(vertical = AppSpacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = stringResource(R.string.manage_group),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 24.dp)
+                        modifier = Modifier.padding(horizontal = AppSpacing.large)
                     )
 
                     Text(
                         text = groupActionTarget!!.groupName,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
+                        modifier = Modifier.padding(horizontal = AppSpacing.large, vertical = AppSizes.strokeThin)
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                     
                     // 重命名选项
                     Surface(
