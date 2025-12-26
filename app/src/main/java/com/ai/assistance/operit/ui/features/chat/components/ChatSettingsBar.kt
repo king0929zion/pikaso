@@ -366,8 +366,8 @@ fun ChatSettingsBar(
                             )
 
                             HorizontalDivider(
-                                modifier = Modifier.padding(vertical = 2.dp),
-                                thickness = 0.5.dp,
+                                modifier = Modifier.padding(vertical = AppSizes.strokeThin / 2),
+                                thickness = AppSizes.strokeThin / 4,
                                     color =
                                             MaterialTheme.colorScheme.onSurfaceVariant.copy(
                                                     alpha = 0.2f
@@ -430,8 +430,8 @@ fun ChatSettingsBar(
                             )
 
                             HorizontalDivider(
-                                modifier = Modifier.padding(vertical = 2.dp),
-                                thickness = 0.5.dp,
+                                modifier = Modifier.padding(vertical = AppSizes.strokeThin / 2),
+                                thickness = AppSizes.strokeThin / 4,
                                     color =
                                             MaterialTheme.colorScheme.onSurfaceVariant.copy(
                                                     alpha = 0.2f
@@ -484,8 +484,8 @@ fun ChatSettingsBar(
                             )
 
                             HorizontalDivider(
-                                modifier = Modifier.padding(vertical = 2.dp),
-                                thickness = 0.5.dp,
+                                modifier = Modifier.padding(vertical = AppSizes.strokeThin / 2),
+                                thickness = AppSizes.strokeThin / 4,
                                     color =
                                             MaterialTheme.colorScheme.onSurfaceVariant.copy(
                                                     alpha = 0.2f
@@ -558,8 +558,8 @@ fun ChatSettingsBar(
                             )
 
                             HorizontalDivider(
-                                modifier = Modifier.padding(vertical = 2.dp),
-                                thickness = 0.5.dp,
+                                modifier = Modifier.padding(vertical = AppSizes.strokeThin / 2),
+                                thickness = AppSizes.strokeThin / 4,
                                     color =
                                             MaterialTheme.colorScheme.onSurfaceVariant.copy(
                                                     alpha = 0.2f
@@ -631,14 +631,14 @@ fun ChatSettingsBar(
                 Box(
                         modifier =
                                 Modifier.padding(
-                                        top = 0.dp,
-                                        bottom = 76.dp,
-                                        end = 40.dp
+                                        top = AppSizes.none,
+                                        bottom = AppSizes.buttonMinHeight * 1.5f + AppSpacing.small,
+                                        end = AppSpacing.extraLarge + AppSpacing.small
                                 ) // 调整边距，使其显示在左侧
                 ) {
                     Card(
-                        modifier = Modifier.width(220.dp),
-                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.width(AppSizes.floatingMaxWidth - AppSpacing.extraLarge - AppSpacing.small),
+                        shape = RoundedCornerShape(AppSizes.cornerRadiusSmall),
                             colors =
                                     CardDefaults.cardColors(
                                             containerColor =
@@ -646,10 +646,10 @@ fun ChatSettingsBar(
                                                             alpha = 0.95f
                                                     )
                         ),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                        elevation = CardDefaults.cardElevation(defaultElevation = AppSizes.elevationMedium)
                     ) {
                         Column(
-                            modifier = Modifier.padding(16.dp),
+                            modifier = Modifier.padding(AppSpacing.medium),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
@@ -660,7 +660,7 @@ fun ChatSettingsBar(
                                 textAlign = TextAlign.Center
                             )
 
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
 
                             Text(
                                 text = infoPopupContent!!.second,
@@ -695,8 +695,8 @@ private fun SettingItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(36.dp)
-            .padding(horizontal = 12.dp)
+            .height(AppSpacing.extraSmall * 3)
+            .padding(horizontal = AppSizes.strokeMedium + AppSpacing.nano)
             .semantics {
                 contentDescription = title
             }
@@ -713,16 +713,16 @@ private fun SettingItem(
             contentDescription = null,
             tint = iconTint,
             modifier = Modifier
-                .size(16.dp)
+                .size(AppSpacing.extraSmall)
                 .clearAndSetSemantics {}
         )
         // 详情按钮（左侧）
-        IconButton(onClick = onInfoClick, modifier = Modifier.size(24.dp)) {
+        IconButton(onClick = onInfoClick, modifier = Modifier.size(AppSizes.iconNormal)) {
             Icon(
                 imageVector = Icons.Outlined.Info,
                 contentDescription = stringResource(R.string.details),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(AppSpacing.extraSmall)
             )
         }
         // 文本
@@ -733,7 +733,7 @@ private fun SettingItem(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = AppSizes.strokeMedium)
                 .clearAndSetSemantics {}
         )
         // 开关
@@ -777,21 +777,21 @@ private fun SettingSliderItem(
         textValue = df.format(value)
     }
 
-    Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)) {
+    Column(modifier = Modifier.padding(horizontal = AppSizes.strokeMedium + AppSpacing.nano, vertical = AppSizes.strokeThin)) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
             Icon(
                 imageVector = icon,
                 contentDescription = label,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(AppSpacing.extraSmall)
             )
             // Info button
-            IconButton(onClick = onInfoClick, modifier = Modifier.size(24.dp)) {
+            IconButton(onClick = onInfoClick, modifier = Modifier.size(AppSizes.iconNormal)) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
                     contentDescription = stringResource(R.string.details),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall)
                 )
             }
             Text(
@@ -799,7 +799,7 @@ private fun SettingSliderItem(
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Normal,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(horizontal = 8.dp)
+                modifier = Modifier.padding(horizontal = AppSizes.strokeMedium)
             )
             Spacer(modifier = Modifier.weight(1f))
             BasicTextField(
@@ -811,12 +811,12 @@ private fun SettingSliderItem(
                     }
                 },
                 modifier = Modifier
-                    .width(50.dp)
+                    .width(AppSpacing.extraSmall * 3 + AppSpacing.nano)
                     .background(
                         MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                        RoundedCornerShape(4.dp)
+                        RoundedCornerShape(AppSizes.strokeThin)
                     )
-                    .padding(horizontal = 4.dp, vertical = 2.dp),
+                    .padding(horizontal = AppSizes.strokeThin, vertical = AppSizes.strokeThin / 2),
                 textStyle = TextStyle(
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
@@ -839,14 +839,14 @@ private fun SettingSliderItem(
             )
 
             // Here is the fix for alignment
-            Box(modifier = Modifier.width(24.dp), contentAlignment = Alignment.CenterStart) {
+            Box(modifier = Modifier.width(AppSizes.iconNormal), contentAlignment = Alignment.CenterStart) {
                 if (unitText != null) {
                     Text(
                         text = unitText,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(start = 2.dp)
+                        modifier = Modifier.padding(start = AppSpacing.nano / 2)
                     )
                 }
             }
@@ -861,7 +861,7 @@ private fun SettingSliderItem(
             onValueChangeFinished = { onValueChange(sliderValue) },
             valueRange = valueRange,
             steps = steps,
-            modifier = Modifier.fillMaxWidth().height(24.dp)
+            modifier = Modifier.fillMaxWidth().height(AppSpacing.extraSmall + AppSpacing.small)
         )
     }
 }
@@ -886,12 +886,12 @@ private fun MemorySelectorItem(
         Row(
                 modifier =
                         Modifier.fillMaxWidth()
-                .height(36.dp)
+                .height(AppSpacing.extraSmall * 3)
                 .semantics {
                     contentDescription = accessibilityDesc
                 }
                 .clickable { onExpandedChange(!expanded) }
-                .padding(horizontal = 12.dp),
+                .padding(horizontal = AppSizes.strokeMedium + AppSpacing.nano),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -899,20 +899,20 @@ private fun MemorySelectorItem(
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(AppSpacing.extraSmall)
                     .clearAndSetSemantics {}
             )
             // 详情按钮（左侧）
-            IconButton(onClick = onInfoClick, modifier = Modifier.size(24.dp)) {
+            IconButton(onClick = onInfoClick, modifier = Modifier.size(AppSizes.iconNormal)) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
                     contentDescription = stringResource(R.string.details),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall)
                 )
             }
             Row(
-                    modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
+                    modifier = Modifier.weight(1f).padding(horizontal = AppSizes.strokeMedium),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -922,7 +922,7 @@ private fun MemorySelectorItem(
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.clearAndSetSemantics {}
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
                 Text(
                     text = currentProfile?.name ?: stringResource(R.string.not_selected),
                     fontSize = 13.sp,
@@ -938,7 +938,7 @@ private fun MemorySelectorItem(
                             if (expanded) Icons.Filled.KeyboardArrowUp
                             else Icons.Filled.KeyboardArrowDown,
                 contentDescription = null,
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
         }
@@ -950,14 +950,14 @@ private fun MemorySelectorItem(
                                     .background(
                                             MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
                                     )
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .padding(horizontal = AppSizes.strokeMedium + AppSpacing.nano, vertical = AppSizes.strokeMedium)
             ) {
                 preferenceProfiles.forEach { profile ->
                     val isSelected = profile.id == currentProfileId
                     Box(
                             modifier =
                                     Modifier.fillMaxWidth()
-                            .clip(RoundedCornerShape(4.dp))
+                            .clip(RoundedCornerShape(AppSizes.strokeThin))
                                             .background(
                                                     if (isSelected)
                                                             MaterialTheme.colorScheme.primary.copy(
@@ -969,7 +969,7 @@ private fun MemorySelectorItem(
                                 onSelectMemory(profile.id)
                                 onExpandedChange(false)
                             }
-                            .padding(horizontal = 8.dp, vertical = 6.dp)
+                            .padding(horizontal = AppSizes.strokeMedium, vertical = AppSizes.strokeMedium + AppSpacing.nano)
                     ) {
                         Text(
                             text = profile.name,
@@ -983,13 +983,13 @@ private fun MemorySelectorItem(
                         )
                     }
                     if (preferenceProfiles.last() != profile) {
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(AppSizes.strokeThin))
                     }
                 }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(30.dp)
+                        .height(AppSpacing.extraSmall * 2 + AppSpacing.nano)
                         .clickable(onClick = onManageClick),
                     contentAlignment = Alignment.Center
                 ) {
@@ -1033,12 +1033,12 @@ private fun ModelSelectorItem(
         Row(
                 modifier =
                         Modifier.fillMaxWidth()
-                .height(36.dp)
+                .height(AppSpacing.extraSmall * 3)
                 .semantics {
                     contentDescription = accessibilityDesc
                 }
                 .clickable { onExpandedChange(!expanded) }
-                .padding(horizontal = 12.dp),
+                .padding(horizontal = AppSizes.strokeMedium + AppSpacing.nano),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -1046,20 +1046,20 @@ private fun ModelSelectorItem(
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(AppSpacing.extraSmall)
                     .clearAndSetSemantics {}
             )
             // 详情按钮（左侧）
-            IconButton(onClick = onInfoClick, modifier = Modifier.size(24.dp)) {
+            IconButton(onClick = onInfoClick, modifier = Modifier.size(AppSizes.iconNormal)) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
                     contentDescription = stringResource(R.string.details),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall)
                 )
             }
             Row(
-                modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
+                modifier = Modifier.weight(1f).padding(horizontal = AppSizes.strokeMedium),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -1069,7 +1069,7 @@ private fun ModelSelectorItem(
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.clearAndSetSemantics {}
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
                 // 只显示选中的模型名称
                 currentConfig?.let { config ->
                     val validIndex = getValidModelIndex(config.modelName, currentConfigMapping.modelIndex)
@@ -1098,7 +1098,7 @@ private fun ModelSelectorItem(
             Icon(
                 imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                 contentDescription = null,
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
         }
@@ -1110,7 +1110,7 @@ private fun ModelSelectorItem(
                                     .background(
                                             MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
                                     )
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .padding(horizontal = AppSizes.strokeMedium + AppSpacing.nano, vertical = AppSizes.strokeMedium)
             ) {
                 configSummaries.forEach { config ->
                     val isSelected = config.id == currentConfigMapping.configId
@@ -1122,7 +1122,7 @@ private fun ModelSelectorItem(
                         Box(
                                 modifier =
                                         Modifier.fillMaxWidth()
-                                .clip(RoundedCornerShape(4.dp))
+                                .clip(RoundedCornerShape(AppSizes.strokeThin))
                                                 .background(
                                                         if (isSelected)
                                                                 MaterialTheme.colorScheme.primary.copy(
@@ -1145,7 +1145,7 @@ private fun ModelSelectorItem(
                                         }
                                     }
                                 }
-                                .padding(horizontal = 8.dp, vertical = 6.dp)
+                                .padding(horizontal = AppSizes.strokeMedium, vertical = AppSizes.strokeMedium + AppSpacing.nano)
                         ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -1163,7 +1163,7 @@ private fun ModelSelectorItem(
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier.weight(1f)
                                 )
-                                Spacer(modifier = Modifier.width(4.dp))
+                                Spacer(modifier = Modifier.width(AppSizes.strokeThin))
                                 if (hasMultipleModels) {
                                     Text(
                                         text = "${modelList.size}个模型",
@@ -1174,7 +1174,7 @@ private fun ModelSelectorItem(
                                     Icon(
                                         imageVector = if (isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                                         contentDescription = null,
-                                        modifier = Modifier.size(16.dp),
+                                        modifier = Modifier.size(AppSpacing.extraSmall),
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 } else {
@@ -1196,7 +1196,7 @@ private fun ModelSelectorItem(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-                                    .padding(start = 16.dp, top = 4.dp, bottom = 4.dp, end = 8.dp)
+                                    .padding(start = AppSpacing.medium, top = AppSizes.strokeThin, bottom = AppSizes.strokeThin, end = AppSizes.strokeMedium)
                             ) {
                                 // 计算有效索引一次，避免重复计算
                                 val validIndex = getValidModelIndex(config.modelName, currentConfigMapping.modelIndex)
@@ -1205,7 +1205,7 @@ private fun ModelSelectorItem(
                                     Box(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .clip(RoundedCornerShape(4.dp))
+                                            .clip(RoundedCornerShape(AppSizes.strokeThin))
                                             .background(
                                                 if (isModelSelected)
                                                     MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
@@ -1220,7 +1220,7 @@ private fun ModelSelectorItem(
                                                     expandedConfigId = null
                                                 }
                                             }
-                                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                                            .padding(horizontal = AppSizes.strokeMedium, vertical = AppSizes.strokeThin)
                                     ) {
                                         Text(
                                             text = modelName,
@@ -1235,20 +1235,20 @@ private fun ModelSelectorItem(
                                         )
                                     }
                                     if (index < modelList.size - 1) {
-                                        Spacer(modifier = Modifier.height(2.dp))
+                                        Spacer(modifier = Modifier.height(AppSpacing.nano / 2))
                                     }
                                 }
                             }
                         }
                     }
                     if (configSummaries.last() != config) {
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(AppSizes.strokeThin))
                     }
                 }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(30.dp)
+                        .height(AppSpacing.extraSmall * 2 + AppSpacing.nano)
                         .clickable(onClick = onManageClick),
                     contentAlignment = Alignment.Center
                 ) {
@@ -1279,12 +1279,12 @@ private fun PromptSelectorItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(36.dp)
+                .height(AppSpacing.extraSmall * 3)
                 .semantics {
                     contentDescription = accessibilityDesc
                 }
                 .clickable { onExpandedChange(!expanded) }
-                .padding(horizontal = 12.dp),
+                .padding(horizontal = AppSizes.strokeMedium + AppSpacing.nano),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -1292,20 +1292,20 @@ private fun PromptSelectorItem(
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(AppSpacing.extraSmall)
                     .clearAndSetSemantics {}
             )
             // 详情按钮（左侧）
-            IconButton(onClick = onInfoClick, modifier = Modifier.size(24.dp)) {
+            IconButton(onClick = onInfoClick, modifier = Modifier.size(AppSizes.iconNormal)) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
                     contentDescription = stringResource(R.string.details),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall)
                 )
             }
             Row(
-                modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
+                modifier = Modifier.weight(1f).padding(horizontal = AppSizes.strokeMedium),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -1315,7 +1315,7 @@ private fun PromptSelectorItem(
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.clearAndSetSemantics {}
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
                 Text(
                     text = currentProfile?.name ?: stringResource(R.string.not_selected),
                     fontSize = 13.sp,
@@ -1330,7 +1330,7 @@ private fun PromptSelectorItem(
                 imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(AppSpacing.extraSmall + AppSpacing.nano)
                     .clearAndSetSemantics {},
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
@@ -1343,14 +1343,14 @@ private fun PromptSelectorItem(
                                     .background(
                                             MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
                                     )
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .padding(horizontal = AppSizes.strokeMedium + AppSpacing.nano, vertical = AppSizes.strokeMedium)
             ) {
                 promptProfiles.forEach { profile ->
                     val isSelected = profile.id == currentProfileId
                     Box(
                             modifier =
                                     Modifier.fillMaxWidth()
-                            .clip(RoundedCornerShape(4.dp))
+                            .clip(RoundedCornerShape(AppSizes.strokeThin))
                                             .background(
                                                     if (isSelected)
                                                             MaterialTheme.colorScheme.primary.copy(
@@ -1362,7 +1362,7 @@ private fun PromptSelectorItem(
                                 onSelectPrompt(profile.id)
                                 onExpandedChange(false)
                             }
-                            .padding(horizontal = 8.dp, vertical = 6.dp)
+                            .padding(horizontal = AppSizes.strokeMedium, vertical = AppSizes.strokeMedium + AppSpacing.nano)
                     ) {
                         Text(
                             text = profile.name,
@@ -1376,13 +1376,13 @@ private fun PromptSelectorItem(
                         )
                     }
                     if (promptProfiles.last() != profile) {
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(AppSizes.strokeThin))
                     }
                 }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(30.dp)
+                        .height(AppSpacing.extraSmall * 2 + AppSpacing.nano)
                         .clickable(onClick = onManageClick),
                     contentAlignment = Alignment.Center
                 ) {
@@ -1404,15 +1404,15 @@ private fun ActionSettingItem(
     Row(
         modifier =
                 Modifier.fillMaxWidth()
-                        .height(36.dp)
-                        .padding(vertical = 2.dp)
-                        .padding(horizontal = 3.dp)
+                        .height(AppSpacing.extraSmall * 3)
+                        .padding(vertical = AppSizes.strokeThin / 2)
+                        .padding(horizontal = AppSpacing.nano - 1.dp)
                         .border(
-                                1.dp,
+                                AppSizes.strokeThin,
                                 MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                                RoundedCornerShape(8.dp)
+                                RoundedCornerShape(AppSizes.cornerRadiusSmall)
                         )
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(AppSizes.cornerRadiusSmall))
                         .semantics {
                             contentDescription = title
                         }
@@ -1420,7 +1420,7 @@ private fun ActionSettingItem(
                             onClick = onClick,
                             role = Role.Button
                         )
-                        .padding(horizontal = 8.dp),
+                        .padding(horizontal = AppSizes.strokeMedium),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // 图标
@@ -1429,16 +1429,16 @@ private fun ActionSettingItem(
             contentDescription = null, 
             tint = iconTint, 
             modifier = Modifier
-                .size(16.dp)
+                .size(AppSpacing.extraSmall)
                 .clearAndSetSemantics {}
         )
         // 详情按钮（左侧）
-        IconButton(onClick = onInfoClick, modifier = Modifier.size(24.dp)) {
+        IconButton(onClick = onInfoClick, modifier = Modifier.size(AppSizes.iconNormal)) {
             Icon(
                 imageVector = Icons.Outlined.Info,
                 contentDescription = stringResource(R.string.details),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(AppSpacing.extraSmall)
             )
         }
         // 文本
@@ -1449,7 +1449,7 @@ private fun ActionSettingItem(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = AppSizes.strokeMedium)
                 .clearAndSetSemantics {}
         )
     }
