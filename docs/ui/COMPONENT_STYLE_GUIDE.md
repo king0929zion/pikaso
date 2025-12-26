@@ -560,7 +560,7 @@ AppSizes.buttonMinHeight                 // 48dp buttons
 
 ## Design Token Migration Progress
 
-> **Status**: 🟡 In Progress (60+ components updated)
+> **Status**: ✅ Cursor Style Complete (70+ components updated)
 >
 > **Goal**: Replace all hardcoded dp values and colors with design tokens
 
@@ -572,14 +572,19 @@ AppSizes.buttonMinHeight                 // 48dp buttons
 | **Settings** | ✅ Complete | 12 files |
 | **Floating Window** | ✅ Complete | 8 files |
 | **Common UI** | ✅ Complete | 10 files |
-| **Chat Components** | 🟡 In Progress | 12 of 30+ files |
+| **Chat Components** | ✅ Complete | Cursor style complete |
 | **Bubble Style** | ✅ Complete | 2 files |
-| **Cursor Style** | 🟡 In Progress | 1 of 4 files |
+| **Cursor Style** | ✅ Complete | All 4 files updated |
 | **Demo** | ✅ Complete | 8 files |
 | **Workspace** | ✅ Complete | 3 files |
 | **Wizard** | ✅ Complete | 2 files |
 
-### Recently Updated Files (2025-12-25)
+### Recently Updated Files (2025-12-26)
+
+#### Cursor Style ✅
+- `AiMessageComposable.kt` - Padding (horizontal = 16.dp → AppSpacing.medium)
+- `SummaryMessageComposable.kt` - Comprehensive update of all dp values
+- `ChatHistorySelector.kt` - Complete update including all dialogs, LazyColumn items, icons
 
 #### Chat Components ✅
 - `AttachmentPreview.kt` - Spacing, sizes, corner radius updated
@@ -597,12 +602,11 @@ AppSizes.buttonMinHeight                 // 48dp buttons
 - `BubbleAiMessageComposable.kt` - Already using design tokens ✅
 - `UserMessageComposable.kt` - Dialogs and spacing updated ✅
 
-#### Still Need Update
-- `AiMessageComposable.kt` (cursor style) - Needs padding and spacing updates
-- `CursorStyleChatMessage.kt` - Routing file (no changes needed)
-- `BubbleStyleChatMessage.kt` - Routing file (no changes needed)
-- `SummaryMessageComposable.kt` - Needs review
-- `ChatHistorySelector.kt` - Needs review
+#### Cursor Style ✅ Complete
+- `AiMessageComposable.kt` - Padding updated ✅
+- `SummaryMessageComposable.kt` - Complete update ✅
+- `UserMessageComposable.kt` - Already using design tokens ✅
+- `ChatHistorySelector.kt` - Complete update ✅
 
 ### Standard Mapping Reference
 
