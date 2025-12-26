@@ -187,7 +187,7 @@ fun ChatScreenHeader(
                 Box(
                     modifier = Modifier
                         .clickable { setShowDetailedStats(!showDetailedStats) }
-                        .size(AppSizes.iconLarge),
+                        .size(AppSizes.iconLarge)
                         .padding(AppSpacing.nano),
                     contentAlignment = Alignment.Center
                 ) {
