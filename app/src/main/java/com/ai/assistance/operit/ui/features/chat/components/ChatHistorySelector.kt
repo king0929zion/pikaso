@@ -623,7 +623,7 @@ fun ChatHistorySelector(
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeThin)
                             .clip(MaterialTheme.shapes.medium)
                             .semantics {
                                 contentDescription = context.getString(R.string.rename_group)
@@ -637,7 +637,7 @@ fun ChatHistorySelector(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(AppSpacing.medium),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
@@ -645,24 +645,24 @@ fun ChatHistorySelector(
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier
-                                    .size(24.dp)
+                                    .size(AppSizes.iconNormal)
                                     .clearAndSetSemantics {}
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(AppSpacing.medium))
                             Text(
-                                stringResource(R.string.rename_group), 
+                                stringResource(R.string.rename_group),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.clearAndSetSemantics {}
                             )
                         }
                     }
-                    
+
                     // 删除选项
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .padding(horizontal = AppSpacing.medium, vertical = AppSizes.strokeThin)
                             .clip(MaterialTheme.shapes.medium)
                             .semantics {
                                 contentDescription = context.getString(R.string.delete_group)
@@ -676,7 +676,7 @@ fun ChatHistorySelector(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(AppSpacing.medium),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
@@ -684,24 +684,24 @@ fun ChatHistorySelector(
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.error,
                                 modifier = Modifier
-                                    .size(24.dp)
+                                    .size(AppSizes.iconNormal)
                                     .clearAndSetSemantics {}
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(AppSpacing.medium))
                             Text(
-                                stringResource(R.string.delete_group), 
+                                stringResource(R.string.delete_group),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onErrorContainer,
                                 modifier = Modifier.clearAndSetSemantics {}
                             )
                         }
                     }
-                    
-                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
 
                     TextButton(
                         onClick = { groupActionTarget = null },
-                        modifier = Modifier.align(Alignment.End).padding(horizontal = 16.dp)
+                        modifier = Modifier.align(Alignment.End).padding(horizontal = AppSpacing.medium)
                     ) {
                         Text(stringResource(R.string.cancel))
                     }
@@ -748,27 +748,27 @@ fun ChatHistorySelector(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
+                    .padding(AppSpacing.medium),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
+                    defaultElevation = AppSizes.elevationMedium
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(AppSpacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(48.dp)
+                        modifier = Modifier.size(AppSpacing.extraLarge + AppSpacing.extraSmall)
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
 
                     Text(
                         text = stringResource(R.string.confirm_delete_group),
@@ -782,9 +782,9 @@ fun ChatHistorySelector(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                     HorizontalDivider()
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                     Text(
                         text = stringResource(R.string.choose_delete_method),
@@ -792,12 +792,12 @@ fun ChatHistorySelector(
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                     TextButton(
                         onClick = {
                             onDeleteGroup(
-                                groupToDelete!!.groupName, 
+                                groupToDelete!!.groupName,
                                 true,
                                 groupToDelete!!.characterCardName
                             )
@@ -814,9 +814,9 @@ fun ChatHistorySelector(
                             Icon(
                                 imageVector = Icons.Outlined.Delete,
                                 contentDescription = null,
-                                modifier = Modifier.size(24.dp)
+                                modifier = Modifier.size(AppSizes.iconNormal)
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(AppSpacing.medium))
                             Column {
                                 Text(
                                     text = stringResource(R.string.delete_group_and_chats),
@@ -832,12 +832,12 @@ fun ChatHistorySelector(
             }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
 
                     TextButton(
                         onClick = {
                             onDeleteGroup(
-                                groupToDelete!!.groupName, 
+                                groupToDelete!!.groupName,
                                 false,
                                 groupToDelete!!.characterCardName
                             )
@@ -853,9 +853,9 @@ fun ChatHistorySelector(
                             Icon(
                                 imageVector = Icons.Default.Folder,
                                 contentDescription = null,
-                                modifier = Modifier.size(24.dp)
+                                modifier = Modifier.size(AppSizes.iconNormal)
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(AppSpacing.medium))
                             Column {
                                 Text(
                                     text = stringResource(R.string.delete_group_only),
@@ -870,7 +870,7 @@ fun ChatHistorySelector(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                     TextButton(
                         onClick = { groupToDelete = null },
@@ -902,7 +902,7 @@ fun ChatHistorySelector(
                 onDismissRequest = { chatToEdit = null },
                 title = { Text(stringResource(R.string.edit_title)) },
                 text = {
-                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.small)) {
                         OutlinedTextField(
                                 value = newTitle,
                                 onValueChange = { newTitle = it },
@@ -986,32 +986,32 @@ fun ChatHistorySelector(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
+                    .padding(AppSpacing.medium),
+                shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
+                    defaultElevation = AppSizes.elevationMedium
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(AppSpacing.medium)
                 ) {
                     Text(
                         text = "聊天记录设置",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 16.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.medium)
                     )
-                    
+
                     Text(
                         text = "显示模式",
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSizes.strokeMedium)
                     )
-                    
+
                     listOf(
                         Triple(
                             ChatHistoryDisplayMode.BY_CHARACTER_CARD,
@@ -1033,7 +1033,7 @@ fun ChatHistorySelector(
                         Surface(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 4.dp)
+                                .padding(vertical = AppSizes.strokeThin)
                                 .clip(MaterialTheme.shapes.medium)
                                 .clickable {
                                     onDisplayModeChange(mode)
@@ -1048,12 +1048,12 @@ fun ChatHistorySelector(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(12.dp),
+                                    .padding(AppSpacing.small),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Column(
                                     modifier = Modifier.weight(1f),
-                                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                                    verticalArrangement = Arrangement.spacedBy(AppSizes.strokeThin)
                                 ) {
                                     Text(
                                         text = title,
@@ -1071,17 +1071,17 @@ fun ChatHistorySelector(
                                         Icons.Default.Check,
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.padding(start = 8.dp)
+                                        modifier = Modifier.padding(start = AppSizes.strokeMedium)
                                     )
                                 }
                             }
                         }
                     }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
                     HorizontalDivider()
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
+
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1095,13 +1095,13 @@ fun ChatHistorySelector(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(12.dp),
+                                .padding(AppSpacing.small),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(2.dp)
+                                verticalArrangement = Arrangement.spacedBy(AppSizes.strokeThin)
                             ) {
                                 Text(
                                     text = stringResource(R.string.history_auto_switch_character),
@@ -1116,13 +1116,13 @@ fun ChatHistorySelector(
                             Switch(
                                 checked = autoSwitchCharacterCard,
                                 onCheckedChange = onAutoSwitchCharacterCardChange,
-                                modifier = Modifier.padding(start = 8.dp)
+                                modifier = Modifier.padding(start = AppSizes.strokeMedium)
                             )
                         }
                     }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
+
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
+
                     TextButton(
                         onClick = { showSettingsDialog = false },
                         modifier = Modifier.align(Alignment.End)
@@ -1177,7 +1177,7 @@ fun ChatHistorySelector(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.medium)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -1190,41 +1190,41 @@ fun ChatHistorySelector(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(AppSizes.strokeThin),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(
                         onClick = { showSearchBox = !showSearchBox },
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSpacing.extraLarge + AppSpacing.extraSmall)
                     ) {
                         Icon(
                             if (showSearchBox) Icons.Default.SearchOff else Icons.Default.Search,
                             contentDescription = stringResource(R.string.search),
                             tint = if (showSearchBox) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
                         )
                     }
                     IconButton(
                         onClick = { showSettingsDialog = true },
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(AppSpacing.extraLarge + AppSpacing.extraSmall)
                     ) {
                         Icon(
                             Icons.Default.Tune,
                             contentDescription = "设置",
                             tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
                         )
                     }
                     if (onBack != null) {
                         IconButton(
                             onClick = onBack,
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(AppSpacing.extraLarge + AppSpacing.extraSmall)
                         ) {
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "返回",
                                 tint = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
                             )
                         }
                     }
@@ -1236,12 +1236,12 @@ fun ChatHistorySelector(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                .padding(horizontal = AppSpacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AppSizes.strokeMedium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { 
+                onClick = {
                     // 根据当前显示模式确定新对话的角色卡归属
                     val characterCardName = when (historyDisplayMode) {
                         ChatHistoryDisplayMode.BY_CHARACTER_CARD -> activeCharacterCard?.name
@@ -1253,18 +1253,18 @@ fun ChatHistorySelector(
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(Icons.Default.Add, contentDescription = stringResource(R.string.new_chat))
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
                 Text(stringResource(R.string.new_chat))
             }
             IconButton(
                 onClick = { showNewGroupDialog = true },
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(AppSpacing.extraLarge + AppSpacing.extraSmall)
             ) {
                 Icon(
                     Icons.Default.AddCircleOutline,
                     contentDescription = stringResource(R.string.new_group),
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(AppSizes.iconNormal)
                 )
             }
         }
@@ -1279,8 +1279,8 @@ fun ChatHistorySelector(
                 leadingIcon = {
                     if (isSearching) {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            strokeWidth = 2.dp
+                            modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano),
+                            strokeWidth = AppSizes.strokeMedium
                         )
                     } else {
                         Icon(Icons.Default.Search, contentDescription = null)
@@ -1295,12 +1295,12 @@ fun ChatHistorySelector(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = AppSpacing.medium),
                 singleLine = true
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(AppSizes.strokeMedium))
         var showSwipeHint by rememberLocal(key = "show_swipe_hint", defaultValue = true)
 
         if (showSwipeHint) {
