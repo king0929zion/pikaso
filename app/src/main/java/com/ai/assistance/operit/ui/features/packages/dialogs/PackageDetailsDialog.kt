@@ -77,11 +77,11 @@ fun PackageDetailsDialog(
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            modifier = Modifier.fillMaxWidth().heightIn(max = AppSizes.floatingMaxWidth + 400.dp),
+            modifier = Modifier.fillMaxWidth().heightIn(max = AppSizes.floatingMaxWidth + AppSizes.messageBubbleMaxWidth + AppSizes.messageBubbleMaxWidth + AppSizes.floatingMaxWidth),
             shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
             color = MaterialTheme.colorScheme.surface
         ) {
-            Column(modifier = Modifier.fillMaxWidth().padding(AppSizes.floatingBallSize + 4.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(AppSizes.floatingBallSize + AppSpacing.nano)) {
                 // 紧凑的标题栏
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -90,7 +90,7 @@ fun PackageDetailsDialog(
                     Icon(
                         imageVector = Icons.Default.Extension,
                         contentDescription = null,
-                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 12.dp),
+                        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - AppSpacing.small),
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
@@ -205,7 +205,7 @@ fun PackageDetailsDialog(
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = null,
-                                modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
                             )
                             Spacer(modifier = Modifier.width(AppSizes.none))
                             Text("删除")
@@ -264,7 +264,7 @@ private fun ToolCard(
                 
                 FilledTonalButton(
                     onClick = { onExecute(tool) },
-                    modifier = Modifier.height(AppSizes.buttonMinHeightSmall - 8.dp),
+                    modifier = Modifier.height(AppSizes.buttonMinHeightSmall - AppSpacing.extraSmall),
                     contentPadding = PaddingValues(horizontal = AppSpacing.extraSmall)
                 ) {
                     Text(

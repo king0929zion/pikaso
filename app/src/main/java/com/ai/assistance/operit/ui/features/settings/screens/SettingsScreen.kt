@@ -278,7 +278,7 @@ private fun SettingsSection(
                                 imageVector = icon,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(AppSpacing.small + 6.dp)
+                                modifier = Modifier.size(AppSpacing.small + AppSpacing.small + AppSpacing.nano)
                         )
                         Spacer(modifier = Modifier.width(AppSpacing.nano))
                         Text(
@@ -323,7 +323,7 @@ private fun CompactSettingsItem(
                         imageVector = icon,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(AppSpacing.small + 8.dp)
+                        modifier = Modifier.size(AppSpacing.small + AppSpacing.extraSmall)
                 )
 
                 Spacer(modifier = Modifier.width(AppSpacing.small))

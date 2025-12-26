@@ -277,7 +277,7 @@ private fun FolderTreeItem(
                     },
                     contentDescription = if (isExpanded) context.getString(R.string.collapse) else context.getString(R.string.expand),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
                 )
             }
         } else {
@@ -291,7 +291,7 @@ private fun FolderTreeItem(
         Checkbox(
             checked = isSelected,
             onCheckedChange = { onToggleSelection() },
-            modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
+            modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
         )
 
         Spacer(modifier = Modifier.width(AppSizes.strokeMedium))
@@ -309,7 +309,7 @@ private fun FolderTreeItem(
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant
             },
-            modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
+            modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
         )
 
         Spacer(modifier = Modifier.width(AppSizes.strokeMedium))

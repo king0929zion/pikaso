@@ -47,7 +47,7 @@ fun ErrorDialog(
                 Box(
                         modifier =
                                 Modifier.padding(vertical = AppSpacing.extraSmall)
-                                        .heightIn(max = 400.dp) // 最大高度
+                                        .heightIn(max = AppSizes.floatingMaxWidth) // 最大高度
                                         .verticalScroll(scrollState) // 添加垂直滚动功能
                 ) {
                     Text(

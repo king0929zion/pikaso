@@ -148,7 +148,7 @@ private fun CharacterCardAssignOption(
             Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
             Box(
                 modifier = Modifier
-                    .size(AppSizes.buttonMinHeightSmall + 4.dp)
+                    .size(AppSizes.buttonMinHeightSmall + AppSpacing.nano)
                     .clip(CircleShape)
                     .background(
                         if (!avatarUri.isNullOrBlank()) Color.Unspecified

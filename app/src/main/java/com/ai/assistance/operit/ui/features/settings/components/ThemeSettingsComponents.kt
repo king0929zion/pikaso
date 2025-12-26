@@ -146,7 +146,7 @@ fun ColorSelectionItem(
 @Composable
 fun PresetColorItem(color: Color, onSelect: (Color) -> Unit) {
     Box(
-        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - 8.dp)
+        modifier = Modifier.size(AppSizes.buttonMinHeightSmall - AppSpacing.extraSmall)
             .clip(CircleShape)
             .background(color)
             .border(AppSizes.strokeThin, Color.White, CircleShape)

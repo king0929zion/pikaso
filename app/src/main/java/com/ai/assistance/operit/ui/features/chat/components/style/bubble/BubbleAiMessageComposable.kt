@@ -218,7 +218,7 @@ fun BubbleAiMessageComposable(
                 // Message bubble
                 Surface(
                     modifier = Modifier
-                        .defaultMinSize(minHeight = AppSizes.buttonMinHeight - 4.dp),
+                        .defaultMinSize(minHeight = AppSizes.buttonMinHeight - AppSpacing.nano),
                     shape = RoundedCornerShape(AppSizes.cornerRadiusSmall, AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusExtraLarge),
                     color = backgroundColor,
                     tonalElevation = AppSizes.elevationSmall

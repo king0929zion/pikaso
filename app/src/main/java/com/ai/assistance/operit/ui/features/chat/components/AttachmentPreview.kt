@@ -98,7 +98,7 @@ private fun AttachmentItem(attachment: AttachmentInfo, onRemove: () -> Unit, onI
                     imageVector = icon,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
             )
 
             Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
@@ -129,7 +129,7 @@ private fun AttachmentItem(attachment: AttachmentInfo, onRemove: () -> Unit, onI
                         imageVector = Icons.Default.Close,
                         contentDescription = "Remove attachment",
                         tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
+                        modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
                 )
             }
         }

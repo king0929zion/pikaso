@@ -31,7 +31,7 @@ fun AvatarPicker(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(AppSpacing.nano + 2.dp)
+        verticalArrangement = Arrangement.spacedBy(AppSpacing.nano + AppSpacing.micro)
     ) {
         Text(
             text = label,
@@ -41,7 +41,7 @@ fun AvatarPicker(
 
         Box(
             modifier = Modifier
-                .size(AppSizes.avatarExtraLarge - 2.dp)
+                .size(AppSizes.avatarExtraLarge - AppSpacing.micro)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .clickable(onClick = onAvatarChange)
@@ -59,7 +59,7 @@ fun AvatarPicker(
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "Default Avatar",
-                    modifier = Modifier.size(AppSizes.avatarLarge - 1.dp),
+                    modifier = Modifier.size(AppSizes.avatarLarge - AppSizes.strokeThin),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -69,7 +69,7 @@ fun AvatarPicker(
             onClick = onAvatarReset,
             enabled = avatarUri != null,
             modifier = Modifier
-                .height(AppSizes.buttonMinHeightSmall - 8.dp)
+                .height(AppSizes.buttonMinHeightSmall - AppSpacing.extraSmall)
                 .padding(horizontal = AppSpacing.nano)
         ) {
             Icon(

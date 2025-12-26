@@ -67,7 +67,7 @@ fun PackageItem(
                         Switch(
                                 checked = isImported,
                                 onCheckedChange = onToggleImport,
-                modifier = Modifier.size(width = AppSizes.iconNormal - 4.dp, height = AppSizes.buttonMinHeightSmall - 32.dp),
+                modifier = Modifier.size(width = AppSizes.iconNormal - AppSpacing.nano, height = AppSizes.buttonMinHeightSmall - AppSpacing.large),
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = MaterialTheme.colorScheme.primary,
                     checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,

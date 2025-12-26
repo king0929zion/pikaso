@@ -406,7 +406,7 @@ fun ChatScreenContent(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = stringResource(R.string.exit_multi_select),
                                 tint = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.size(AppSpacing.extraSmall + 4.dp)
+                                modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.nano)
                             )
                         }
                         
@@ -576,7 +576,7 @@ fun ChatScreenContent(
                 Icon(
                     imageVector = Icons.Filled.Stop,
                     contentDescription = stringResource(R.string.stop_reading),
-                    modifier = Modifier.size(AppSpacing.extraSmall + 8.dp)
+                    modifier = Modifier.size(AppSpacing.extraSmall + AppSpacing.extraSmall)
                 )
             }
         }
