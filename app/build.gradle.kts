@@ -102,18 +102,32 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        // Suppress common Kotlin compiler warnings
+        freeCompilerArgs += listOf(
+            "-Xopt-in=kotlin.RequiresOptIn",
+            "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+            "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-Xopt-in=kotlin.ExperimentalUnsignedTypes",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xopt-in=kotlinx.coroutines.FlowPreview",
+            // Suppress additional warnings
+            "-Xno-call-assertions",
+            "-Xno-param-assertions"
+        )
     }
     buildFeatures {
         compose = true
         aidl = true
         buildConfig = true
     }
-    
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
-        
+
         jniLibs {
             useLegacyPackaging = true
         }
@@ -123,7 +137,7 @@ android {
             excludes += "LICENSE-EPL-1.0.txt"
             excludes += "/META-INF/LICENSE-EDL-1.0.txt"
             excludes += "LICENSE-EDL-1.0.txt"
-            
+
             // Resolve merge conflicts for document libraries
             excludes += "/META-INF/DEPENDENCIES"
             excludes += "/META-INF/LICENSE"
@@ -420,4 +434,11 @@ dependencies {
     // Glance for Widgets (Compose for Widgets)
     implementation(libs.glance.appwidget)
     implementation(libs.glance.material3)
+}
+
+// Suppress Kotlin compiler warnings
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    compilerOptions {
+        freeCompilerArgs.add("-nowarn")
+    }
 }

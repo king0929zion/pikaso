@@ -109,7 +109,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: Pikaso-APK-*
-          merge-multiple: false
+          merge-multiple: true
           path: ./artifacts
 
       - name: Create Release
@@ -143,7 +143,7 @@ jobs:
 
             ---
             🤖 Generated with [Claude Code](https://claude.com/claude-code)
-          files: ./artifacts/*.apk
+          files: ./artifacts/**/*.apk
           draft: false
           prerelease: false
         env:
