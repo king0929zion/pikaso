@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import androidx.compose.ui.res.stringResource
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
