@@ -699,11 +699,11 @@ class MainActivity : ComponentActivity() {
         return refreshRate
     }
 
-    /** 清理临时文件目录 删除Download/Operit/cleanOnExit目录中的所有文件 */
+    /** 清理临时文件目录 删除Download/Pikaso/cleanOnExit目录中的所有文件 */
     private fun cleanTemporaryFiles() {
         lifecycleScope.launch {
             try {
-                val tempDir = java.io.File("/sdcard/Download/Operit/cleanOnExit")
+                val tempDir = java.io.File("/sdcard/Download/Pikaso/cleanOnExit")
                 if (tempDir.exists() && tempDir.isDirectory) {
                     // 确保.nomedia文件存在
                     val noMediaFile = java.io.File(tempDir, ".nomedia")

@@ -2,7 +2,7 @@
 
 ## 1. 简介
 
-本文档旨在为开发者提供关于如何编写、构建和维护自动化脚本的全面指南。**这些脚本旨在作为强大的工具，被导入到 Operit AI 智能助手中，并由 AI 根据用户指令进行调用，从而极大地扩展应用的功能边界。** 这些脚本基于一个强大的框架，提供了一系列用于设备控制、UI自动化、网络请求和文件操作的工具。
+本文档旨在为开发者提供关于如何编写、构建和维护自动化脚本的全面指南。**这些脚本旨在作为强大的工具，被导入到 Pikaso AI 智能助手中，并由 AI 根据用户指令进行调用，从而极大地扩展应用的功能边界。** 这些脚本基于一个强大的框架，提供了一系列用于设备控制、UI自动化、网络请求和文件操作的工具。
 
 脚本主要使用 **TypeScript** 编写，以利用其强大的类型系统，但也可以使用原生 JavaScript (ES6+)。
 
@@ -14,21 +14,21 @@
 
 **对于需要更好开发体验的开发者，我们提供了两种不同的开发路径：**
 
-*   **路径 A：在 Operit 项目中直接开发 (推荐)**: 这是最简单快捷的方式，无需手动配置环境。适合想要快速编写脚本并贡献给主项目的开发者。
+*   **路径 A：在 Pikaso 项目中直接开发 (推荐)**: 这是最简单快捷的方式，无需手动配置环境。适合想要快速编写脚本并贡献给主项目的开发者。
 *   **路径 B：创建独立的脚本项目 (高级)**: 如果你想创建和维护自己的脚本仓库，或者将脚本作为独立产品发布，可以选择此路径。这需要你手动完成项目的搭建。
 
 ---
 
-### 路径 A: 在 Operit 项目中直接开发 (5分钟快速入门)
+### 路径 A: 在 Pikaso 项目中直接开发 (5分钟快速入门)
 
-这是最推荐的入门方式。Operit 项目本身就是一个功能完备的开发环境，让你免于手动配置。
+这是最推荐的入门方式。Pikaso 项目本身就是一个功能完备的开发环境，让你免于手动配置。
 
 **步骤 1: 克隆项目并安装依赖**
 
 ```bash
 # 克隆项目仓库
-git clone https://github.com/AAswordman/Operit.git
-cd Operit
+git clone https://github.com/AAswordman/Pikaso.git
+cd Pikaso
 
 # 安装项目依赖 (主要是TypeScript编译器)
 npm install
@@ -79,7 +79,7 @@ const MyFirstScript = (function () {
 
     // 这是你工具的具体实现
     async function hello_world(params: { name: string }): Promise<any> {
-        const message = `你好, ${params.name}! 欢迎来到 Operit 脚本世界。`;
+        const message = `你好, ${params.name}! 欢迎来到 Pikaso 脚本世界。`;
         await Tools.System.sleep(500); // 调用内置API
         return { success: true, message: message };
     }
@@ -265,7 +265,7 @@ my-script-project/
 
 ### 3.1. 脚本元数据 (METADATA)
 
-每个脚本文件的开头都必须包含一个 `/* METADATA ... */` 注释块。这个块定义了脚本的名称、描述、分类以及最重要的——它所提供的工具。**这块元数据是 Operit AI 理解并调用你所编写功能的唯一途径。AI 会解析 `METADATA` 中的信息，将其作为可用的“工具”呈现给大语言模型（LLM），从而实现通过自然语言指令来执行复杂脚本的能力。**
+每个脚本文件的开头都必须包含一个 `/* METADATA ... */` 注释块。这个块定义了脚本的名称、描述、分类以及最重要的——它所提供的工具。**这块元数据是 Pikaso AI 理解并调用你所编写功能的唯一途径。AI 会解析 `METADATA` 中的信息，将其作为可用的“工具”呈现给大语言模型（LLM），从而实现通过自然语言指令来执行复杂脚本的能力。**
 
 **示例：** (`examples/automatic_bilibili_assistant.ts`)
 
@@ -552,7 +552,7 @@ TypeScript 脚本 (`.ts`) 需要被编译成 JavaScript (`.js`)才能被执行�
 
 - **Android SDK (ADB)**: 确保你已经安装了 Android SDK，并且 `adb` 命令在你的系统路径中可用。
 - **安卓设备**: 连接一台开启了“USB调试”功能的安卓设备，并已授权电脑进行调试。
-- **Operit 应用程序**: 确保 `com.ai.assistance.operit` 应用程序已经安装并在目标设备上运行。脚本的执行依赖于应用内的 `ScriptExecutionReceiver` 来接收和处理来自 ADB 的命令。
+- **Pikaso 应用程序**: 确保 `com.ai.assistance.operit` 应用程序已经安装并在目标设备上运行。脚本的执行依赖于应用内的 `ScriptExecutionReceiver` 来接收和处理来自 ADB 的命令。
 
 ### 9.2. 执行脚本函数
 

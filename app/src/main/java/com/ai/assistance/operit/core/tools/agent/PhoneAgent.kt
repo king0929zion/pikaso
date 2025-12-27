@@ -680,7 +680,7 @@ class ActionHandler(
             val quality = prefs.getScreenshotQuality().coerceIn(50, 100)
             val scalePercent = prefs.getScreenshotScalePercent().coerceIn(50, 100)
 
-            val screenshotDir = File("/sdcard/Download/Operit/cleanOnExit")
+            val screenshotDir = File("/sdcard/Download/Pikaso/cleanOnExit")
             if (!screenshotDir.exists()) {
                 screenshotDir.mkdirs()
             }
@@ -831,7 +831,7 @@ class ActionHandler(
                             } else {
                                 // 桌面应用未安装：从 assets 拷贝 desktop.apk 到下载目录，并通过系统安装界面安装
                                 try {
-                                    val destDir = File("/sdcard/Download/Operit")
+                                    val destDir = File("/sdcard/Download/Pikaso")
                                     if (!destDir.exists()) {
                                         destDir.mkdirs()
                                     }

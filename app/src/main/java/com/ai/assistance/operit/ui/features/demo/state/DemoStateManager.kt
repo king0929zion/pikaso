@@ -417,8 +417,8 @@ val operitTerminalSampleCommands =
                 "echo 'Hello OperitTerminal'" to "打印Hello OperitTerminal",
                 "ls -la" to "列出文件和目录",
                 "whoami" to "显示当前用户",
-                "apt update" to "更新包管理器 (Ubuntu)",
-                "apt install python3" to "安装Python (Ubuntu)",
+                "pkg update" to "更新包管理器",
+                "pkg install python" to "安装Python",
                 "ip addr" to "显示网络信息"
         )
 

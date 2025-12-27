@@ -59,15 +59,11 @@ object SystemToolPrompts {
     // ==================== 文件系统工具 ====================
     val fileSystemTools = SystemToolPromptCategory(
         categoryName = "File System Tools",
-        categoryHeader = """**IMPORTANT: All file tools support an optional 'environment' parameter:**
-- environment (optional): Specifies the execution environment. Values: "android" (default, Android file system) or "linux" (local Ubuntu 24 terminal environment via proot). 
-  - When "linux" is specified, paths use Linux format (e.g., "/home/user/file.txt", "/etc/hosts") and operate in the local Ubuntu 24 environment.
-
-**SSH Remote File System:**""",
+        categoryHeader = """**SSH Remote File System:**""",
         tools = listOf(
             ToolPrompt(
                 name = "ssh_login",
-                description = "Login to a remote SSH server. After logging in, all file tools with environment=\"linux\" will use this SSH connection instead of the local Ubuntu 24 terminal.",
+                description = "Login to a remote SSH server. After logging in, all file tools will use this SSH connection.",
                 parametersStructured = listOf(
                     ToolParameterSchema(name = "host", type = "string", description = "SSH server address", required = true),
                     ToolParameterSchema(name = "port", type = "integer", description = "optional", required = false, default = "22"),
@@ -78,7 +74,7 @@ object SystemToolPrompts {
             ),
             ToolPrompt(
                 name = "ssh_exit",
-                description = "Logout from the SSH connection. After logout, file tools will resume using the local Ubuntu 24 terminal.",
+                description = "Logout from the SSH connection. After logout, file tools will resume using local file system.",
                 parametersStructured = listOf()
             ),
             ToolPrompt(
@@ -267,15 +263,11 @@ object SystemToolPrompts {
     
     val fileSystemToolsCn = SystemToolPromptCategory(
         categoryName = "文件系统工具",
-        categoryHeader = """**重要：所有文件工具都支持可选的'environment'参数：**
-- environment（可选）：指定执行环境。取值："android"（默认，Android文件系统）或"linux"（本地Ubuntu 24终端环境，通过proot实现）。
-  - 当指定"linux"时，路径使用Linux格式（如"/home/user/file.txt"、"/etc/hosts"），在本地Ubuntu 24环境中操作。
-
-**SSH远程文件系统：**""",
+        categoryHeader = """**SSH远程文件系统：**""",
         tools = listOf(
             ToolPrompt(
                 name = "ssh_login",
-                description = "登录远程SSH服务器。登录后，所有environment=\"linux\"的文件工具都将使用此SSH连接，而不是本地Ubuntu 24终端。",
+                description = "登录远程SSH服务器。登录后，所有文件工具都将使用此SSH连接。",
                 parametersStructured = listOf(
                     ToolParameterSchema(name = "host", type = "string", description = "SSH服务器地址", required = true),
                     ToolParameterSchema(name = "port", type = "integer", description = "可选", required = false, default = "22"),
@@ -286,7 +278,7 @@ object SystemToolPrompts {
             ),
             ToolPrompt(
                 name = "ssh_exit",
-                description = "退出SSH连接。退出后，文件工具将恢复使用本地Ubuntu 24终端。",
+                description = "退出SSH连接。退出后，文件工具将恢复使用本地文件系统。",
                 parametersStructured = listOf()
             ),
             ToolPrompt(

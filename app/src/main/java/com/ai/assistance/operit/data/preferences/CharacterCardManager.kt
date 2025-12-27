@@ -47,9 +47,9 @@ class CharacterCardManager private constructor(private val context: Context) {
         // 默认角色卡ID
         const val DEFAULT_CHARACTER_CARD_ID = "default_character"
 
-        const val DEFAULT_CHARACTER_NAME = "Operit"
+        const val DEFAULT_CHARACTER_NAME = "Pikaso"
         const val DEFAULT_CHARACTER_DESCRIPTION = "系统默认的角色卡配置"
-        const val DEFAULT_CHARACTER_SETTING = "你是Operit，一个全能AI助手，旨在解决用户提出的任何任务。"
+        const val DEFAULT_CHARACTER_SETTING = "你是Pikaso，一个全能AI助手，旨在解决用户提出的任何任务。"
         const val DEFAULT_CHARACTER_OTHER_CONTENT = "保持有帮助的语气，并清楚地传达限制。"
         
         @Volatile

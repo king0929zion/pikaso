@@ -1,5 +1,5 @@
  <resources>
-    <string name="app_name">Operit AI</string>
+    <string name="app_name">Pikaso AI</string>
     <string name="accessibility_service_description">Used to obtain the UI hierarchy, providing faster interface analysis capabilities for AI assistants, and does not collect or store any personal information.</string>
     
     <!-- Model selector related -->
@@ -143,7 +143,7 @@
     <string name="danger_zone">Danger Zone</string>
     <string name="chat_statistics">Chat Statistics</string>
     <string name="current_chats">Currently %1$d chat records</string>
-    <string name="backup_location">Backup files are saved in the \"Download/Operit\" folder</string>
+    <string name="backup_location">Backup files are saved in the \"Download/Pikaso\" folder</string>
     <string name="faq_backup">FAQ</string>
     
     <!-- Terminal Screen -->
@@ -163,13 +163,13 @@
     <string name="termux_setup_guide">Termux Setup Guide</string>
     
     <!-- About Screen -->
-    <string name="about_title">About Operit AI</string>
+    <string name="about_title">About Pikaso AI</string>
     <string name="about_version">Version: %1$s</string>
-    <string name="about_description">Operit AI is an intelligent assistant application that helps users use their devices more efficiently, providing interface analysis, chat conversations, and more.</string>
+    <string name="about_description">Pikaso AI is an intelligent assistant application that helps users use their devices more efficiently, providing interface analysis, chat conversations, and more.</string>
     <string name="about_developer">Developer: &lt;a href="https://github.com/AAswordman"&gt;AAswordman&lt;/a&gt;</string>
     <string name="about_contact">Contact Us: aaswordsman@foxmail.com</string>
-    <string name="about_website">&lt;a href="https://github.com/AAswordman/Operit"&gt;GitHub: https://github.com/AAswordman/Operit&lt;/a&gt;</string>
-    <string name="about_copyright">© 2023-2024 Operit. All Rights Reserved.</string>
+    <string name="about_website">&lt;a href="https://github.com/AAswordman/Pikaso"&gt;GitHub: https://github.com/AAswordman/Pikaso&lt;/a&gt;</string>
+    <string name="about_copyright">© 2023-2024 Pikaso. All Rights Reserved.</string>
     <string name="star_on_github">Star on GitHub</string>
     <string name="update_log">Update Log</string>
     <string name="app_logo_description">App Logo</string>
@@ -190,7 +190,7 @@
     <string name="network_status">Network Status: %1$s</string>
     
     <!-- Configuration Screen -->
-    <string name="config_title">Operit AI Assistant</string>
+    <string name="config_title">Pikaso AI Assistant</string>
     <string name="config_description">We use DeepSeek API by default. For alternatives, click the custom option below</string>
     <string name="config_api_key_label">API Key</string>
     <string name="config_api_key_placeholder">DeepSeek API Key</string>
@@ -278,7 +278,7 @@
     <string name="permission_guide_intro_2_title">A Powerful Toolbox for Geeks and Developers</string>
     <string name="permission_guide_intro_2_desc">With over 40 built-in professional tools for file management, web requests, script execution, and system control. Combined with a robust plugin system, you can automate tasks, and take deep control of your device.</string>
     <string name="permission_guide_intro_3_title">Unleash Creativity, Always on Standby</string>
-    <string name="permission_guide_intro_3_desc">Whether designing web pages, processing media files, or accessing the AI via its floating window, Operit provides a powerful, flexible, and secure environment for creation and assistance. Your data, your control.</string>
+    <string name="permission_guide_intro_3_desc">Whether designing web pages, processing media files, or accessing the AI via its floating window, Pikaso provides a powerful, flexible, and secure environment for creation and assistance. Your data, your control.</string>
     <string name="permission_guide_intro_page_indicator">Feature Tour %1$d/%2$d</string>
 
     <!-- Context Menu -->
@@ -629,10 +629,10 @@
     <string name="agreement_title">User Agreement and Privacy Policy</string>
     <string name="agreement_subtitle">Please read and agree to the following terms before use.</string>
     <string name="agreement_human_readable_title">Plain Language Version (Not a legal document)</string>
-    <string name="agreement_human_readable_content">Like you, we don\'t like long and tedious agreements. Simply put:\n\nOperitAI is a free and open-source software. Its automation features are powerful, so please use them only for personal learning and daily assistance, not for any commercial or prohibited purposes.\n\nYou are responsible for all your actions. We are not responsible for any extensions you add or modifications you make to the software.\n\nRegarding privacy: Your voice processing is done locally on your device, which is secure. AI chat data is sent directly to the AI service provider, and we do not handle it.</string>
+    <string name="agreement_human_readable_content">Like you, we don\'t like long and tedious agreements. Simply put:\n\nPikasoAI is a free and open-source software. Its automation features are powerful, so please use them only for personal learning and daily assistance, not for any commercial or prohibited purposes.\n\nYou are responsible for all your actions. We are not responsible for any extensions you add or modifications you make to the software.\n\nRegarding privacy: Your voice processing is done locally on your device, which is secure. AI chat data is sent directly to the AI service provider, and we do not handle it.</string>
     <string name="agreement_serious_title">Formal Legal Agreement</string>
     <string name="agreement_serious_content"><![CDATA[
-        <p>Welcome to OperitAI. This software is modified and distributed under the terms of the GNU Lesser General Public License, version 3 (LGPLv3).</p>
+        <p>Welcome to PikasoAI. This software is modified and distributed under the terms of the GNU Lesser General Public License, version 3 (LGPLv3).</p>
         <p><b>1. No Warranty</b><br>This software is provided "as is" without any warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. The entire risk as to the quality and performance of the software is with you.</p>
         <p><b>2. Limitation of Liability</b><br>In no event unless required by applicable law or agreed to in writing will any contributor be liable to you for damages, including any general, special, incidental, or consequential damages arising out of the use or inability to use the software. <b>Furthermore, the development team is not responsible for any consequences arising from user-installed extension packages (such as MCPs) or from modifications made to this software.</b></p>
         <p><b>3. User Responsibility and Usage Restrictions</b><br>You are fully responsible for any operations conducted through this software and for all their consequences. You agree to use this software for lawful and proper personal purposes and agree that:<br>
@@ -876,7 +876,7 @@
     <string name="overlay_permission">Overlay Permission</string>
     <string name="battery_optimization">Battery Optimization Exemption</string>
     <string name="location_permission">Location Permission</string>
-    <string name="operit_terminal">Operit Terminal</string>
+    <string name="operit_terminal">Pikaso Terminal</string>
     
     <!-- Permission Level Descriptions -->
     <string name="permission_level_standard">Standard Permission</string>
@@ -1053,7 +1053,7 @@
     <string name="accessibility_wizard_install_provider">Install Provider App</string>
     <string name="accessibility_wizard_enable_message">Now, enable the accessibility service in your device settings. This allows the provider app to analyze screen content.</string>
     <string name="accessibility_wizard_enable_note">Important Note:</string>
-    <string name="accessibility_wizard_enable_note_details">You must select and enable \"Operit Accessibility Provider\" from the list of services.</string>
+    <string name="accessibility_wizard_enable_note_details">You must select and enable \"Pikaso Accessibility Provider\" from the list of services.</string>
     <string name="accessibility_wizard_open_settings">Open Accessibility Settings</string>
     <string name="accessibility_wizard_success_message">Accessibility service is properly configured and ready to use!</string>
 
@@ -1326,7 +1326,7 @@
     <string name="tool_user_agreement">User Agreement</string>
     <string name="tool_user_agreement_desc">View the application\'s user agreement and privacy policy</string>
     <string name="tool_default_assistant_guide">Default Assistant Setup</string>
-    <string name="tool_default_assistant_guide_desc">Set Operit voice floating as system default assistant</string>
+    <string name="tool_default_assistant_guide_desc">Set Pikaso voice floating as system default assistant</string>
     <string name="tool_terminal">Command Terminal</string>
     <string name="tool_terminal_desc">Powerful command-line terminal for executing system commands</string>
     <string name="tool_terminal_auto_config">Terminal Auto Configuration</string>
@@ -2842,18 +2842,18 @@
     <string name="delete_tag">Delete Tag</string>
     <string name="delete_tag_confirm">Are you sure you want to delete tag "%1$s"? This action cannot be undone.</string>
 
-    <!-- OperitTerminal Wizard Card -->
-    <string name="operit_terminal_wizard_title">OperitTerminal Setup Wizard</string>
-    <string name="operit_terminal_not_installed">OperitTerminal not installed</string>
-    <string name="operit_terminal_update_available">OperitTerminal update available</string>
-    <string name="operit_terminal_up_to_date">OperitTerminal is up to date</string>
-    <string name="operit_terminal_install_description">OperitTerminal is a powerful terminal application that provides a complete Linux environment and package management capabilities. We need to install this application first.</string>
-    <string name="operit_terminal_install_button">Install OperitTerminal</string>
-    <string name="operit_terminal_update_description">A new version of OperitTerminal is available. It is recommended to update for better features and compatibility.</string>
+    <!-- PikasoTerminal Wizard Card -->
+    <string name="operit_terminal_wizard_title">PikasoTerminal Setup Wizard</string>
+    <string name="operit_terminal_not_installed">PikasoTerminal not installed</string>
+    <string name="operit_terminal_update_available">PikasoTerminal update available</string>
+    <string name="operit_terminal_up_to_date">PikasoTerminal is up to date</string>
+    <string name="operit_terminal_install_description">PikasoTerminal is a powerful terminal application that provides a complete Linux environment and package management capabilities. We need to install this application first.</string>
+    <string name="operit_terminal_install_button">Install PikasoTerminal</string>
+    <string name="operit_terminal_update_description">A new version of PikasoTerminal is available. It is recommended to update for better features and compatibility.</string>
     <string name="operit_terminal_release_notes">Release Notes: %1$s</string>
-    <string name="operit_terminal_update_button">Update OperitTerminal</string>
-    <string name="operit_terminal_latest_description">Congratulations! You have installed the latest version of OperitTerminal and can start using its powerful terminal features.</string>
-    <string name="operit_terminal_open_button">Open OperitTerminal</string>
+    <string name="operit_terminal_update_button">Update PikasoTerminal</string>
+    <string name="operit_terminal_latest_description">Congratulations! You have installed the latest version of PikasoTerminal and can start using its powerful terminal features.</string>
+    <string name="operit_terminal_open_button">Open PikasoTerminal</string>
 
     <!-- Function Types -->
     <string name="function_type_translation">Translation Function</string>
@@ -3066,7 +3066,7 @@
     <string name="invalid_category_name">Category name can only contain lowercase letters, numbers, and underscores</string>
     
     <!-- Voice Assistant Widget -->
-    <string name="voice_assistant_widget_description">Quick launch Operit voice assistant</string>
+    <string name="voice_assistant_widget_description">Quick launch Pikaso voice assistant</string>
 
     <!-- Persona Card Generation Screen -->
     <string name="persona_card_generation_title">Character Card to Edit</string>
@@ -3137,15 +3137,15 @@
 
     <!-- Default Assistant Setup Guide -->
     <string name="default_assistant_guide_title">Set Default Voice Assistant</string>
-    <string name="default_assistant_guide_subtitle">Make Operit Your Smart Assistant</string>
-    <string name="default_assistant_guide_intro">After setting Operit as the default system assistant, you can quickly launch the Operit voice assistant by long-pressing the Home button or using voice wake-up, providing a more convenient AI interaction experience.</string>
+    <string name="default_assistant_guide_subtitle">Make Pikaso Your Smart Assistant</string>
+    <string name="default_assistant_guide_intro">After setting Pikaso as the default system assistant, you can quickly launch the Pikaso voice assistant by long-pressing the Home button or using voice wake-up, providing a more convenient AI interaction experience.</string>
     <string name="default_assistant_guide_steps_title">Setup Steps</string>
     
     <!-- Step 1 -->
     <string name="default_assistant_guide_step1_title">Open System Settings</string>
     <string name="default_assistant_guide_step1_desc">First, you need to enter the Android system settings interface</string>
     <string name="default_assistant_guide_step1_detail1">• Open System Settings → Apps → Default apps → Digital assistant app</string>
-    <string name="default_assistant_guide_step1_detail2">• Find and select "Operit AI" in the assistant app list</string>
+    <string name="default_assistant_guide_step1_detail2">• Find and select "Pikaso AI" in the assistant app list</string>
     <string name="default_assistant_guide_step1_detail_android12">Android 12+: Settings → Apps → Default apps → Digital assistant app → Default digital assistant app</string>
     <string name="default_assistant_guide_open_settings">Open Settings</string>
     
@@ -3160,24 +3160,24 @@
     <string name="default_assistant_guide_step2_detail_android12">Android 12+: Settings → Apps → Default apps → Digital assistant app → Default digital assistant app</string>
     
     <!-- Step 3 -->
-    <string name="default_assistant_guide_step3_title">Select Operit</string>
-    <string name="default_assistant_guide_step3_desc">Choose Operit AI from the assistant app list</string>
-    <string name="default_assistant_guide_step3_detail1">• Find \"Operit AI\" in the available assistant apps list</string>
-    <string name="default_assistant_guide_step3_detail2">• Tap to select, and the system will set Operit as the default assistant</string>
+    <string name="default_assistant_guide_step3_title">Select Pikaso</string>
+    <string name="default_assistant_guide_step3_desc">Choose Pikaso AI from the assistant app list</string>
+    <string name="default_assistant_guide_step3_detail1">• Find \"Pikaso AI\" in the available assistant apps list</string>
+    <string name="default_assistant_guide_step3_detail2">• Tap to select, and the system will set Pikaso as the default assistant</string>
     <string name="default_assistant_guide_step3_detail3">• You can try speaking or typing to interact with the assistant</string>
     
     <!-- Step 4 -->
     <string name="default_assistant_guide_step4_title">Test Voice Assistant</string>
     <string name="default_assistant_guide_step4_desc">After setup, test if it can be launched normally</string>
-    <string name="default_assistant_guide_step4_detail1">• Long-press the Home button (home screen button) should invoke Operit voice assistant</string>
-    <string name="default_assistant_guide_step4_detail2">• If voice wake-up is supported, saying \"Hey Google\" or your device\'s designated wake word may also trigger Operit</string>
+    <string name="default_assistant_guide_step4_detail1">• Long-press the Home button (home screen button) should invoke Pikaso voice assistant</string>
+    <string name="default_assistant_guide_step4_detail2">• If voice wake-up is supported, saying \"Hey Google\" or your device\'s designated wake word may also trigger Pikaso</string>
     
     <!-- Troubleshooting -->
     <string name="default_assistant_guide_troubleshooting_title">Having Problems?</string>
-    <string name="default_assistant_guide_troubleshooting_content">If you can\'t find Operit in the list, please ensure:\n\n• The app is properly installed and not disabled\n• Necessary permissions have been granted (microphone, overlay, etc.)\n• Try restarting the device and setting it up again\n\nSome custom systems may restrict third-party apps from being set as default assistants. If you encounter this situation, you can still use Operit through the in-app floating window feature.</string>
+    <string name="default_assistant_guide_troubleshooting_content">If you can\'t find Pikaso in the list, please ensure:\n\n• The app is properly installed and not disabled\n• Necessary permissions have been granted (microphone, overlay, etc.)\n• Try restarting the device and setting it up again\n\nSome custom systems may restrict third-party apps from being set as default assistants. If you encounter this situation, you can still use Pikaso through the in-app floating window feature.</string>
 
     <!-- Voice Interaction Service -->
-    <string name="voice_interaction_service_name">Operit AI Assistant</string>
+    <string name="voice_interaction_service_name">Pikaso AI Assistant</string>
     <string name="voice_interaction_service_summary">Intelligent voice assistant service</string>
 
     <!-- Tool Permission Settings -->
@@ -3474,13 +3474,13 @@
     <string name="backup_memory_link_count">Memory Links</string>
     
     <string name="backup_files_statistics">Backup Files Statistics</string>
-    <string name="backup_files_statistics_subtitle">Backup files in Operit export directory</string>
+    <string name="backup_files_statistics_subtitle">Backup files in Pikaso export directory</string>
     <string name="backup_refresh">Refresh</string>
     <string name="backup_scanning">Scanning</string>
     <string name="backup_chat_files">Chat History</string>
     <string name="backup_memory_files">Memory Library</string>
     <string name="backup_model_config_files">Model Configs</string>
-    <string name="backup_files_location_hint">Backup files are saved in Download/Operit folder</string>
+    <string name="backup_files_location_hint">Backup files are saved in Download/Pikaso folder</string>
     
     <string name="backup_chat_history">Chat History</string>
     <string name="backup_chat_history_subtitle">Cross-format backup, export and recovery</string>
@@ -3510,7 +3510,7 @@
     <string name="backup_faq_why">Why backup data?</string>
     <string name="backup_faq_why_answer">Backing up chat history prevents important content loss when the app is uninstalled or data is lost. Regular backups are a good habit!</string>
     <string name="backup_faq_where">Where are exported files saved?</string>
-    <string name="backup_faq_where_answer">Exported backup files are saved in the \"Download/Operit\" folder on your phone, with filenames containing the data type, date and time.</string>
+    <string name="backup_faq_where_answer">Exported backup files are saved in the \"Download/Pikaso\" folder on your phone, with filenames containing the data type, date and time.</string>
     <string name="backup_faq_duplicate">Will importing create duplicate data?</string>
     <string name="backup_faq_duplicate_answer">The system uses record IDs to determine duplicates. Records with the same ID will be updated rather than duplicated. Records with different IDs will be added as new entries.</string>
     
@@ -3518,7 +3518,7 @@
     <string name="backup_select_export_format">Select Export Format</string>
     <string name="backup_select_format_hint">Please select the chat history format to export:</string>
     <string name="backup_format_json">JSON (Recommended)</string>
-    <string name="backup_format_json_desc">Operit native format, preserves all data completely</string>
+    <string name="backup_format_json_desc">Pikaso native format, preserves all data completely</string>
     <string name="backup_format_markdown">Markdown</string>
     <string name="backup_format_markdown_desc">Lightweight markup format, easy to read and edit</string>
     <string name="backup_format_html">HTML</string>
@@ -3529,7 +3529,7 @@
     <!-- Import Format Selection -->
     <string name="backup_select_import_format">Select Import Format</string>
     <string name="backup_import_format_hint">Please select the chat history format to import:</string>
-    <string name="backup_format_operit">Operit JSON (Recommended)</string>
+    <string name="backup_format_operit">Pikaso JSON (Recommended)</string>
     <string name="backup_format_operit_desc">Native format of this app, preserves all data completely</string>
     <string name="backup_format_chatgpt">ChatGPT</string>
     <string name="backup_format_chatgpt_desc">OpenAI ChatGPT conversations.json export format</string>

@@ -176,7 +176,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="operit"
+                    android:scheme="pikaso"
                     android:host="github-oauth-callback" />
             </intent-filter>
             <!-- File open and share support -->
@@ -257,7 +257,7 @@
         <activity
             android:name=".integrations.tasker.WorkflowTaskerActivityConfig"
             android:exported="true"
-            android:label="Operit Workflow"
+            android:label="Pikaso Workflow"
             android:icon="@mipmap/ic_launcher">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />

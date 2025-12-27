@@ -166,19 +166,6 @@ fun FileManagerScreen(navController: NavController) {
             ) {
                 item {
                     QuickAccessChip(
-                        name = "Ubuntu",
-                        icon = Icons.Default.Terminal,
-                        isActive = viewModel.currentPath.startsWith(File(context.filesDir, "usr/var/lib/proot-distro/installed-rootfs/ubuntu").absolutePath),
-                        onClick = {
-                            val ubuntuPath = File(context.filesDir, "usr/var/lib/proot-distro/installed-rootfs/ubuntu").absolutePath
-                            if (File(ubuntuPath).exists()) {
-                                viewModel.navigateToPath(ubuntuPath)
-                            }
-                        }
-                    )
-                }
-                item {
-                    QuickAccessChip(
                         name = "SDCard",
                         icon = Icons.Default.SdCard,
                         isActive = viewModel.currentPath.startsWith(Environment.getExternalStorageDirectory().absolutePath),

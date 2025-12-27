@@ -5,32 +5,32 @@
 </div>
 
 <div align="center">
-  <img src="https://img.shields.io/github/last-commit/AAswordman/Operit" alt="Last Commit">
+  <img src="https://img.shields.io/github/last-commit/AAswordman/Pikaso" alt="Last Commit">
   <img src="https://img.shields.io/badge/Platform-Android_8.0%2B-brightgreen.svg" alt="Platform">
-  <a href="https://github.com/AAswordman/Operit/releases/latest"><img src="https://img.shields.io/github/v/release/AAswordman/Operit" alt="Latest Release"></a>
+  <a href="https://github.com/AAswordman/Pikaso/releases/latest"><img src="https://img.shields.io/github/v/release/AAswordman/Pikaso" alt="Latest Release"></a>
   <br>
-  <a href="https://github.com/AAswordman/Operit/stargazers"><img src="https://img.shields.io/github/stars/AAswordman/Operit" alt="GitHub Stars"></a>
-  <a href="https://aaswordman.github.io/OperitWeb"><img src="https://img.shields.io/badge/📖-用户指南-blue.svg" alt="User Guide"></a>
+  <a href="https://github.com/AAswordman/Pikaso/stargazers"><img src="https://img.shields.io/github/stars/AAswordman/Pikaso" alt="GitHub Stars"></a>
+  <a href="https://aaswordman.github.io/PikasoWeb"><img src="https://img.shields.io/badge/📖-用户指南-blue.svg" alt="User Guide"></a>
   <a href="docs/CONTRIBUTING.md"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg" alt="Contributions Welcome"></a>
   <br>
   <a href="mailto:aaswordsman@foxmail.com"><img src="https://img.shields.io/badge/📧-Email-red.svg" alt="Email"></a>
   <a href="https://qm.qq.com/q/Sa4fKEH7sO"><img src="https://img.shields.io/badge/💬-QQ群-blue.svg" alt="QQ Group"></a>
   <a href="https://discord.gg/YnV9MWurRF"><img src="https://img.shields.io/badge/🎮-Discord-5865F2.svg" alt="Discord"></a>
-  <a href="https://github.com/AAswordman/Operit/issues"><img src="https://img.shields.io/badge/🐛-Issues-orange.svg" alt="Issues"></a>
+  <a href="https://github.com/AAswordman/Pikaso/issues"><img src="https://img.shields.io/badge/🐛-Issues-orange.svg" alt="Issues"></a>
 </div>
 
 <div align="center">
-  <img src="app/src/main/res/playstore-icon.png" width="120" height="120" alt="Operit Logo">
-  <h1>Operit AI - 智能助手应用</h1>
+  <img src="app/src/main/res/playstore-icon.png" width="120" height="120" alt="Pikaso Logo">
+  <h1>Pikaso AI - 智能助手应用</h1>
   <p>📱 <b>移动端首个功能完备的AI智能助手应用，完全独立运行，拥有强大的工具调用能力</b> 📱</p>
 </div>
 
 <div align="center">
   <div style="padding: 10px 0; text-align: center;">
-    <img src="docs/assets/9f85b39450c8616909039b66d15a475a.jpg" width="22%" alt="Operit预览图1" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
-    <img src="docs/assets/88a7b7520e4628682a849cc00716c8de.jpg" width="22%" alt="Operit预览图2" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
-    <img src="docs/assets/9036f349c25888d357de5ce34580176d.jpg" width="22%" alt="Operit预览图3" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
-    <img src="docs/assets/d12038f26df3f814b4e3ce967537f039.jpg" width="22%" alt="Operit预览图4" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
+    <img src="docs/assets/9f85b39450c8616909039b66d15a475a.jpg" width="22%" alt="Pikaso预览图1" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
+    <img src="docs/assets/88a7b7520e4628682a849cc00716c8de.jpg" width="22%" alt="Pikaso预览图2" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
+    <img src="docs/assets/9036f349c25888d357de5ce34580176d.jpg" width="22%" alt="Pikaso预览图3" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
+    <img src="docs/assets/d12038f26df3f814b4e3ce967537f039.jpg" width="22%" alt="Pikaso预览图4" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
   </div>
 </div>
 
@@ -38,7 +38,7 @@
 
 ## 🌟 项目简介
 
-**Operit AI** 是移动端首个功能完备的 AI 智能助手应用，完全独立运行于您的 Android 设备上（除API调用），拥有强大的**工具调用能力**、**深度搜索**、**智能记忆库**，并支持**人设定制**与**角色卡**等高度自定义功能。它不仅仅是聊天界面，更是与Android权限和各种工具深度融合的**全能助手**，内置**Ubuntu 24 环境**，提供前所未有的强大功能。
+**Pikaso AI** 是移动端首个功能完备的 AI 智能助手应用，完全独立运行于您的 Android 设备上（除API调用），拥有强大的**工具调用能力**、**深度搜索**、**智能记忆库**，并支持**人设定制**与**角色卡**等高度自定义功能。它不仅仅是聊天界面，更是与Android权限和各种工具深度融合的**全能助手**，内置**Ubuntu 24 环境**，提供前所未有的强大功能。
 
 ---
 
@@ -142,10 +142,10 @@ AI自动分类管理记忆，智能搜索历史对话，记住您的偏好和习
 | 项目 | 说明 |
 |-----|------|
 | 📋 **系统要求** | Android 8.0+ (API 26+)，建议 4GB+ 内存，200MB+ 存储 |
-| 📥 **下载安装** | [Release页面](https://github.com/AAswordman/Operit/releases) 下载最新APK |
-| 📖 **使用指南** | [完整文档](https://aaswordman.github.io/OperitWeb) 包含详细教程和示例 |
+| 📥 **下载安装** | [Release页面](https://github.com/AAswordman/Pikaso/releases) 下载最新APK |
+| 📖 **使用指南** | [完整文档](https://aaswordman.github.io/PikasoWeb) 包含详细教程和示例 |
 
-> **安全提示：** 为确保您的数据安全，请务必从官方 [Release页面](https://github.com/AAswordman/Operit/releases) 或 [官方网站](https://aaswordman.github.io/OperitWeb/) 下载本应用。通过未知渠道下载的安装包可能被恶意修改，从而导致隐私泄露或设备被监听。
+> **安全提示：** 为确保您的数据安全，请务必从官方 [Release页面](https://github.com/AAswordman/Pikaso/releases) 或 [官方网站](https://aaswordman.github.io/PikasoWeb/) 下载本应用。通过未知渠道下载的安装包可能被恶意修改，从而导致隐私泄露或设备被监听。
 
 **安装步骤：** 下载APK → 安装启动 → 按引导配置 → 开始使用 ✨
 
@@ -278,13 +278,13 @@ AI自动分类管理记忆，智能搜索历史对话，记住您的偏好和习
 </tr>
 </table>
 
-> 📝 **完整更新日志**：访问 [Releases 页面](https://github.com/AAswordman/Operit/releases) 查看每个版本的详细更新内容
+> 📝 **完整更新日志**：访问 [Releases 页面](https://github.com/AAswordman/Pikaso/releases) 查看每个版本的详细更新内容
 
 ---
 
 ## 👨‍💻 开源共创
 
-欢迎加入 Operit 开源生态！我们欢迎各种贡献：第三方脚本、MCP插件、核心功能开发。
+欢迎加入 Pikaso 开源生态！我们欢迎各种贡献：第三方脚本、MCP插件、核心功能开发。
 
 **开发者须知：**
 - 📚 [开源共创指南](docs/CONTRIBUTING.md) | [脚本开发指南](docs/SCRIPT_DEV_GUIDE.md)
@@ -293,10 +293,10 @@ AI自动分类管理记忆，智能搜索历史对话，记住您的偏好和习
 
 ### 💖 贡献者
 
-感谢所有为 Operit AI 做出贡献的人！
+感谢所有为 Pikaso AI 做出贡献的人！
 
-<a href="https://github.com/AAswordman/Operit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=AAswordman/Operit" />
+<a href="https://github.com/AAswordman/Pikaso/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AAswordman/Pikaso" />
 </a>
 
 ---
@@ -314,7 +314,7 @@ AI自动分类管理记忆，智能搜索历史对话，记住您的偏好和习
 
 ## 📝 问题反馈
 
-遇到问题或有建议？欢迎 [提交 Issue](https://github.com/AAswordman/Operit/issues)！
+遇到问题或有建议？欢迎 [提交 Issue](https://github.com/AAswordman/Pikaso/issues)！
 
 **提交指南：**
 - 📝 清晰描述问题/建议，提供复现步骤
@@ -325,9 +325,9 @@ AI自动分类管理记忆，智能搜索历史对话，记住您的偏好和习
 
 <div align="center">
   <h3>⭐ 如果觉得项目不错，请给我们一个 Star ⭐</h3>
-  <p><b>🚀 帮助我们推广，让更多人了解 Operit AI 🚀</b></p>
+  <p><b>🚀 帮助我们推广，让更多人了解 Pikaso AI 🚀</b></p>
   
   <br>
   
-  <sub>Made with ❤️ by the Operit Team</sub>
+  <sub>Made with ❤️ by the Pikaso Team</sub>
 </div>

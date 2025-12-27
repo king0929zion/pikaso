@@ -1,7 +1,7 @@
 {
     "name": "operit-node-project",
     "version": "1.0.0",
-    "description": "Node.js project created with Operit",
+    "description": "Node.js project created with Pikaso",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",

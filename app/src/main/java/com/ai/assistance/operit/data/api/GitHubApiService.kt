@@ -156,7 +156,7 @@ class GitHubApiService(private val context: Context) {
             val request = chain.request()
             val newRequest = request.newBuilder()
                 .addHeader("Accept", "application/vnd.github.v3+json")
-                .addHeader("User-Agent", "Operit-MCP-Client")
+                .addHeader("User-Agent", "Pikaso-MCP-Client")
                 .build()
             chain.proceed(newRequest)
         }

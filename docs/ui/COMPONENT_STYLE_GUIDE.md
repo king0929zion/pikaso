@@ -1,4 +1,4 @@
-# Operit UI Component Style Guide
+# Pikaso UI Component Style Guide
 
 > Based on Anthropic's design philosophy: clean, warm, human-centric interfaces
 >
@@ -141,13 +141,13 @@ MaterialTheme.typography.labelSmall  // 11sp, Medium
 ```kotlin
 // ✅ Good: Using theme typography
 Text(
-    text = "Welcome to Operit",
+    text = "Welcome to Pikaso",
     style = MaterialTheme.typography.headlineMedium
 )
 
 // ❌ Bad: Hardcoded font size
 Text(
-    text = "Welcome to Operit",
+    text = "Welcome to Pikaso",
     fontSize = 28.sp
 )
 ```

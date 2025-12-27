@@ -5,32 +5,32 @@
 </div>
 
 <div align="center">
-  <img src="https://img.shields.io/github/last-commit/AAswordman/Operit" alt="Last Commit">
+  <img src="https://img.shields.io/github/last-commit/AAswordman/Pikaso" alt="Last Commit">
   <img src="https://img.shields.io/badge/Platform-Android_8.0%2B-brightgreen.svg" alt="Platform">
-  <a href="https://github.com/AAswordman/Operit/releases/latest"><img src="https://img.shields.io/github/v/release/AAswordman/Operit" alt="Latest Release"></a>
+  <a href="https://github.com/AAswordman/Pikaso/releases/latest"><img src="https://img.shields.io/github/v/release/AAswordman/Pikaso" alt="Latest Release"></a>
   <br>
-  <a href="https://github.com/AAswordman/Operit/stargazers"><img src="https://img.shields.io/github/stars/AAswordman/Operit" alt="GitHub Stars"></a>
-  <a href="https://aaswordman.github.io/OperitWeb"><img src="https://img.shields.io/badge/📖-User_Guide-blue.svg" alt="User Guide"></a>
+  <a href="https://github.com/AAswordman/Pikaso/stargazers"><img src="https://img.shields.io/github/stars/AAswordman/Pikaso" alt="GitHub Stars"></a>
+  <a href="https://aaswordman.github.io/PikasoWeb"><img src="https://img.shields.io/badge/📖-User_Guide-blue.svg" alt="User Guide"></a>
   <a href="docs/CONTRIBUTING.md"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg" alt="Contributions Welcome"></a>
   <br>
   <a href="mailto:aaswordsman@foxmail.com"><img src="https://img.shields.io/badge/📧-Email-red.svg" alt="Email"></a>
   <a href="https://qm.qq.com/q/Sa4fKEH7sO"><img src="https://img.shields.io/badge/💬-QQ_Group-blue.svg" alt="QQ Group"></a>
   <a href="https://discord.gg/YnV9MWurRF"><img src="https://img.shields.io/badge/🎮-Discord-5865F2.svg" alt="Discord"></a>
-  <a href="https://github.com/AAswordman/Operit/issues"><img src="https://img.shields.io/badge/🐛-Issues-orange.svg" alt="Issues"></a>
+  <a href="https://github.com/AAswordman/Pikaso/issues"><img src="https://img.shields.io/badge/🐛-Issues-orange.svg" alt="Issues"></a>
 </div>
 
 <div align="center">
-  <img src="app/src/main/res/playstore-icon.png" width="120" height="120" alt="Operit Logo">
-  <h1>Operit AI - Your Intelligent Assistant</h1>
+  <img src="app/src/main/res/playstore-icon.png" width="120" height="120" alt="Pikaso Logo">
+  <h1>Pikaso AI - Your Intelligent Assistant</h1>
   <p>📱 <b>The first fully functional, standalone AI assistant for mobile devices with powerful tool-calling capabilities</b> 📱</p>
 </div>
 
 <div align="center">
   <div style="padding: 10px 0; text-align: center;">
-    <img src="docs/assets/9f85b39450c8616909039b66d15a475a.jpg" width="22%" alt="Operit Preview 1" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
-    <img src="docs/assets/88a7b7520e4628682a849cc00716c8de.jpg" width="22%" alt="Operit Preview 2" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
-    <img src="docs/assets/9036f349c25888d357de5ce34580176d.jpg" width="22%" alt="Operit Preview 3" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
-    <img src="docs/assets/d12038f26df3f814b4e3ce967537f039.jpg" width="22%" alt="Operit Preview 4" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
+    <img src="docs/assets/9f85b39450c8616909039b66d15a475a.jpg" width="22%" alt="Pikaso Preview 1" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
+    <img src="docs/assets/88a7b7520e4628682a849cc00716c8de.jpg" width="22%" alt="Pikaso Preview 2" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
+    <img src="docs/assets/9036f349c25888d357de5ce34580176d.jpg" width="22%" alt="Pikaso Preview 3" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
+    <img src="docs/assets/d12038f26df3f814b4e3ce967537f039.jpg" width="22%" alt="Pikaso Preview 4" style="display: inline-block; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin: 0 3px; max-width: 220px;">
   </div>
 </div>
 
@@ -38,7 +38,7 @@
 
 ## 🌟 Project Introduction
 
-**Operit AI** is the first fully functional AI assistant application on mobile devices that runs **completely standalone** (except for external API calls) on your Android device. It features powerful **tool-calling capabilities**, **Deep Search**, an **intelligent Memory Vault**, and supports highly customizable features like **User Personality** and **Character Cards**. It's more than just a chat interface—it's an **all-in-one assistant** deeply integrated with Android permissions and various tools, now featuring a built-in **Ubuntu 24 Environment** for unprecedented functionality.
+**Pikaso AI** is the first fully functional AI assistant application on mobile devices that runs **completely standalone** (except for external API calls) on your Android device. It features powerful **tool-calling capabilities**, **Deep Search**, an **intelligent Memory Vault**, and supports highly customizable features like **User Personality** and **Character Cards**. It's more than just a chat interface—it's an **all-in-one assistant** deeply integrated with Android permissions and various tools, now featuring a built-in **Ubuntu 24 Environment** for unprecedented functionality.
 
 ---
 
@@ -142,10 +142,10 @@ Rich MCP ecosystem
 | Item | Description |
 |------|-------------|
 | 📋 **System Requirements** | Android 8.0+ (API 26+), 4GB+ RAM recommended, 200MB+ storage |
-| 📥 **Download & Install** | Download the latest APK from the [Release Page](https://github.com/AAswordman/Operit/releases) |
-| 📖 **User Guide** | [Complete Documentation](https://aaswordman.github.io/OperitWeb) with detailed tutorials and examples |
+| 📥 **Download & Install** | Download the latest APK from the [Release Page](https://github.com/AAswordman/Pikaso/releases) |
+| 📖 **User Guide** | [Complete Documentation](https://aaswordman.github.io/PikasoWeb) with detailed tutorials and examples |
 
-> **Security Warning:** To ensure your data security, please download this application exclusively from the official [Release Page](https://github.com/AAswordman/Operit/releases) or the [Official Website](https://aaswordman.github.io/OperitWeb/). Installation packages from unofficial sources may be maliciously modified, potentially leading to privacy leaks or device monitoring.
+> **Security Warning:** To ensure your data security, please download this application exclusively from the official [Release Page](https://github.com/AAswordman/Pikaso/releases) or the [Official Website](https://aaswordman.github.io/PikasoWeb/). Installation packages from unofficial sources may be maliciously modified, potentially leading to privacy leaks or device monitoring.
 
 **Installation Steps:** Download APK → Install & Launch → Follow Setup Guide → Start Using ✨
 
@@ -278,13 +278,13 @@ Rich MCP ecosystem
 </tr>
 </table>
 
-> 📝 **Full Changelog**: Visit the [Releases Page](https://github.com/AAswordman/Operit/releases) for detailed updates on each version
+> 📝 **Full Changelog**: Visit the [Releases Page](https://github.com/AAswordman/Pikaso/releases) for detailed updates on each version
 
 ---
 
 ## 👨‍💻 Open Source & Collaboration
 
-Join the Operit open-source ecosystem! We welcome all types of contributions: third-party scripts, MCP plugins, and core feature development.
+Join the Pikaso open-source ecosystem! We welcome all types of contributions: third-party scripts, MCP plugins, and core feature development.
 
 **Developer Notes:**
 - 📚 [Contribution Guide](docs/CONTRIBUTING.md) | [Script Development Guide (Chinese)](docs/SCRIPT_DEV_GUIDE.md)
@@ -293,10 +293,10 @@ Join the Operit open-source ecosystem! We welcome all types of contributions: th
 
 ### 💖 Contributors
 
-Thanks to all who have contributed to Operit AI!
+Thanks to all who have contributed to Pikaso AI!
 
-<a href="https://github.com/AAswordman/Operit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=AAswordman/Operit" />
+<a href="https://github.com/AAswordman/Pikaso/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AAswordman/Pikaso" />
 </a>
 
 ---
@@ -314,7 +314,7 @@ In simple terms, this means:
 
 ## 📝 Feedback
 
-Encountered a problem or have a suggestion? Welcome to [submit an Issue](https://github.com/AAswordman/Operit/issues)!
+Encountered a problem or have a suggestion? Welcome to [submit an Issue](https://github.com/AAswordman/Pikaso/issues)!
 
 **Submission Guidelines:**
 - 📝 Clearly describe the problem/suggestion with reproduction steps
@@ -325,9 +325,9 @@ Encountered a problem or have a suggestion? Welcome to [submit an Issue](https:/
 
 <div align="center">
   <h3>⭐ If you like this project, please give us a Star ⭐</h3>
-  <p><b>🚀 Help us promote and let more people discover Operit AI 🚀</b></p>
+  <p><b>🚀 Help us promote and let more people discover Pikaso AI 🚀</b></p>
   
   <br>
   
-  <sub>Made with ❤️ by the Operit Team</sub>
+  <sub>Made with ❤️ by the Pikaso Team</sub>
 </div>

@@ -454,7 +454,7 @@ open class StandardUITools(protected val context: Context) : ToolImplementations
     /**
      * Default screenshot implementation for the UI subagent.
      *
-     * It captures the current screen to /sdcard/Download/Operit/cleanOnExit,
+     * It captures the current screen to /sdcard/Download/Pikaso/cleanOnExit,
      * then registers the image in ImagePoolManager and returns a <link type="image" ...> tag.
      *
      * Subclasses can override this method if they have a more specialized screenshot pipeline.
@@ -481,7 +481,7 @@ open class StandardUITools(protected val context: Context) : ToolImplementations
     protected open suspend fun captureScreenshotToFile(tool: AITool): Pair<String?, Pair<Int, Int>?> {
         return try {
             // Keep path consistent with automatic_ui_base.* so cleanup logic can be shared.
-            val screenshotDir = File("/sdcard/Download/Operit/cleanOnExit")
+            val screenshotDir = File("/sdcard/Download/Pikaso/cleanOnExit")
             if (!screenshotDir.exists()) {
                 screenshotDir.mkdirs()
             }

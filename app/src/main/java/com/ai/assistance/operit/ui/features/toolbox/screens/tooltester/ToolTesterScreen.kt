@@ -281,7 +281,7 @@ fun ToolDetailsSheet(
 
 
 private fun getFinalToolTestGroups(context: android.content.Context): List<ToolGroup> {
-    val testBaseDir = "/sdcard/Download/Operit/test"
+    val testBaseDir = "/sdcard/Download/Pikaso/test"
     val testFile = "$testBaseDir/test_file.txt"
     val testFileCopy = "$testBaseDir/test_file_copy.txt"
     val testZip = "$testBaseDir/test.zip"

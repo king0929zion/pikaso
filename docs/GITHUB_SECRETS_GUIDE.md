@@ -5,8 +5,8 @@
 ### 本地已生成的密钥
 - **Keystore 文件**: `app/release.keystore`
 - **密钥别名**: `operit`
-- **Keystore 密码**: `Operit2025!`
-- **Key 密码**: `Operit2025!`
+- **Keystore 密码**: `Pikaso2025!`
+- **Key 密码**: `Pikaso2025!`
 - **有效期**: 10000 天 (到 2053 年)
 
 ## GitHub Actions 配置步骤
@@ -32,12 +32,12 @@ MIIKtAIBAzCCCl4GCSqGSIb3DQEHAaCCCk8EggpLMIIKRzCCBa4GCSqGSIb3DQEHAaCCBZ8EggWbMIIF
 #### Secret 2: STORE_PASSWORD
 
 **名称**: `STORE_PASSWORD`
-**值**: `Operit2025!`
+**值**: `Pikaso2025!`
 
 #### Secret 3: KEY_PASSWORD
 
 **名称**: `KEY_PASSWORD`
-**值**: `Operit2025!`
+**值**: `Pikaso2025!`
 
 #### Secret 4: KEY_ALIAS
 
@@ -53,7 +53,7 @@ MIIKtAIBAzCCCl4GCSqGSIb3DQEHAaCCCk8EggpLMIIKRzCCBa4GCSqGSIb3DQEHAaCCBZ8EggWbMIIF
 在本地测试构建是否成功：
 
 ```bash
-cd G:\Open-AutoGLM\Operit
+cd G:\Open-AutoGLM\Pikaso
 .\gradlew assembleRelease
 ```
 
@@ -83,7 +83,7 @@ cd G:\Open-AutoGLM\Operit
 |------|-----|
 | Keystore 文件 | `app/release.keystore` |
 | 密钥别名 | `operit` |
-| Keystore 密码 | `Operit2025!` |
-| Key 密码 | `Operit2025!` |
+| Keystore 密码 | `Pikaso2025!` |
+| Key 密码 | `Pikaso2025!` |
 | 有效期 | 10000 天 (至 2053-05-12) |
 | 证书指纹 SHA-256 | `A1:20:69:B4:C1:E6:7E:77:58:BD:5B:75:71:57:5A:1D:42:FA:7E:27:19:8D:25:E1:50:C1:37:5F:6E:19:92:37` |

@@ -121,7 +121,7 @@ class ApiPreferences private constructor(private val context: Context) {
         const val DEFAULT_DISABLE_STREAM_OUTPUT = false
 
         // Default values for custom prompts
-        const val DEFAULT_INTRO_PROMPT = "你是Operit，一个全能AI助手，旨在解决用户提出的任何任务。你有各种工具可以调用，以高效完成复杂的请求。"
+        const val DEFAULT_INTRO_PROMPT = "你是Pikaso，一个全能AI助手，旨在解决用户提出的任何任务。你有各种工具可以调用，以高效完成复杂的请求。"
         
         // Default system prompt template (empty means use built-in template)
         const val DEFAULT_SYSTEM_PROMPT_TEMPLATE = ""

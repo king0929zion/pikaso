@@ -1,7 +1,7 @@
 /* METADATA
 {
   "name": "nanobanana_draw",
-  "description": "使用 Nano Banana API (基于Grsai的api服务/https://grsai.com/) 根据提示词画图，支持文生图和图生图（可传入参考图片URL进行图像编辑与合成），将图片保存到本地 /sdcard/Download/Operit/draws/ 目录，并返回 Markdown 图片提示。",
+  "description": "使用 Nano Banana API (基于Grsai的api服务/https://grsai.com/) 根据提示词画图，支持文生图和图生图（可传入参考图片URL进行图像编辑与合成），将图片保存到本地 /sdcard/Download/Pikaso/draws/ 目录，并返回 Markdown 图片提示。",
   "env": [
     "NANOBANANA_API_KEY"
   ],
@@ -31,7 +31,7 @@ const nanobananaDraw = (function () {
     const DEFAULT_MODEL = "nano-banana-pro";
     // Android 实际路径为 /sdcard/Download，对应系统中文名"下载"
     const DOWNLOAD_ROOT = "/sdcard/Download";
-    const OPERIT_DIR = `${DOWNLOAD_ROOT}/Operit`;
+    const OPERIT_DIR = `${DOWNLOAD_ROOT}/Pikaso`;
     const DRAWS_DIR = `${OPERIT_DIR}/draws`;
 
     // 轮询配置
@@ -329,7 +329,7 @@ const nanobananaDraw = (function () {
         const markdown = `![AI生成的图片](${fileUri})`;
 
         const hintLines: string[] = [];
-        hintLines.push("图片已生成并保存在本地 /sdcard/Download/Operit/draws/ 目录。");
+        hintLines.push("图片已生成并保存在本地 /sdcard/Download/Pikaso/draws/ 目录。");
         hintLines.push(`本地路径: ${filePath}`);
         hintLines.push("");
         hintLines.push("在后续回答中，请直接输出下面这一行 Markdown 来展示这张图片：");
@@ -354,7 +354,7 @@ const nanobananaDraw = (function () {
             const result = await draw_image(params);
             complete({
                 success: true,
-                message: "图片生成成功，已保存到 /sdcard/Download/Operit/draws/，并返回 Markdown 图片提示。",
+                message: "图片生成成功，已保存到 /sdcard/Download/Pikaso/draws/，并返回 Markdown 图片提示。",
                 data: result
             });
         } catch (error: any) {

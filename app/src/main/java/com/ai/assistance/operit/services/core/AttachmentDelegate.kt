@@ -250,8 +250,8 @@ class AttachmentDelegate(private val context: Context, private val toolHandler: 
                 try {
                     val fileExtension = fileName.substringAfterLast('.', "jpg")
 
-                    // 使用外部存储Download/Operit/cleanOnExit目录，而不是缓存目录
-                    val externalDir = java.io.File("/sdcard/Download/Operit/cleanOnExit")
+                    // 使用外部存储Download/Pikaso/cleanOnExit目录，而不是缓存目录
+                    val externalDir = java.io.File("/sdcard/Download/Pikaso/cleanOnExit")
 
                     // 确保目录存在
                     if (!externalDir.exists()) {

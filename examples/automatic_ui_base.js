@@ -99,7 +99,7 @@ const UIAutomationTools = (function () {
     }
     async function get_page_screenshot_image(params) {
         try {
-            const screenshotDir = "/sdcard/Download/Operit/cleanOnExit";
+            const screenshotDir = "/sdcard/Download/Pikaso/cleanOnExit";
             // Ensure the directory exists
             await Tools.Files.mkdir(screenshotDir, true);
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');

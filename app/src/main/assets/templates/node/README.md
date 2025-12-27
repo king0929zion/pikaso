@@ -1,6 +1,6 @@
-# Operit Node.js 项目
+# Pikaso Node.js 项目
 
-这是一个使用 Operit 创建的 Node.js 项目。
+这是一个使用 Pikaso 创建的 Node.js 项目。
 
 ## 快速开始
 
@@ -12,7 +12,7 @@
 
 - `index.js` - 主程序入口
 - `package.json` - 项目配置文件
-- `.operit/config.json` - Operit 工作区配置
+- `.operit/config.json` - Pikaso 工作区配置
 
 ## 自定义
 

@@ -205,7 +205,7 @@ const CrossrefSearch = (function () {
             const url = `${BASE_URL}/works/${encodeURIComponent(doi)}`;
             const client = OkHttp.newClient();
             const response = await client.get(url, {
-                'User-Agent': 'Operit/1.0 (mailto:support@example.com)'
+                'User-Agent': 'Pikaso/1.0 (mailto:support@example.com)'
             });
             if (!response.isSuccessful()) {
                 return {
@@ -258,7 +258,7 @@ const CrossrefSearch = (function () {
             const url = `${BASE_URL}/works?${urlParams.toString()}`;
             const client = OkHttp.newClient();
             const response = await client.get(url, {
-                'User-Agent': 'Operit/1.0 (mailto:support@example.com)'
+                'User-Agent': 'Pikaso/1.0 (mailto:support@example.com)'
             });
             if (!response.isSuccessful()) {
                 return {
@@ -314,7 +314,7 @@ const CrossrefSearch = (function () {
             const url = `${BASE_URL}/works?${urlParams.toString()}`;
             const client = OkHttp.newClient();
             const response = await client.get(url, {
-                'User-Agent': 'Operit/1.0 (mailto:support@example.com)'
+                'User-Agent': 'Pikaso/1.0 (mailto:support@example.com)'
             });
             if (!response.isSuccessful()) {
                 return {
@@ -370,7 +370,7 @@ const CrossrefSearch = (function () {
             const url = `${BASE_URL}/works?${urlParams.toString()}`;
             const client = OkHttp.newClient();
             const response = await client.get(url, {
-                'User-Agent': 'Operit/1.0 (mailto:support@example.com)'
+                'User-Agent': 'Pikaso/1.0 (mailto:support@example.com)'
             });
             const data = response.json();
             if (data.status === "ok" && data.message && data.message.items) {
@@ -416,7 +416,7 @@ const CrossrefSearch = (function () {
             const url = `${BASE_URL}/journals/${encodeURIComponent(issn)}/works?rows=${actualRows}`;
             const client = OkHttp.newClient();
             const response = await client.get(url, {
-                'User-Agent': 'Operit/1.0 (mailto:support@example.com)'
+                'User-Agent': 'Pikaso/1.0 (mailto:support@example.com)'
             });
             if (!response.isSuccessful()) {
                 return {

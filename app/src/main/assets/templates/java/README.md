@@ -1,4 +1,4 @@
-# Operit Java 项目
+# Pikaso Java 项目
 
 这是一个使用标准 Gradle 构建的 Java 项目模板。
 
@@ -84,6 +84,6 @@ dependencies {
 - 修改 `build.gradle.kts` 更改构建配置
 - 在 `src/main/java` 中添加新的 Java 类
 - 在 `src/test/java` 中添加单元测试
-- 编辑 `.operit/config.json` 自定义 Operit 命令
+- 编辑 `.operit/config.json` 自定义 Pikaso 命令
 
 Happy Coding! ☕

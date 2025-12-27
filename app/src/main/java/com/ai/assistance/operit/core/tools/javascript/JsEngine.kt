@@ -114,7 +114,7 @@ class JsEngine(private val context: Context) {
                                 settings.allowContentAccess = false
 
                                 // 设置User Agent
-                                settings.userAgentString = "Operit-JsEngine/1.0"
+                                settings.userAgentString = "Pikaso-JsEngine/1.0"
                                 addJavascriptInterface(toolCallInterface, "NativeInterface")
                                 // 加载一个带有有效基地址的空HTML页面，以解决 about:blank 的源安全问题
                                 loadDataWithBaseURL("https://localhost", "<html></html>", "text/html", "UTF-8", null)

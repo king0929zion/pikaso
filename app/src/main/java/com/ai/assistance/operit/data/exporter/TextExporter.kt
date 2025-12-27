@@ -78,7 +78,7 @@ object TextExporter {
         
         sb.appendLine()
         sb.appendLine()
-        sb.appendLine("导出完成 - Operit AI Assistant")
+        sb.appendLine("导出完成 - Pikaso AI Assistant")
         
         return sb.toString()
     }

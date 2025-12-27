@@ -719,7 +719,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
 
     override suspend fun captureScreenshotToFile(tool: AITool): Pair<String?, Pair<Int, Int>?> {
         return try {
-            val screenshotDir = File("/sdcard/Download/Operit/cleanOnExit")
+            val screenshotDir = File("/sdcard/Download/Pikaso/cleanOnExit")
             if (!screenshotDir.exists()) {
                 screenshotDir.mkdirs()
             }

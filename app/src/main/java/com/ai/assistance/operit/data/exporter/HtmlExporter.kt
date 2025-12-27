@@ -123,7 +123,7 @@ object HtmlExporter {
     private fun appendHtmlFooter(sb: StringBuilder) {
         sb.appendLine("</div>")
         sb.appendLine("<footer>")
-        sb.appendLine("  <p>导出自 Operit AI Assistant</p>")
+        sb.appendLine("  <p>导出自 Pikaso AI Assistant</p>")
         sb.appendLine("</footer>")
         sb.appendLine("</body>")
         sb.appendLine("</html>")

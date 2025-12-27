@@ -1,7 +1,7 @@
 {
     "name": "operit-typescript-project",
     "version": "1.0.0",
-    "description": "TypeScript project created with Operit",
+    "description": "TypeScript project created with Pikaso",
     "main": "dist/index.js",
     "scripts": {
         "build": "tsc",

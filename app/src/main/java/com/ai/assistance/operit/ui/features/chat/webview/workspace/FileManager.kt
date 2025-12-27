@@ -95,11 +95,6 @@ fun FileBrowser(
     val quickPaths = remember {
         listOf(
             QuickPathEntry(
-                name = "Ubuntu",
-                path = File(context.filesDir, "usr/var/lib/proot-distro/installed-rootfs/ubuntu").absolutePath,
-                icon = Icons.Default.Terminal
-            ),
-            QuickPathEntry(
                 name = "SDCard",
                 path = Environment.getExternalStorageDirectory().absolutePath,
                 icon = Icons.Default.SdCard

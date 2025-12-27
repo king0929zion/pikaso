@@ -64,7 +64,7 @@ fun getWorkspacePath(context: Context, chatId: String): String {
 
 /**
  * 获取旧的工作区路径（外部存储）
- * 路径: /sdcard/Download/Operit/workspace/{chatId}
+ * 路径: /sdcard/Download/Pikaso/workspace/{chatId}
  */
 fun getLegacyWorkspacePath(chatId: String): String {
     val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)

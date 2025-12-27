@@ -93,9 +93,9 @@ class MCPBridge private constructor(private val context: Context) {
             appContext = context.applicationContext
             return withContext(Dispatchers.IO) {
                 try {
-                    // 1. 首先将桥接器从assets复制到sdcard/Download/Operit/bridge目录
+                    // 1. 首先将桥接器从assets复制到sdcard/Download/Pikaso/bridge目录
                     val sdcardPath = "/sdcard"
-                    val operitDir = File("$sdcardPath/Download/Operit")
+                    val operitDir = File("$sdcardPath/Download/Pikaso")
                     if (!operitDir.exists()) {
                         operitDir.mkdirs()
                     }

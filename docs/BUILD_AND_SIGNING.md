@@ -1,4 +1,4 @@
-# Operit Android 签名配置指南
+# Pikaso Android 签名配置指南
 
 ## 1. 生成签名密钥
 
@@ -15,7 +15,7 @@ keytool -genkeypair \
   -validity 10000 \
   -storepass your_store_password \
   -keypass your_key_password \
-  -dname "CN=Operit, OU=Development, O=YourCompany, L=YourCity, ST=YourState, C=CN"
+  -dname "CN=Pikaso, OU=Development, O=YourCompany, L=YourCity, ST=YourState, C=CN"
 ```
 
 ### 使用 Android Studio 生成密钥
@@ -99,12 +99,12 @@ git push origin main
 GitHub Actions 将生成以下产物：
 
 ### Debug 构建
-- **文件名**: `Operit-Debug-{version}-{timestamp}.apk`
+- **文件名**: `Pikaso-Debug-{version}-{timestamp}.apk`
 - **用途**: 开发测试
 - **保留时间**: 30 天
 
 ### Release 构建
-- **APK**: `Operit-Release-{version}-{timestamp}.apk`
+- **APK**: `Pikaso-Release-{version}-{timestamp}.apk`
 - **AAB**: `app-release.aab`
 - **保留时间**: 90 天
 

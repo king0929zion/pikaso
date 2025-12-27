@@ -146,7 +146,7 @@ const douyin = (function () {
             // 替换文件名中的非法字符
             videoTitle = videoTitle.replace(/[\\/:*?"<>|]/g, '_');
             // 逐级创建目录并下载视频
-            const baseDir = "/sdcard/Download/OperitScripts";
+            const baseDir = "/sdcard/Download/PikasoScripts";
             const destinationDir = `${baseDir}/douyin`;
             const destinationPath = `${destinationDir}/${videoTitle}_${videoId}.mp4`;
             console.log(`确保目录存在: ${destinationDir}`);

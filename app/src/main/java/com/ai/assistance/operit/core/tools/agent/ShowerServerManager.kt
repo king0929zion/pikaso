@@ -48,7 +48,7 @@ object ShowerServerManager {
         AppLogger.d(TAG, "Stopping existing Shower server (if any) with command: $killCmd")
         AndroidShellExecutor.executeShellCommand(killCmd)
 
-        // 2) Copy the jar from /sdcard/Download/Operit to /data/local/tmp.
+        // 2) Copy the jar from /sdcard/Download/Pikaso to /data/local/tmp.
         val remoteJarPath = "/data/local/tmp/$LOCAL_JAR_NAME"
         val copyCmd = "cp ${jarFile.absolutePath} $remoteJarPath"
         AppLogger.d(TAG, "Copying Shower jar with command: $copyCmd")
@@ -106,8 +106,8 @@ object ShowerServerManager {
      * Always overwrites the existing file to keep it in sync with the packaged asset.
      */
     private suspend fun copyJarToExternalDir(context: Context): File = withContext(Dispatchers.IO) {
-        // Reuse the same base directory as screenshots: /sdcard/Download/Operit
-        val baseDir = File("/sdcard/Download/Operit")
+        // Reuse the same base directory as screenshots: /sdcard/Download/Pikaso
+        val baseDir = File("/sdcard/Download/Pikaso")
         if (!baseDir.exists()) {
             baseDir.mkdirs()
         }

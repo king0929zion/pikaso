@@ -429,7 +429,7 @@ object ModelListFetcher {
             try {
                 val modelsDir = File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                    "Operit/models/mnn"
+                    "Pikaso/models/mnn"
                 )
                 
                 AppLogger.d(TAG, "读取MNN模型目录: ${modelsDir.absolutePath}")

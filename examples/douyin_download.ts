@@ -167,7 +167,7 @@ const douyin = (function () {
             videoTitle = videoTitle.replace(/[\\/:*?"<>|]/g, '_');
 
             // 逐级创建目录并下载视频
-            const baseDir = "/sdcard/Download/OperitScripts";
+            const baseDir = "/sdcard/Download/PikasoScripts";
             const destinationDir = `${baseDir}/douyin`;
             const destinationPath = `${destinationDir}/${videoTitle}_${videoId}.mp4`;
 
