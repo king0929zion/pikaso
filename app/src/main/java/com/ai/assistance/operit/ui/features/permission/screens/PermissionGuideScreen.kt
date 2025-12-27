@@ -376,12 +376,14 @@ private fun PermissionLevelCard(
                         AndroidPermissionLevel.STANDARD -> stringResource(R.string.permission_guide_standard_title)
                         AndroidPermissionLevel.ACCESSIBILITY -> stringResource(R.string.permission_guide_accessibility_title)
                         AndroidPermissionLevel.DEBUGGER -> stringResource(R.string.permission_guide_debugger_title)
+                        AndroidPermissionLevel.ADMIN -> stringResource(R.string.permission_guide_admin_title)
                         AndroidPermissionLevel.ROOT -> stringResource(R.string.permission_guide_root_title)
                     },
                     description = when (level) {
                         AndroidPermissionLevel.STANDARD -> stringResource(R.string.permission_guide_standard_desc)
                         AndroidPermissionLevel.ACCESSIBILITY -> stringResource(R.string.permission_guide_accessibility_desc)
                         AndroidPermissionLevel.DEBUGGER -> stringResource(R.string.permission_guide_debugger_desc)
+                        AndroidPermissionLevel.ADMIN -> stringResource(R.string.permission_guide_admin_desc)
                         AndroidPermissionLevel.ROOT -> stringResource(R.string.permission_guide_root_desc)
                     },
                     isSelected = selectedLevel == level,

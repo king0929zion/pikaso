@@ -693,6 +693,8 @@
     <string name="permission_guide_accessibility_desc">通过无障碍服务实现屏幕内容分析和模拟操作</string>
     <string name="permission_guide_debugger_title">调试权限</string>
     <string name="permission_guide_debugger_desc">通过Shizuku提供ADB级别的系统访问</string>
+    <string name="permission_guide_admin_title">管理员权限</string>
+    <string name="permission_guide_admin_desc">设备管理员权限，可执行部分系统操作</string>
     <string name="permission_guide_root_title">Root权限</string>
     <string name="permission_guide_root_desc">超级用户权限，可执行任意系统操作</string>
     <string name="permission_guide_confirm">确认选择</string>

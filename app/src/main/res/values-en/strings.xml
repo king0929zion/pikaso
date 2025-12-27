@@ -721,6 +721,8 @@
     <string name="permission_guide_accessibility_desc">Enables screen content analysis and operation simulation via accessibility service</string>
     <string name="permission_guide_debugger_title">Debug Permissions</string>
     <string name="permission_guide_debugger_desc">Provides ADB-level system access through Shizuku</string>
+    <string name="permission_guide_admin_title">Admin Permissions</string>
+    <string name="permission_guide_admin_desc">Device administrator permissions, can perform some system operations</string>
     <string name="permission_guide_root_title">Root Permissions</string>
     <string name="permission_guide_root_desc">Superuser permissions, can perform any system operations</string>
     <string name="permission_guide_confirm">Confirm Selection</string>
