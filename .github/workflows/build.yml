@@ -62,7 +62,9 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease --stacktrace
+        run: ./gradlew assembleRelease --stacktrace --no-daemon
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
       - name: Get version
         id: version
@@ -85,6 +87,10 @@ jobs:
           name: Pikaso-APK-${{ steps.version.outputs.buildNumber }}
           path: app/build/outputs/apk/release/Pikaso-*.apk
           retention-days: 30
+
+      - name: Stop Gradle Daemon
+        if: always()
+        run: ./gradlew --stop || true
 
   release:
     name: Create Release
