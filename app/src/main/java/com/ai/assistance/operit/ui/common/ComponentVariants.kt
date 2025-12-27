@@ -57,7 +57,7 @@ object ComponentVariants {
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        content: @Composable androidx.compose.material3.ButtonScope.() -> Unit
+        content: @Composable () -> Unit
     ) {
         Button(
             onClick = onClick,
@@ -65,9 +65,10 @@ object ComponentVariants {
                 .height(AppSizes.buttonMinHeight)
                 .defaultMinSize(minWidth = AppSizes.buttonMinWidth),
             enabled = enabled,
-            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
-            content = content
-        )
+            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
+        ) {
+            content()
+        }
     }
 
     /**
@@ -78,7 +79,7 @@ object ComponentVariants {
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        content: @Composable androidx.compose.material3.ButtonScope.() -> Unit
+        content: @Composable () -> Unit
     ) {
         FilledTonalButton(
             onClick = onClick,
@@ -86,9 +87,10 @@ object ComponentVariants {
                 .height(AppSizes.buttonMinHeight)
                 .defaultMinSize(minWidth = AppSizes.buttonMinWidth),
             enabled = enabled,
-            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
-            content = content
-        )
+            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
+        ) {
+            content()
+        }
     }
 
     /**
@@ -99,7 +101,7 @@ object ComponentVariants {
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        content: @Composable androidx.compose.material3.ButtonScope.() -> Unit
+        content: @Composable () -> Unit
     ) {
         OutlinedButton(
             onClick = onClick,
@@ -107,9 +109,10 @@ object ComponentVariants {
                 .height(AppSizes.buttonMinHeight)
                 .defaultMinSize(minWidth = AppSizes.buttonMinWidth),
             enabled = enabled,
-            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
-            content = content
-        )
+            shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
+        ) {
+            content()
+        }
     }
 
     /**
@@ -120,14 +123,15 @@ object ComponentVariants {
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        content: @Composable androidx.compose.material3.ButtonScope.() -> Unit
+        content: @Composable () -> Unit
     ) {
         TextButton(
             onClick = onClick,
             modifier = modifier.height(AppSizes.buttonMinHeight),
-            enabled = enabled,
-            content = content
-        )
+            enabled = enabled
+        ) {
+            content()
+        }
     }
 
     /**
