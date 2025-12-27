@@ -32,13 +32,9 @@ import com.ai.assistance.operit.core.tools.AIToolHandler
 import com.ai.assistance.operit.data.migration.ChatHistoryMigrationManager
 import com.ai.assistance.operit.data.preferences.AgreementPreferences
 import com.ai.assistance.operit.data.preferences.UserPreferencesManager
-import com.ai.assistance.operit.data.preferences.androidPermissionPreferences
 import com.ai.assistance.operit.data.updates.UpdateManager
 import com.ai.assistance.operit.data.updates.UpdateStatus
 import com.ai.assistance.operit.ui.common.NavItem
-import com.ai.assistance.operit.ui.features.agreement.screens.AgreementScreen
-import com.ai.assistance.operit.ui.features.migration.screens.MigrationScreen
-import com.ai.assistance.operit.ui.features.permission.screens.PermissionGuideScreen
 import com.ai.assistance.operit.ui.theme.OperitTheme
 import com.ai.assistance.operit.ui.common.displays.VirtualDisplayOverlay
 import com.ai.assistance.operit.util.AnrMonitor
@@ -80,10 +76,7 @@ class MainActivity : ComponentActivity() {
     // UpdateManager实例
     private lateinit var updateManager: UpdateManager
 
-    // 是否显示权限引导界面
-    private var showPermissionGuide by mutableStateOf(false)
-
-    // 是否已完成权限和迁移检查
+    // 是否已完成初始化检查
     private var initialChecksDone = false
 
     // 存储待处理的分享文件URIs
@@ -230,59 +223,14 @@ class MainActivity : ComponentActivity() {
     // ======== 执行初始化检查 ========
     private fun performInitialChecks() {
         lifecycleScope.launch {
-            // 1. 检查通知权限（Android 13+）
+            // 只检查通知权限（Android 13+）
             checkNotificationPermission()
 
-            // 2. 检查权限级别设置
-            checkPermissionLevelSet()
-
-            // 3. 检查是否需要数据迁移
-            if (!showPermissionGuide && agreementPreferences.isAgreementAccepted()) {
-                try {
-                    val needsMigration = migrationManager.needsMigration()
-                    AppLogger.d(TAG, "数据迁移检查: 需要迁移=$needsMigration")
-
-                    showMigrationScreen = needsMigration
-
-                    // 如果不需要迁移，直接启动插件加载
-                    if (!needsMigration) {
-                        startPluginLoading()
-                    }
-                } catch (e: Exception) {
-                    AppLogger.e(TAG, "数据迁移检查失败", e)
-                    // 检查失败，跳过迁移直接加载插件
-                    startPluginLoading()
-                }
-            }
-
-            // 标记完成初始检查
+            // 直接标记完成，不显示任何引导页
             initialChecksDone = true
 
             // 设置应用内容
             setAppContent()
-        }
-    }
-
-    // ======== 检查数据迁移 ========
-    private fun checkMigrationNeeded() {
-        lifecycleScope.launch {
-            try {
-                // 检查是否需要迁移数据
-                val needsMigration = migrationManager.needsMigration()
-                AppLogger.d(TAG, "数据迁移检查: 需要迁移=$needsMigration")
-
-                if (needsMigration) {
-                    showMigrationScreen = true
-                    setAppContent()
-                } else {
-                    // 不需要迁移，显示插件加载界面
-                    startPluginLoading()
-                }
-            } catch (e: Exception) {
-                AppLogger.e(TAG, "数据迁移检查失败", e)
-                // 检查失败，跳过迁移直接加载插件
-                startPluginLoading()
-            }
         }
     }
 
@@ -434,18 +382,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // ======== 检查权限级别设置 ========
-    private fun checkPermissionLevelSet() {
-        // 检查是否已设置权限级别
-        val permissionLevel = androidPermissionPreferences.getPreferredPermissionLevel()
-        AppLogger.d(TAG, "当前权限级别: $permissionLevel")
-        showPermissionGuide = permissionLevel == null
-        AppLogger.d(
-                TAG,
-                "权限级别检查: 已设置=${!showPermissionGuide}, 将${if(showPermissionGuide) "" else "不"}显示权限引导界面"
-        )
-    }
-
     // ======== 显示与性能配置 ========
     private fun configureDisplaySettings() {
         // 1. 请求持续的高性能模式 (API 31+)
@@ -490,76 +426,27 @@ class MainActivity : ComponentActivity() {
         setContent {
             OperitTheme {
                 Box {
-                    // 如果初始化检查未完成，则显示一个占位符，避免在检查完成前显示不完整的界面
-                    if (!initialChecksDone) {
-                        // 在这里可以放置一个加载指示器，或者一个空白屏幕
-                        // 为了简单起见，我们暂时留空，因为检查过程很快
-                    } else {
-                        // 检查是否需要显示用户协议
-                        if (!agreementPreferences.isAgreementAccepted()) {
-                            AgreementScreen(
-                                    onAgreementAccepted = {
-                                        agreementPreferences.setAgreementAccepted(true)
-                                        // 协议接受后，检查权限级别设置
-                                        lifecycleScope.launch {
-                                            // 确保使用非阻塞方式更新UI
-                                            delay(300) // 短暂延迟确保UI状态更新
-                                            checkPermissionLevelSet()
-                                            // 重新设置应用内容
-                                            setAppContent()
-                                        }
-                                    }
-                            )
-                        }
-                        // 检查是否需要显示数据迁移界面
-                        else if (showMigrationScreen) {
-                            MigrationScreen(
-                                    migrationManager = migrationManager,
-                                    onComplete = {
-                                        showMigrationScreen = false
-                                        // 迁移完成后，启动插件加载
-                                        startPluginLoading()
-                                        // 重新设置应用内容
-                                        setAppContent()
-                                    }
-                            )
-                        }
-                        // 检查是否需要显示权限引导界面
-                        else if (showPermissionGuide) {
-                            PermissionGuideScreen(
-                                    onComplete = {
-                                        showPermissionGuide = false
-                                        // 权限设置完成后，重新设置应用内容
-                                        setAppContent()
-                                    }
-                            )
-                        }
-                        // 显示主应用界面
-                        else {
-                            // 处理待处理的分享文件
-                            processPendingSharedFiles()
-                            
-                            // 主应用界面 (始终存在于底层)
-                            OperitApp(
-                                    initialNavItem = NavItem.AiChat,  // 直接进入聊天界面
-                                    toolHandler = toolHandler
-                            )
-                        }
-                    }
-                }
+                    // 直接显示主应用界面
+                    processPendingSharedFiles()
 
-                // 方向改变时显示对话框
-                if (showOrientationChangeDialog) {
-                    OrientationChangeDialog(
-                        onConfirm = {
-                            showOrientationChangeDialog = false
-                            // 重新创建Activity以重新加载页面
-                            recreate()
-                        },
-                        onDismiss = {
-                            showOrientationChangeDialog = false
-                        }
+                    OperitApp(
+                        initialNavItem = NavItem.AiChat,  // 直接进入聊天界面
+                        toolHandler = toolHandler
                     )
+
+                    // 方向改变时显示对话框
+                    if (showOrientationChangeDialog) {
+                        OrientationChangeDialog(
+                            onConfirm = {
+                                showOrientationChangeDialog = false
+                                // 重新创建Activity以重新加载页面
+                                recreate()
+                            },
+                            onDismiss = {
+                                showOrientationChangeDialog = false
+                            }
+                        )
+                    }
                 }
             }
         }
