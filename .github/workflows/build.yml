@@ -8,33 +8,28 @@ on:
 jobs:
   build:
     name: Build Release APK
-    runs-on: self-hosted
-    timeout-minutes: 45
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
-      - name: Cleanup Workspace
-        run: |
-          echo "Cleaning up workspace before build..."
-          rm -rf ./*
-          rm -rf .[^.]*
-          echo "Workspace cleaned"
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          clean: true
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master' }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-
-      - name: Kill any existing Gradle processes
-        run: |
-          echo "Killing any existing Gradle processes..."
-          pkill -9 -f gradle || true
-          pkill -9 -f java.*gradle || true
-          rm -f ~/.gradle/caches/*.lock ~/.gradle/*.lock || true
-          echo "Gradle processes cleaned"
 
       - name: Decode Keystore
         run: |
@@ -58,9 +53,9 @@ jobs:
           cat app/keystore.properties | sed 's/Password=.*/Password=***/'
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease --stacktrace --no-daemon --build-cache
+        run: ./gradlew assembleRelease --stacktrace --no-daemon
         env:
-          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Xmx4096m"
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
       - name: Get version
         id: version
@@ -84,20 +79,14 @@ jobs:
           path: app/build/outputs/apk/release/Pikaso-*.apk
           retention-days: 30
 
-      - name: Cleanup after build
+      - name: Stop Gradle Daemon
         if: always()
-        run: |
-          echo "Stopping Gradle daemon..."
-          ./gradlew --stop || true
-          echo "Killing any remaining Gradle processes..."
-          pkill -9 -f gradle || true
-          pkill -9 -f java.*gradle || true
-          echo "Cleanup completed"
+        run: ./gradlew --stop || true
 
   release:
     name: Create Release
     needs: build
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     timeout-minutes: 10
 
@@ -159,10 +148,3 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Cleanup after release
-        if: always()
-        run: |
-          echo "Cleaning up artifacts..."
-          rm -rf ./artifacts || true
-          echo "Cleanup completed"
