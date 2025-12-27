@@ -43,7 +43,8 @@ fun SettingsScreen(
         navigateToWaifuModeSettings: () -> Unit,
         navigateToTokenUsageStatistics: () -> Unit,
         navigateToContextSummarySettings: () -> Unit,
-        navigateToLayoutAdjustmentSettings: () -> Unit
+        navigateToLayoutAdjustmentSettings: () -> Unit,
+        navigateToPermissionGuide: () -> Unit = {}
 ) {
         val context = LocalContext.current
         val userPreferences = remember { UserPreferencesManager.getInstance(context) }
@@ -165,6 +166,12 @@ fun SettingsScreen(
                                 subtitle = "工具权限管理",
                                 icon = Icons.Default.AdminPanelSettings,
                                 onClick = navigateToToolPermissions
+                        )
+                        SettingsItem(
+                                title = "权限配置",
+                                subtitle = "应用权限级别设置",
+                                icon = Icons.Default.Security,
+                                onClick = navigateToPermissionGuide
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_chat_history_management),
