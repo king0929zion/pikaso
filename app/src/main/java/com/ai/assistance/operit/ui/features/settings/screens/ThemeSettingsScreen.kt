@@ -74,6 +74,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import kotlinx.coroutines.launch
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 // Add utility function to calculate the luminance of a color
 private fun calculateLuminance(color: Color): Float {
@@ -855,17 +856,17 @@ fun ThemeSettingsScreen() {
     // Add a scroll state that we can control
     val scrollState = rememberScrollState()
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState)) {
+    Column(modifier = Modifier.fillMaxSize().padding(AppSpacing.medium).verticalScroll(scrollState)) {
         // ======= 角色卡主题绑定信息 =======
         Card(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.small),
             colors = cardModifier,
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(AppSpacing.extraSmall)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(12.dp),
+                modifier = Modifier.fillMaxWidth().padding(AppSpacing.small),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.small)
             ) {
                 // 显示头像但不可编辑
                 Box(
@@ -887,7 +888,7 @@ fun ThemeSettingsScreen() {
                             Icons.Default.Person,
                             contentDescription = "默认头像",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(AppSpacing.large)
                         )
                     }
                 }
@@ -910,7 +911,7 @@ fun ThemeSettingsScreen() {
                     Icons.Default.Link,
                     contentDescription = "绑定",
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(AppSpacing.mediumLarge)
                 )
             }
         }
@@ -922,17 +923,17 @@ fun ThemeSettingsScreen() {
         )
 
         // System theme settings
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = stringResource(id = R.string.theme_system_title),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
 
                 // Follow system theme
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -961,18 +962,18 @@ fun ThemeSettingsScreen() {
 
                 // Only show theme selection when not following system
                 if (!useSystemThemeInput) {
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                     Text(
                             text = stringResource(id = R.string.theme_select),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                     )
 
                     // Theme mode selection
                     Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                     ) {
                         ThemeModeOption(
                                 title = stringResource(id = R.string.theme_light),
@@ -1014,17 +1015,17 @@ fun ThemeSettingsScreen() {
         )
 
         // Add status bar color settings
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = stringResource(id = R.string.theme_statusbar_color),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
 
                 // Status bar hidden switch
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1050,11 +1051,11 @@ fun ThemeSettingsScreen() {
                     )
                 }
 
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                 // Status bar transparent switch
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1082,11 +1083,11 @@ fun ThemeSettingsScreen() {
                     )
                 }
 
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                 // Use custom status bar color switch
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1115,7 +1116,7 @@ fun ThemeSettingsScreen() {
                 }
 
                 if (useCustomStatusBarColorInput) {
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
                     // Status bar color selection
                     ColorSelectionItem(
                             title = stringResource(id = R.string.theme_statusbar_color),
@@ -1135,17 +1136,17 @@ fun ThemeSettingsScreen() {
 
 
         // Add toolbar transparency settings
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = stringResource(id = R.string.theme_toolbar_transparent),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
 
                 // Toolbar transparency
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1170,7 +1171,7 @@ fun ThemeSettingsScreen() {
                 
                 // Custom AppBar Color
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1214,15 +1215,15 @@ fun ThemeSettingsScreen() {
         }
 
         // Chat header transparency
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = stringResource(id = R.string.theme_chat_header_transparent_title),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1246,9 +1247,9 @@ fun ThemeSettingsScreen() {
                 }
 
                 if (chatHeaderTransparentInput) {
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
                     Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                            modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -1280,15 +1281,15 @@ fun ThemeSettingsScreen() {
         }
 
         // Chat input transparency
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = stringResource(id = R.string.theme_chat_input_transparent_title),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1314,17 +1315,17 @@ fun ThemeSettingsScreen() {
         }
 
         // Add AppBar content color settings
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = stringResource(id = R.string.theme_appbar_content_color_title),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
 
                 // Force AppBar content color
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1351,15 +1352,15 @@ fun ThemeSettingsScreen() {
                 }
 
                 if (forceAppBarContentColorInput) {
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
                     Text(
                             text = stringResource(id = R.string.theme_appbar_content_color_mode),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                     )
                     Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                     ) {
                         ThemeModeOption(
                                 title = stringResource(id = R.string.theme_appbar_content_color_light),
@@ -1389,12 +1390,12 @@ fun ThemeSettingsScreen() {
         }
 
         // ChatHeader icon color settings
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = stringResource(id = R.string.theme_chat_header_icons_color_title),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
                 ColorSelectionItem(
                         title = stringResource(id = R.string.theme_chat_header_history_icon_color),
@@ -1405,7 +1406,7 @@ fun ThemeSettingsScreen() {
                             showColorPicker = true
                         }
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                 ColorSelectionItem(
                         title = stringResource(id = R.string.theme_chat_header_pip_icon_color),
                         color = Color(chatHeaderPipIconColorInput),
@@ -1419,17 +1420,17 @@ fun ThemeSettingsScreen() {
         }
 
         // Custom color settings
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = stringResource(id = R.string.theme_custom_color),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
 
                 // Whether to use custom colors
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1458,19 +1459,19 @@ fun ThemeSettingsScreen() {
 
                 // Only show color selection when custom colors are enabled
                 if (useCustomColorsInput) {
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                     Text(
                             text = stringResource(id = R.string.theme_select_color),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                     )
 
                     // Color selection
                     Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                            modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.medium)
                     ) {
                         // Primary color selection
                         ColorSelectionItem(
@@ -1495,17 +1496,17 @@ fun ThemeSettingsScreen() {
                         )
                     }
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                     Text(
                         text = stringResource(id = R.string.theme_on_color_mode),
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                     )
 
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium),
+                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                     ) {
                         ThemeModeOption(
                             title = stringResource(id = R.string.theme_on_color_auto),
@@ -1546,22 +1547,22 @@ fun ThemeSettingsScreen() {
                     Text(
                             text = stringResource(id = R.string.theme_preview),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(vertical = 8.dp)
+                            modifier = Modifier.padding(vertical = AppSpacing.extraSmall)
                     )
 
                     // Create a mini-preview of how the selected colors will look
-                    Column(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium)) {
                         // Primary color demo
-                        Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+                        Row(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall)) {
                             val primaryColor = Color(primaryColorInput)
                             val onPrimaryColor = getTextColorForBackground(primaryColor)
 
                             // Primary button preview
                             Surface(
                                     modifier =
-                                            Modifier.weight(1f).height(40.dp).padding(end = 8.dp),
+                                            Modifier.weight(1f).height(40.dp).padding(end = AppSpacing.extraSmall),
                                     color = primaryColor,
-                                    shape = RoundedCornerShape(4.dp)
+                                    shape = RoundedCornerShape(AppSpacing.nano)
                             ) {
                                 Box(
                                         modifier = Modifier.fillMaxSize(),
@@ -1582,7 +1583,7 @@ fun ThemeSettingsScreen() {
                             Surface(
                                     modifier = Modifier.weight(1f).height(40.dp),
                                     color = secondaryColor,
-                                    shape = RoundedCornerShape(4.dp)
+                                    shape = RoundedCornerShape(AppSpacing.nano)
                             ) {
                                 Box(
                                         modifier = Modifier.fillMaxSize(),
@@ -1601,7 +1602,7 @@ fun ThemeSettingsScreen() {
                                 text = stringResource(id = R.string.theme_contrast_tip),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.padding(top = 8.dp)
+                                modifier = Modifier.padding(top = AppSpacing.extraSmall)
                         )
                     }
 
@@ -1616,7 +1617,7 @@ fun ThemeSettingsScreen() {
                                     showSaveSuccessMessage = true
                                 }
                             },
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                            modifier = Modifier.fillMaxWidth().padding(vertical = AppSpacing.extraSmall)
                     ) { Text(stringResource(id = R.string.theme_save_colors)) }
                 }
             }
@@ -1628,17 +1629,17 @@ fun ThemeSettingsScreen() {
             icon = Icons.Default.ColorLens // 您可以根据需要更改图标
         )
 
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                     text = stringResource(id = R.string.chat_style_desc),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                 ) {
                     ChatStyleOption(
                         title = stringResource(id = R.string.chat_style_cursor),
@@ -1670,11 +1671,11 @@ fun ThemeSettingsScreen() {
             title = stringResource(id = R.string.display_options_title),
             icon = Icons.Default.ColorLens // Replace with a more appropriate icon if available
         )
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 // Show thinking process switch
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1697,7 +1698,7 @@ fun ThemeSettingsScreen() {
                     )
                 }
 
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                 // Show status tags switch
                 Row(
@@ -1724,7 +1725,7 @@ fun ThemeSettingsScreen() {
                     )
                 }
 
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                 // Show input processing status switch
                 Row(
@@ -1759,11 +1760,11 @@ fun ThemeSettingsScreen() {
             icon = Icons.Default.TextFields
         )
 
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 // 启用自定义字体开关
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -1791,18 +1792,18 @@ fun ThemeSettingsScreen() {
 
                 // 字体设置只在启用自定义字体时显示
                 if (useCustomFontInput) {
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                     // 字体类型选择
                     Text(
                         text = context.getString(R.string.font_type_label),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                     )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                     ) {
                         // 系统字体按钮
                         FilterChip(
@@ -1833,7 +1834,7 @@ fun ThemeSettingsScreen() {
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                     // 根据选择的类型显示不同的设置
                     when (fontTypeInput) {
@@ -1842,12 +1843,12 @@ fun ThemeSettingsScreen() {
                             Text(
                                 text = context.getString(R.string.select_system_font),
                                 style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                             )
 
                             Column(
                                 modifier = Modifier.fillMaxWidth(),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                                verticalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                             ) {
                                 listOf(
                                     UserPreferencesManager.SYSTEM_FONT_DEFAULT to "默认字体",
@@ -1859,7 +1860,7 @@ fun ThemeSettingsScreen() {
                                     Row(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(vertical = 4.dp),
+                                            .padding(vertical = AppSpacing.nano),
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         RadioButton(
@@ -1873,7 +1874,7 @@ fun ThemeSettingsScreen() {
                                                 }
                                             }
                                         )
-                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                                         Text(
                                             text = displayName,
                                             style = MaterialTheme.typography.bodyMedium
@@ -1888,19 +1889,19 @@ fun ThemeSettingsScreen() {
                             Text(
                                 text = context.getString(R.string.custom_font_file_title),
                                 style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                             )
 
                             Text(
                                 text = context.getString(R.string.font_file_support_desc),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                             )
 
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                             ) {
                                 Button(
                                     onClick = {
@@ -1914,7 +1915,7 @@ fun ThemeSettingsScreen() {
                                         contentDescription = null,
                                         modifier = Modifier.size(18.dp)
                                     )
-                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Spacer(modifier = Modifier.width(AppSpacing.nano))
                                     Text(context.getString(R.string.select_font_file))
                                 }
 
@@ -1935,30 +1936,30 @@ fun ThemeSettingsScreen() {
                                             contentDescription = null,
                                             modifier = Modifier.size(18.dp)
                                         )
-                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Spacer(modifier = Modifier.width(AppSpacing.nano))
                                         Text(context.getString(R.string.clear_font))
                                     }
                                 }
                             }
 
                             if (!customFontPathInput.isNullOrEmpty()) {
-                                Spacer(modifier = Modifier.height(8.dp))
+                                Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                                 Text(
                                     text = context.getString(R.string.current_font_file_path, customFontPathInput?.substringAfterLast("/") ?: ""),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.padding(top = 4.dp)
+                                    modifier = Modifier.padding(top = AppSpacing.nano)
                                 )
                             }
                         }
                     }
 
                     // 添加字体大小调整滑块
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.medium))
                     Text(
                         text = context.getString(R.string.font_size_scale_label, String.format("%.1f", fontScaleInput)),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                     )
                     Slider(
                         value = fontScaleInput,
@@ -1980,8 +1981,8 @@ fun ThemeSettingsScreen() {
             title = stringResource(id = R.string.avatar_customization_title),
             icon = Icons.Default.Person // Replace with a more appropriate icon if available
         )
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 // User Avatar Pickers - 横向排列
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -2025,16 +2026,16 @@ fun ThemeSettingsScreen() {
                     text = "说明：左侧的用户头像是角色卡专属设置，为空时将使用右侧的全局用户头像。全局用户头像在所有角色卡中共享使用。",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                    modifier = Modifier.padding(top = AppSpacing.extraSmall, bottom = AppSpacing.extraSmall)
                 )
 
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                 // 全局用户名称设置
                 Text(
                     text = stringResource(id = R.string.global_user_name_title),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
                 
                 OutlinedTextField(
@@ -2043,7 +2044,7 @@ fun ThemeSettingsScreen() {
                     label = { Text(stringResource(id = R.string.global_user_name_label)) },
                     placeholder = { Text(stringResource(id = R.string.global_user_name_placeholder)) },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(AppSpacing.extraSmall),
                     singleLine = true,
                     trailingIcon = {
                         if (globalUserNameInput.isNullOrEmpty()) {
@@ -2075,19 +2076,19 @@ fun ThemeSettingsScreen() {
                     text = stringResource(id = R.string.global_user_name_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+                    modifier = Modifier.padding(top = AppSpacing.nano, bottom = AppSpacing.extraSmall)
                 )
 
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                 Text(
                     text = stringResource(id = R.string.avatar_shape_title),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                 ) {
                     ChatStyleOption(
                         title = stringResource(id = R.string.avatar_shape_circle),
@@ -2113,11 +2114,11 @@ fun ThemeSettingsScreen() {
 
                 AnimatedVisibility(visible = avatarShapeInput == UserPreferencesManager.AVATAR_SHAPE_SQUARE) {
                     Column {
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                        HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
                         Text(
                             text = stringResource(id = R.string.avatar_corner_radius),
                             style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                         )
 
                         Row(
@@ -2144,7 +2145,7 @@ fun ThemeSettingsScreen() {
                                 text = "${avatarCornerRadiusInput.toInt()} dp",
                                 style = MaterialTheme.typography.bodyLarge,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(horizontal = 24.dp)
+                                modifier = Modifier.padding(horizontal = AppSpacing.large)
                             )
 
                             OutlinedButton(
@@ -2175,17 +2176,17 @@ fun ThemeSettingsScreen() {
         )
 
         // Background media settings
-        Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), colors = cardModifier) {
-            Column(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium), colors = cardModifier) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = stringResource(id = R.string.theme_bg_media),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                 )
 
                 // Whether to use background image
                 Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -2214,18 +2215,18 @@ fun ThemeSettingsScreen() {
 
                 // Only show image selection when background image is enabled
                 if (useBackgroundImageInput) {
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                     // Media type selection
                     Text(
                             text = stringResource(id = R.string.theme_media_type),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                     )
 
                     Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.medium),
+                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                     ) {
                         MediaTypeOption(
                                 title = stringResource(id = R.string.theme_media_image),
@@ -2278,12 +2279,12 @@ fun ThemeSettingsScreen() {
                                 modifier =
                                         Modifier.fillMaxWidth()
                                                 .height(200.dp)
-                                                .padding(bottom = 16.dp)
-                                                .clip(RoundedCornerShape(8.dp))
+                                                .padding(bottom = AppSpacing.medium)
+                                                .clip(RoundedCornerShape(AppSpacing.extraSmall))
                                                 .border(
                                                         1.dp,
                                                         MaterialTheme.colorScheme.outline,
-                                                        RoundedCornerShape(8.dp)
+                                                        RoundedCornerShape(AppSpacing.extraSmall)
                                                 )
                                                 .background(Color.Black.copy(alpha = 0.1f))
                         ) {
@@ -2309,7 +2310,7 @@ fun ThemeSettingsScreen() {
                                         },
                                         modifier =
                                                 Modifier.align(Alignment.TopEnd)
-                                                        .padding(8.dp)
+                                                        .padding(AppSpacing.extraSmall)
                                                         .background(
                                                                 MaterialTheme.colorScheme.surface
                                                                         .copy(alpha = 0.7f),
@@ -2387,7 +2388,7 @@ fun ThemeSettingsScreen() {
                                 )
 
                                 // Video control buttons
-                                Row(modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)) {
+                                Row(modifier = Modifier.align(Alignment.TopEnd).padding(AppSpacing.extraSmall)) {
                                     // Mute button
                                     IconButton(
                                             onClick = {
@@ -2401,7 +2402,7 @@ fun ThemeSettingsScreen() {
                                                 }
                                             },
                                             modifier =
-                                                    Modifier.padding(end = 8.dp)
+                                                    Modifier.padding(end = AppSpacing.extraSmall)
                                                             .background(
                                                                     MaterialTheme.colorScheme
                                                                             .surface.copy(
@@ -2499,12 +2500,12 @@ fun ThemeSettingsScreen() {
                                 modifier =
                                         Modifier.fillMaxWidth()
                                                 .height(150.dp)
-                                                .padding(bottom = 16.dp)
-                                                .clip(RoundedCornerShape(8.dp))
+                                                .padding(bottom = AppSpacing.medium)
+                                                .clip(RoundedCornerShape(AppSpacing.extraSmall))
                                                 .border(
                                                         1.dp,
                                                         MaterialTheme.colorScheme.outline,
-                                                        RoundedCornerShape(8.dp)
+                                                        RoundedCornerShape(AppSpacing.extraSmall)
                                                 )
                                                 .background(
                                                         MaterialTheme.colorScheme.surfaceVariant
@@ -2539,7 +2540,7 @@ fun ThemeSettingsScreen() {
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
 
                     // Opacity adjustment
                     Text(
@@ -2549,7 +2550,7 @@ fun ThemeSettingsScreen() {
                                             (backgroundImageOpacityInput * 100).toInt()
                                     ),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = AppSpacing.extraSmall)
                     )
 
                     // Remember last saved value for debounce save operation
@@ -2606,7 +2607,7 @@ fun ThemeSettingsScreen() {
                     }
 
                     // Use Box to wrap slider, solve drag issue
-                    Box(modifier = Modifier.fillMaxWidth().height(56.dp).padding(vertical = 8.dp)) {
+                    Box(modifier = Modifier.fillMaxWidth().height(56.dp).padding(vertical = AppSpacing.extraSmall)) {
                         Slider(
                                 value = backgroundImageOpacityInput,
                                 onValueChange = updateOpacity,
@@ -2626,13 +2627,13 @@ fun ThemeSettingsScreen() {
                     }
 
                     // Add a gap, ensure slider below has enough space
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(AppSpacing.medium))
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = AppSpacing.extraSmall))
 
                     // Background blur settings
                     Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                            modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -2664,7 +2665,7 @@ fun ThemeSettingsScreen() {
                                         stringResource(id = R.string.theme_background_blur_radius) +
                                                 ": ${backgroundBlurRadiusInput.toInt()}",
                                 style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                                modifier = Modifier.padding(top = AppSpacing.extraSmall, bottom = AppSpacing.extraSmall)
                         )
 
                         // Remember last saved value for debounce save operation
@@ -2689,7 +2690,7 @@ fun ThemeSettingsScreen() {
                         // Use Box to wrap slider, solve drag issue
                         Box(
                                 modifier =
-                                        Modifier.fillMaxWidth().height(56.dp).padding(vertical = 8.dp)
+                                        Modifier.fillMaxWidth().height(56.dp).padding(vertical = AppSpacing.extraSmall)
                         ) {
                             Slider(
                                     value = backgroundBlurRadiusInput,
@@ -2759,7 +2760,7 @@ fun ThemeSettingsScreen() {
                         fontScaleInput = 1.0f
                     }
                 },
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(vertical = AppSpacing.medium)
         ) { Text(stringResource(id = R.string.theme_reset)) }
 
         // Show save success message
@@ -2870,14 +2871,14 @@ private fun ThemeSectionTitle(
 ) {
     Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier.padding(vertical = AppSpacing.extraSmall)
     ) {
         Icon(
                 imageVector = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
         Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
@@ -2885,5 +2886,5 @@ private fun ThemeSectionTitle(
                 color = MaterialTheme.colorScheme.primary
         )
     }
-    HorizontalDivider(modifier = Modifier.padding(bottom = 8.dp))
+    HorizontalDivider(modifier = Modifier.padding(bottom = AppSpacing.extraSmall))
 }

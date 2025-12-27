@@ -45,6 +45,7 @@ import com.ai.assistance.operit.ui.features.settings.sections.SettingsTextField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -126,14 +127,14 @@ fun ModelConfigScreen(
                 modifier =
                         Modifier.fillMaxSize()
                                 .padding(paddingValues)
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                                .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall),
+                verticalArrangement = Arrangement.spacedBy(AppSpacing.nano)
         ) {
 
             item {
                 Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(AppSpacing.small),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                         border =
                                 BorderStroke(
@@ -142,9 +143,9 @@ fun ModelConfigScreen(
                                 ),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                 ) {
-                    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+                    Column(modifier = Modifier.padding(horizontal = AppSpacing.medium, vertical = AppSpacing.small)) {
                         Row(
-                                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                                modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.extraSmall),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -157,9 +158,9 @@ fun ModelConfigScreen(
 
                             OutlinedButton(
                                     onClick = { showAddConfigDialog = true },
-                                    shape = RoundedCornerShape(16.dp),
-                                    border = BorderStroke(0.8.dp, MaterialTheme.colorScheme.primary),
-                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                                    shape = RoundedCornerShape(AppSpacing.medium),
+                                    border = BorderStroke(0.AppSpacing.extraSmall, MaterialTheme.colorScheme.primary),
+                                    contentPadding = PaddingValues(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.nano),
                                     modifier = Modifier.height(28.dp),
                                     colors =
                                             ButtonDefaults.outlinedButtonColors(
@@ -185,14 +186,14 @@ fun ModelConfigScreen(
 
                         Surface(
                                 modifier = Modifier.fillMaxWidth().clickable { isDropdownExpanded = true },
-                                shape = RoundedCornerShape(8.dp),
+                                shape = RoundedCornerShape(AppSpacing.extraSmall),
                                 color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                                 tonalElevation = 0.5.dp,
                         ) {
                             Row(
                                     modifier =
                                             Modifier.fillMaxWidth()
-                                                    .padding(vertical = 12.dp, horizontal = 16.dp),
+                                                    .padding(vertical = AppSpacing.small, horizontal = AppSpacing.medium),
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.SpaceBetween
                             ) {
@@ -221,9 +222,9 @@ fun ModelConfigScreen(
                         }
 
                         FlowRow(
-                                modifier = Modifier.padding(top = 12.dp),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                                modifier = Modifier.padding(top = AppSpacing.small),
+                                horizontalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall),
+                                verticalArrangement = Arrangement.spacedBy(AppSpacing.extraSmall)
                         ) {
                             if (selectedConfigId != "default") {
                                 TextButton(
@@ -231,13 +232,13 @@ fun ModelConfigScreen(
                                             renameConfigName = selectedConfig.value?.name ?: ""
                                             showRenameConfigDialog = true
                                         },
-                                        contentPadding = PaddingValues(horizontal = 12.dp),
+                                        contentPadding = PaddingValues(horizontal = AppSpacing.small),
                                         modifier = Modifier.height(36.dp)
                                 ) {
                                     Icon(
                                             Icons.Default.Edit,
                                             contentDescription = null,
-                                            modifier = Modifier.size(16.dp)
+                                            modifier = Modifier.size(AppSpacing.medium)
                                     )
                                     Spacer(modifier = Modifier.width(6.dp))
                                     Text(stringResource(R.string.rename_action), fontSize = 14.sp)
@@ -251,7 +252,7 @@ fun ModelConfigScreen(
                                                 showNotification(context.getString(R.string.config_deleted))
                                             }
                                         },
-                                        contentPadding = PaddingValues(horizontal = 12.dp),
+                                        contentPadding = PaddingValues(horizontal = AppSpacing.small),
                                         colors =
                                                 ButtonDefaults.textButtonColors(
                                                         contentColor = MaterialTheme.colorScheme.error
@@ -261,7 +262,7 @@ fun ModelConfigScreen(
                                     Icon(
                                             Icons.Default.Delete,
                                             contentDescription = null,
-                                            modifier = Modifier.size(16.dp)
+                                            modifier = Modifier.size(AppSpacing.medium)
                                     )
                                     Spacer(modifier = Modifier.width(6.dp))
                                     Text(stringResource(R.string.delete_action), fontSize = 14.sp)
@@ -304,18 +305,18 @@ fun ModelConfigScreen(
                                         }
                                     },
                                     modifier = Modifier.height(36.dp),
-                                    contentPadding = PaddingValues(horizontal = 12.dp)
+                                    contentPadding = PaddingValues(horizontal = AppSpacing.small)
                             ) {
                                 if (isTestingConnection) {
                                     CircularProgressIndicator(
-                                            modifier = Modifier.size(16.dp),
+                                            modifier = Modifier.size(AppSpacing.medium),
                                             strokeWidth = 2.dp
                                     )
                                 } else {
                                     Icon(
                                             Icons.Default.Dns,
                                             contentDescription = null,
-                                            modifier = Modifier.size(16.dp)
+                                            modifier = Modifier.size(AppSpacing.medium)
                                     )
                                 }
                                 Spacer(modifier = Modifier.width(6.dp))
@@ -351,12 +352,12 @@ fun ModelConfigScreen(
                                         else Icons.Default.Warning
 
                                 Card(
-                                        modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                                        modifier = Modifier.fillMaxWidth().padding(top = AppSpacing.small),
                                         colors = CardDefaults.cardColors(containerColor = containerColor),
-                                        shape = RoundedCornerShape(8.dp)
+                                        shape = RoundedCornerShape(AppSpacing.extraSmall)
                                 ) {
                                     Row(
-                                            modifier = Modifier.padding(12.dp),
+                                            modifier = Modifier.padding(AppSpacing.small),
                                             verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Icon(
@@ -364,7 +365,7 @@ fun ModelConfigScreen(
                                                 contentDescription = null,
                                                 tint = contentColor
                                         )
-                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                                         Text(
                                                 text = message,
                                                 style = MaterialTheme.typography.bodyMedium,
@@ -406,7 +407,7 @@ fun ModelConfigScreen(
                                                     Icon(
                                                             Icons.Default.Check,
                                                             contentDescription = stringResource(R.string.selected_desc),
-                                                            modifier = Modifier.size(16.dp)
+                                                            modifier = Modifier.size(AppSpacing.medium)
                                                     )
                                                 }
                                             } else null,
@@ -421,11 +422,11 @@ fun ModelConfigScreen(
                                                                     MaterialTheme.colorScheme.primary
                                                             else MaterialTheme.colorScheme.onSurface
                                             ),
-                                    modifier = Modifier.padding(horizontal = 4.dp)
+                                    modifier = Modifier.padding(horizontal = AppSpacing.nano)
                             )
 
                             if (configId != configList.last()) {
-                                HorizontalDivider(modifier = Modifier.padding(horizontal = 8.dp), thickness = 0.5.dp)
+                                HorizontalDivider(modifier = Modifier.padding(horizontal = AppSpacing.extraSmall), thickness = 0.5.dp)
                             }
                         }
                     }
@@ -484,7 +485,7 @@ fun ModelConfigScreen(
                                         )
                         ) {
                             Row(
-                                    modifier = Modifier.padding(16.dp),
+                                    modifier = Modifier.padding(AppSpacing.medium),
                                     verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
@@ -492,7 +493,7 @@ fun ModelConfigScreen(
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                                 Text(
                                         text = confirmMessage,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -525,14 +526,14 @@ fun ModelConfigScreen(
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                             OutlinedTextField(
                                     value = newConfigName,
                                     onValueChange = { newConfigName = it },
                                     label = { Text(stringResource(R.string.model_config_name), fontSize = 12.sp) },
                                     placeholder = { Text(stringResource(R.string.model_config_name_placeholder), fontSize = 12.sp) },
                                     modifier = Modifier.fillMaxWidth(),
-                                    shape = RoundedCornerShape(8.dp),
+                                    shape = RoundedCornerShape(AppSpacing.extraSmall),
                                     singleLine = true
                             )
                         }
@@ -550,7 +551,7 @@ fun ModelConfigScreen(
                                         }
                                     }
                                 },
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(AppSpacing.extraSmall)
                         ) { Text(stringResource(R.string.create_action), fontSize = 13.sp) }
                     },
                     dismissButton = {
@@ -561,7 +562,7 @@ fun ModelConfigScreen(
                                 }
                         ) { Text(stringResource(R.string.cancel_action), fontSize = 13.sp) }
                     },
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(AppSpacing.small)
             )
         }
 
@@ -586,13 +587,13 @@ fun ModelConfigScreen(
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(AppSpacing.extraSmall))
                             OutlinedTextField(
                                     value = renameConfigName,
                                     onValueChange = { renameConfigName = it },
                                     label = { Text(stringResource(R.string.model_config_name), fontSize = 12.sp) },
                                     modifier = Modifier.fillMaxWidth(),
-                                    shape = RoundedCornerShape(8.dp),
+                                    shape = RoundedCornerShape(AppSpacing.extraSmall),
                                     singleLine = true
                             )
                         }
@@ -610,7 +611,7 @@ fun ModelConfigScreen(
                                         }
                                     }
                                 },
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(AppSpacing.extraSmall)
                         ) { Text(stringResource(R.string.confirm_rename), fontSize = 13.sp) }
                     },
                     dismissButton = {
@@ -621,7 +622,7 @@ fun ModelConfigScreen(
                                 }
                         ) { Text(stringResource(R.string.cancel_action), fontSize = 13.sp) }
                     },
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(AppSpacing.small)
             )
         }
     }
@@ -668,19 +669,19 @@ private fun ContextSummarySettingsSection(
 
         Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(AppSpacing.nano)
         ) {
                 Card(
                         modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 4.dp),
-                        shape = RoundedCornerShape(12.dp),
+                                .padding(vertical = AppSpacing.nano),
+                        shape = RoundedCornerShape(AppSpacing.small),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                 ) {
                 Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        modifier = Modifier.padding(AppSpacing.medium),
+                        verticalArrangement = Arrangement.spacedBy(AppSpacing.small)
                 ) {
                         Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -693,7 +694,7 @@ private fun ContextSummarySettingsSection(
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.primary
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                                 Text(
                                         text = stringResource(id = R.string.settings_context_title),
                                         style = MaterialTheme.typography.titleMedium,
@@ -712,7 +713,7 @@ private fun ContextSummarySettingsSection(
                                 enter = expandVertically() + fadeIn(),
                                 exit = shrinkVertically() + fadeOut()
                         ) {
-                                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                                Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.small)) {
                                         SettingsInfoBanner(text = stringResource(id = R.string.settings_context_card_content))
 
                                         SettingsTextField(
@@ -794,14 +795,14 @@ private fun ContextSummarySettingsSection(
         Card(
                 modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                shape = RoundedCornerShape(12.dp),
+                        .padding(vertical = AppSpacing.nano),
+                shape = RoundedCornerShape(AppSpacing.small),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
         ) {
                 Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        modifier = Modifier.padding(AppSpacing.medium),
+                        verticalArrangement = Arrangement.spacedBy(AppSpacing.small)
                 ) {
                         Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -814,7 +815,7 @@ private fun ContextSummarySettingsSection(
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.primary
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(AppSpacing.extraSmall))
                                 Text(
                                         text = stringResource(id = R.string.settings_summary_title),
                                         style = MaterialTheme.typography.titleMedium,
@@ -833,7 +834,7 @@ private fun ContextSummarySettingsSection(
                                 enter = expandVertically() + fadeIn(),
                                 exit = shrinkVertically() + fadeOut()
                         ) {
-                                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                                Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.small)) {
                                         SettingsSwitchRow(
                                                 title = stringResource(id = R.string.settings_enable_summary),
                                                 subtitle = stringResource(id = R.string.settings_enable_summary_desc),
