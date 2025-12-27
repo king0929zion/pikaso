@@ -46,6 +46,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppSizes
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -159,7 +160,7 @@ fun ModelConfigScreen(
                             OutlinedButton(
                                     onClick = { showAddConfigDialog = true },
                                     shape = RoundedCornerShape(AppSpacing.medium),
-                                    border = BorderStroke(0.AppSpacing.extraSmall, MaterialTheme.colorScheme.primary),
+                                    border = BorderStroke(AppSizes.strokeThin, MaterialTheme.colorScheme.primary),
                                     contentPadding = PaddingValues(horizontal = AppSpacing.extraSmall, vertical = AppSpacing.nano),
                                     modifier = Modifier.height(28.dp),
                                     colors =
