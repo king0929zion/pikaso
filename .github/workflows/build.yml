@@ -3,8 +3,6 @@ name: Build and Release APK
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -34,23 +32,9 @@ jobs:
 
       - name: Decode Keystore
         run: |
-          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
-            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.keystore
-            echo "Keystore decoded successfully"
-            ls -la app/release.keystore
-          else
-            echo "WARNING: KEYSTORE_BASE64 secret is not set! Using debug keystore..."
-            # 如果没有配置签名密钥，创建一个临时密钥用于CI构建
-            keytool -genkeypair \
-              -alias androiddebugkey \
-              -keyalg RSA \
-              -keysize 2048 \
-              -validity 10000 \
-              -keystore app/release.keystore \
-              -storepass android \
-              -keypass android \
-              -dname "CN=Android Debug,O=Android,C=US"
-          fi
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.keystore
+          echo "Keystore decoded successfully"
+          ls -la app/release.keystore
 
       - name: Create keystore.properties
         env:
@@ -59,9 +43,9 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
           cat > app/keystore.properties << EOF
-          storePassword=${STORE_PASSWORD:-android}
-          keyPassword=${KEY_PASSWORD:-android}
-          keyAlias=${KEY_ALIAS:-androiddebugkey}
+          storePassword=${STORE_PASSWORD}
+          keyPassword=${KEY_PASSWORD}
+          keyAlias=${KEY_ALIAS}
           storeFile=release.keystore
           EOF
           echo "keystore.properties created:"
@@ -77,14 +61,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
-
       - name: Build Release APK
         run: ./gradlew assembleRelease --stacktrace
-
-      - name: Build Release AAB
-        run: ./gradlew bundleRelease --stacktrace
 
       - name: Get version
         id: version
@@ -95,34 +73,18 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "versionCode=$VERSION_CODE" >> $GITHUB_OUTPUT
           echo "buildNumber=$BUILD_NUMBER" >> $GITHUB_OUTPUT
-          echo "date=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
           echo "shortSha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
 
-      - name: Rename APKs
+      - name: Rename APK
         run: |
-          mv app/build/outputs/apk/debug/app-debug.apk "app/build/outputs/apk/debug/Operit-Debug-${{ steps.version.outputs.version }}-${{ steps.version.outputs.date }}.apk"
-          mv app/build/outputs/apk/release/app-release.apk "app/build/outputs/apk/release/Operit-Release-${{ steps.version.outputs.version }}-${{ steps.version.outputs.date }}.apk"
+          mv app/build/outputs/apk/release/app-release.apk "app/build/outputs/apk/release/Pikaso-v${{ steps.version.outputs.version }}-build.${{ steps.version.outputs.buildNumber }}.apk"
 
-      - name: Upload Debug APK Artifact
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Operit-Debug-APK-${{ steps.version.outputs.date }}
-          path: app/build/outputs/apk/debug/Operit-Debug-*.apk
+          name: Pikaso-APK-${{ steps.version.outputs.buildNumber }}
+          path: app/build/outputs/apk/release/Pikaso-*.apk
           retention-days: 30
-
-      - name: Upload Release APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Operit-Release-APK-${{ steps.version.outputs.date }}
-          path: app/build/outputs/apk/release/Operit-Release-*.apk
-          retention-days: 90
-
-      - name: Upload AAB Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Operit-Release-AAB-${{ steps.version.outputs.date }}
-          path: app/build/outputs/bundle/release/app-release.aab
-          retention-days: 90
 
   release:
     name: Create Release
@@ -145,35 +107,26 @@ jobs:
           echo "buildNumber=$BUILD_NUMBER" >> $GITHUB_OUTPUT
           echo "shortSha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
 
-      - name: Download Release APK Artifact
+      - name: Download APK Artifact
         uses: actions/download-artifact@v4
         with:
-          pattern: Operit-Release-APK-*
-          merge-multiple: true
-          path: ./artifacts
-
-      - name: Download Release AAB Artifact
-        uses: actions/download-artifact@v4
-        with:
-          pattern: Operit-Release-AAB-*
-          merge-multiple: true
+          pattern: Pikaso-APK-*
+          merge-multiple: false
           path: ./artifacts
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}+build.${{ steps.version.outputs.buildNumber }}
-          name: Operit v${{ steps.version.outputs.version }} (Build #${{ steps.version.outputs.buildNumber }})
+          name: Pikaso v${{ steps.version.outputs.version }} (Build #${{ steps.version.outputs.buildNumber }})
           body: |
-            ## Operit v${{ steps.version.outputs.version }} - Build #${{ steps.version.outputs.buildNumber }}
+            ## Pikaso v${{ steps.version.outputs.version }} - Build #${{ steps.version.outputs.buildNumber }}
 
             **提交**: ${{ steps.version.outputs.shortSha }}
-            **日期**: $(date +'%Y-%m-%d %H:%M:%S UTC')
             **版本代码**: ${{ steps.version.outputs.versionCode }}
 
             ### 下载
-            - **APK (Release)**: 发布版本APK，直接安装到 Android 设备
-            - **AAB**: Android App Bundle，用于 Google Play 发布
+            - **APK**: 签名发布版本，直接安装到 Android 设备
 
             ### 系统要求
             - Android 8.0+ (API 26)
@@ -181,10 +134,8 @@ jobs:
 
             ### 主要功能
             - AI 智能助手对话
-            - 无障碍服务集成
-            - Shizuku 权限管理
+            - Shizuku 高级权限管理
             - 文件管理工具
-            - Workflow 工作流自动化
             - MCP 插件系统
 
             ### 最新更新
@@ -194,9 +145,7 @@ jobs:
 
             ---
             🤖 Generated with [Claude Code](https://claude.com/claude-code)
-          files: |
-            ./artifacts/*.apk
-            ./artifacts/*.aab
+          files: ./artifacts/*.apk
           draft: false
           prerelease: false
         env:
