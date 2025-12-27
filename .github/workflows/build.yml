@@ -9,6 +9,7 @@ jobs:
   build:
     name: Build Release APK
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -51,16 +52,6 @@ jobs:
           echo "keystore.properties created:"
           cat app/keystore.properties | sed 's/Password=.*/Password=***/'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
       - name: Build Release APK
         run: ./gradlew assembleRelease --stacktrace --no-daemon
         env:
@@ -87,10 +78,6 @@ jobs:
           name: Pikaso-APK-${{ steps.version.outputs.buildNumber }}
           path: app/build/outputs/apk/release/Pikaso-*.apk
           retention-days: 30
-
-      - name: Stop Gradle Daemon
-        if: always()
-        run: ./gradlew --stop || true
 
   release:
     name: Create Release
