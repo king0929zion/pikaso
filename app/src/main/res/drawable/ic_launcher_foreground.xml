@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 使用用户提供的圆形图标作为前景 -->
+    <!-- 使用用户提供的圆形图标，缩小到安全区域内避免裁剪 -->
+    <!-- Android adaptive icon安全区域是中心72x72dp，外部18dp会被裁剪 -->
     <item
-        android:drawable="@drawable/ic_launcher_logo"
-        android:width="108dp"
-        android:height="108dp"
-        android:gravity="center" />
+        android:width="72dp"
+        android:height="72dp"
+        android:gravity="center">
+        <bitmap
+            android:src="@drawable/ic_launcher_logo"
+            android:gravity="center" />
+    </item>
 </layer-list>
