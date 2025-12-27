@@ -57,7 +57,7 @@ object ComponentVariants {
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        content: @Composable ButtonScope.() -> Unit
+        content: @Composable androidx.compose.material3.ButtonScope.() -> Unit
     ) {
         Button(
             onClick = onClick,
@@ -78,7 +78,7 @@ object ComponentVariants {
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        content: @Composable ButtonScope.() -> Unit
+        content: @Composable androidx.compose.material3.ButtonScope.() -> Unit
     ) {
         FilledTonalButton(
             onClick = onClick,
@@ -99,7 +99,7 @@ object ComponentVariants {
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        content: @Composable ButtonScope.() -> Unit
+        content: @Composable androidx.compose.material3.ButtonScope.() -> Unit
     ) {
         OutlinedButton(
             onClick = onClick,
@@ -120,7 +120,7 @@ object ComponentVariants {
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        content: @Composable ButtonScope.() -> Unit
+        content: @Composable androidx.compose.material3.ButtonScope.() -> Unit
     ) {
         TextButton(
             onClick = onClick,
