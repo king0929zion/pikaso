@@ -91,9 +91,12 @@ jobs:
         run: |
           VERSION=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*versionName = "\(.*\)".*/\1/')
           VERSION_CODE=$(grep 'versionCode' app/build.gradle.kts | head -1 | sed 's/.*versionCode = \(.*\)/\1/')
+          BUILD_NUMBER=${{ github.run_number }}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "versionCode=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "buildNumber=$BUILD_NUMBER" >> $GITHUB_OUTPUT
           echo "date=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
+          echo "shortSha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
 
       - name: Rename APKs
         run: |
@@ -136,8 +139,11 @@ jobs:
         run: |
           VERSION=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*versionName = "\(.*\)".*/\1/')
           VERSION_CODE=$(grep 'versionCode' app/build.gradle.kts | head -1 | sed 's/.*versionCode = \(.*\)/\1/')
+          BUILD_NUMBER=${{ github.run_number }}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "versionCode=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "buildNumber=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+          echo "shortSha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
 
       - name: Download Release APK Artifact
         uses: actions/download-artifact@v4
@@ -156,16 +162,17 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.version.outputs.version }}+${{ steps.version.outputs.versionCode }}
-          name: Operit v${{ steps.version.outputs.version }}
+          tag_name: v${{ steps.version.outputs.version }}+build.${{ steps.version.outputs.buildNumber }}
+          name: Operit v${{ steps.version.outputs.version }} (Build #${{ steps.version.outputs.buildNumber }})
           body: |
-            ## Operit v${{ steps.version.outputs.version }} (Build ${{ steps.version.outputs.versionCode }})
+            ## Operit v${{ steps.version.outputs.version }} - Build #${{ steps.version.outputs.buildNumber }}
 
-            自动构建版本，提交: ${{ github.sha }}
+            **提交**: ${{ steps.version.outputs.shortSha }}
+            **日期**: $(date +'%Y-%m-%d %H:%M:%S UTC')
+            **版本代码**: ${{ steps.version.outputs.versionCode }}
 
             ### 下载
             - **APK (Release)**: 发布版本APK，直接安装到 Android 设备
-            - **APK (Debug)**: 调试版本APK，用于开发测试
             - **AAB**: Android App Bundle，用于 Google Play 发布
 
             ### 系统要求
@@ -180,8 +187,10 @@ jobs:
             - Workflow 工作流自动化
             - MCP 插件系统
 
-            ### 更新内容
-            查看提交历史了解详细变更。
+            ### 最新更新
+            本次构建包含自上次发布以来的所有提交。
+
+            [查看完整提交历史](https://github.com/king0929zion/pikaso/commits/main)
 
             ---
             🤖 Generated with [Claude Code](https://claude.com/claude-code)
