@@ -164,36 +164,23 @@ fun OperitApp(initialNavItem: NavItem = NavItem.AiChat, toolHandler: AIToolHandl
         showChatBindingAnnouncement = false
     }
 
-    val isEventCampaignActive = remember { isEventCampaignActive() }
-
-    // Navigation items grouped by category
+    // Navigation items grouped by category (simplified)
     val navGroups = listOf(
         NavGroup(
-            "AI功能",
+            "主要功能",
             listOf(
                 NavItem.AiChat,
-                NavItem.AssistantConfig,
-                NavItem.Packages,
-                NavItem.MemoryBase,
-                NavItem.TokenConfig
-            )
-        ),
-        NavGroup(
-            "工具",
-            listOf(
                 NavItem.Toolbox,
-                NavItem.ShizukuCommands,
-                // NavItem.Workflow,
+                NavItem.MemoryBase
             )
         ),
         NavGroup(
-            "系统",
-            listOfNotNull(
+            "设置",
+            listOf(
                 NavItem.Settings,
-                if (isEventCampaignActive) NavItem.EventCampaign else null,
+                NavItem.AssistantConfig,
                 NavItem.Help,
-                NavItem.About,
-                NavItem.UpdateHistory
+                NavItem.About
             )
         )
     )
