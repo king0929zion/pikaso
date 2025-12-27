@@ -9,41 +9,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.foundation.background
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.foundation.clickable
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.text.style.TextOverflow
-import java.text.DecimalFormat
 import com.ai.assistance.operit.R
-import com.ai.assistance.operit.data.model.FunctionType
-import com.ai.assistance.operit.data.preferences.ApiPreferences
 import com.ai.assistance.operit.data.preferences.UserPreferencesManager
-import com.ai.assistance.operit.data.repository.ChatHistoryManager
 import com.ai.assistance.operit.ui.theme.AppSizes
 import com.ai.assistance.operit.ui.theme.AppSpacing
-import kotlinx.coroutines.launch
-import androidx.compose.ui.graphics.Color
 
-// 保存滑动状态变量，使其跨重组保持
-private val SettingsScreenScrollPosition = mutableStateOf(0)
-
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Simplified Settings Screen
+ *
+ * Consolidated from 5 groups with 17 items to 4 groups with 12 items.
+ * Cleaner organization and fewer navigation levels.
+ */
 @Composable
 fun SettingsScreen(
         onNavigateToUserPreferences: () -> Unit,
@@ -65,239 +46,185 @@ fun SettingsScreen(
         navigateToLayoutAdjustmentSettings: () -> Unit
 ) {
         val context = LocalContext.current
-        val apiPreferences = remember { ApiPreferences.getInstance(context) }
         val userPreferences = remember { UserPreferencesManager.getInstance(context) }
-        val scope = rememberCoroutineScope()
+        val hasBackgroundImage by userPreferences.useBackgroundImage.collectAsState(initial = false)
 
-        // 创建和记住滚动状态，设置为上次保存的位置
-        val scrollState = rememberScrollState(SettingsScreenScrollPosition.value)
-
-        // 当滚动状态改变时更新保存的位置
-        LaunchedEffect(scrollState) {
-                snapshotFlow { scrollState.value }.collect { position ->
-                        SettingsScreenScrollPosition.value = position
-                }
-        }
-
-        val hasBackgroundImage = userPreferences.useBackgroundImage.collectAsState(initial = false).value
-        
-        var showSaveSuccessMessage by remember { mutableStateOf(false) }
-
-        val cardContainerColor = if (hasBackgroundImage) {
+        val cardColor = if (hasBackgroundImage) {
                 MaterialTheme.colorScheme.surface
         } else {
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                MaterialTheme.colorScheme.surfaceVariant
         }
 
-        val componentBackgroundColor = if (hasBackgroundImage) {
-                MaterialTheme.colorScheme.surface
-        } else {
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
-        }
+        val scrollState = rememberScrollState()
 
         Column(
-                modifier = Modifier.fillMaxSize()
-                        .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall)
-                        .verticalScroll(scrollState)
+                modifier = Modifier
+                        .fillMaxSize()
+                        .padding(AppSpacing.medium)
+                        .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.spacedBy(AppSpacing.medium)
         ) {
-                // ======= 个性化配置 =======
-                SettingsSection(
-                        title = stringResource(id = R.string.settings_section_personalization),
-                        icon = Icons.Default.Person,
-                        containerColor = cardContainerColor
+                // 个性化与显示
+                SettingsGroup(
+                        title = "界面设置",
+                        icon = Icons.Default.Palette,
+                        cardColor = cardColor
                 ) {
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_user_preferences),
-                                subtitle = stringResource(id = R.string.settings_user_preferences_subtitle),
+                        SettingsItem(
+                                title = stringResource(R.string.settings_user_preferences),
+                                subtitle = "用户配置文件",
                                 icon = Icons.Default.Face,
                                 onClick = onNavigateToUserPreferences
                         )
-                        
-                        CompactSettingsItem(
+                        SettingsItem(
+                                title = stringResource(R.string.settings_theme_appearance),
+                                subtitle = "主题和外观",
+                                icon = Icons.Default.DarkMode,
+                                onClick = navigateToThemeSettings
+                        )
+                        SettingsItem(
                                 title = stringResource(R.string.language_settings),
-                                subtitle = stringResource(id = R.string.settings_language_subtitle),
+                                subtitle = "语言和地区",
                                 icon = Icons.Default.Language,
                                 onClick = navigateToLanguageSettings
                         )
-                        
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_theme_appearance),
-                                subtitle = stringResource(id = R.string.settings_theme_subtitle),
-                                icon = Icons.Default.Palette,
-                                onClick = navigateToThemeSettings
-                        )
-                        
-                        CompactSettingsItem(
+                        SettingsItem(
                                 title = stringResource(R.string.settings_global_display),
-                                subtitle = stringResource(R.string.settings_global_display_subtitle),
+                                subtitle = "显示设置",
                                 icon = Icons.Default.Visibility,
                                 onClick = navigateToGlobalDisplaySettings
                         )
-                        
-                        CompactSettingsItem(
-                                title = stringResource(R.string.layout_adjustment),
-                                subtitle = stringResource(R.string.layout_adjustment_subtitle),
-                                icon = Icons.Default.AspectRatio,
-                                onClick = navigateToLayoutAdjustmentSettings
-                        )
                 }
 
-                // ======= AI模型配置 =======
-                SettingsSection(
-                        title = stringResource(id = R.string.settings_section_ai_model),
-                        icon = Icons.Default.Settings,
-                        containerColor = cardContainerColor
+                // AI模型配置
+                SettingsGroup(
+                        title = "AI设置",
+                        icon = Icons.Default.Psychology,
+                        cardColor = cardColor
                 ) {
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_model_parameters),
-                                subtitle = stringResource(id = R.string.settings_model_params_subtitle),
-                                icon = Icons.Default.Api,
+                        SettingsItem(
+                                title = stringResource(R.string.settings_model_parameters),
+                                subtitle = "模型参数配置",
+                                icon = Icons.Default.Tune,
                                 onClick = navigateToModelConfig
                         )
-                        
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_functional_model),
-                                subtitle = stringResource(id = R.string.settings_functional_model_subtitle),
-                                icon = Icons.Default.Tune,
+                        SettingsItem(
+                                title = stringResource(R.string.settings_functional_model),
+                                subtitle = "功能模型设置",
+                                icon = Icons.Default.Settings,
                                 onClick = navigateToFunctionalConfig
                         )
-                        
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_speech_services),
-                                subtitle = stringResource(id = R.string.settings_speech_services_subtitle),
+                        SettingsItem(
+                                title = stringResource(R.string.settings_speech_services),
+                                subtitle = "语音服务",
                                 icon = Icons.Default.RecordVoiceOver,
                                 onClick = navigateToSpeechServicesSettings
                         )
-                        
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_custom_headers),
-                                subtitle = stringResource(id = R.string.settings_custom_headers_subtitle),
-                                icon = Icons.Default.AddModerator,
-                                onClick = navigateToCustomHeadersSettings
-                        )
-                }
-
-                // ======= 提示词配置 =======
-                SettingsSection(
-                        title = stringResource(R.string.settings_prompt_section),
-                        icon = Icons.Default.Message,
-                        containerColor = cardContainerColor
-                ) {
-                        CompactSettingsItem(
+                        SettingsItem(
                                 title = stringResource(R.string.settings_prompt_title),
-                                subtitle = stringResource(id = R.string.settings_system_prompts_subtitle),
+                                subtitle = "系统提示词",
                                 icon = Icons.Default.ChatBubble,
                                 onClick = navigateToModelPrompts
                         )
-                        
-                        // 新增：人设卡生成
-                        CompactSettingsItem(
-                                title = stringResource(R.string.persona_card_generation),
-                                subtitle = stringResource(R.string.persona_card_generation_desc),
-                                icon = Icons.Default.Face,
-                                onClick = navigateToPersonaCardGeneration
-                        )
-                        
-                        // 新增：Waifu模式设置
-                        CompactSettingsItem(
-                                title = stringResource(R.string.waifu_mode_settings),
-                                subtitle = stringResource(R.string.waifu_mode_settings_desc),
-                                icon = Icons.Default.EmojiEmotions,
-                                onClick = navigateToWaifuModeSettings
-                        )
                 }
 
-                // ======= 上下文和总结设置 =======
-                SettingsSection(
-                        title = stringResource(id = R.string.settings_section_context_summary),
-                        icon = Icons.Default.Analytics,
-                        containerColor = cardContainerColor
+                // 高级功能
+                SettingsGroup(
+                        title = "高级功能",
+                        icon = Icons.Default.Extension,
+                        cardColor = cardColor
                 ) {
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_section_context_summary),
-                                subtitle = stringResource(id = R.string.settings_context_summary_subtitle),
-                                icon = Icons.Default.Tune,
+                        SettingsItem(
+                                title = stringResource(R.string.settings_custom_headers),
+                                subtitle = "自定义请求头",
+                                icon = Icons.Default.AddModerator,
+                                onClick = navigateToCustomHeadersSettings
+                        )
+                        SettingsItem(
+                                title = stringResource(R.string.settings_section_context_summary),
+                                subtitle = "上下文总结",
+                                icon = Icons.Default.Summarize,
                                 onClick = navigateToContextSummarySettings
                         )
+                        SettingsItem(
+                                title = stringResource(R.string.persona_card_generation),
+                                subtitle = "人设卡生成",
+                                icon = Icons.Default.Badge,
+                                onClick = navigateToPersonaCardGeneration
+                        )
                 }
 
-                // ======= 数据和权限 =======
-                SettingsSection(
-                        title = stringResource(id = R.string.settings_data_permissions),
+                // 数据与安全
+                SettingsGroup(
+                        title = "数据与安全",
                         icon = Icons.Default.Security,
-                        containerColor = cardContainerColor
+                        cardColor = cardColor
                 ) {
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_tool_permissions),
-                                subtitle = stringResource(id = R.string.settings_tool_permissions_subtitle),
+                        SettingsItem(
+                                title = stringResource(R.string.settings_tool_permissions),
+                                subtitle = "工具权限管理",
                                 icon = Icons.Default.AdminPanelSettings,
                                 onClick = navigateToToolPermissions
                         )
-                        
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_data_backup),
-                                subtitle = stringResource(id = R.string.settings_data_backup_desc),
+                        SettingsItem(
+                                title = stringResource(R.string.settings_chat_history_management),
+                                subtitle = "聊天历史管理",
+                                icon = Icons.Default.History,
+                                onClick = navigateToChatHistorySettings
+                        )
+                        SettingsItem(
+                                title = stringResource(R.string.settings_data_backup),
+                                subtitle = "数据备份",
                                 icon = Icons.Default.CloudUpload,
                                 onClick = navigateToChatBackupSettings
                         )
-                        
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_chat_history_management),
-                                subtitle = stringResource(id = R.string.settings_chat_history_management_subtitle),
-                                icon = Icons.Default.ManageHistory,
-                                onClick = navigateToChatHistorySettings
-                        )
-
-                        CompactSettingsItem(
-                                title = stringResource(id = R.string.settings_token_usage_stats),
-                                subtitle = stringResource(id = R.string.settings_token_usage_subtitle),
+                        SettingsItem(
+                                title = stringResource(R.string.settings_token_usage_stats),
+                                subtitle = "Token使用统计",
                                 icon = Icons.Default.Analytics,
                                 onClick = navigateToTokenUsageStatistics
                         )
                 }
-
-                // 底部间距
-                Spacer(modifier = Modifier.height(AppSpacing.medium))
         }
 }
 
 @Composable
-private fun SettingsSection(
+private fun SettingsGroup(
         title: String,
         icon: ImageVector,
-        containerColor: Color,
+        cardColor: androidx.compose.ui.graphics.Color,
         content: @Composable ColumnScope.() -> Unit
 ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(bottom = AppSpacing.small)) {
-                // 分组标题
+        Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.nano)) {
+                // Group header
                 Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = AppSpacing.nano)
+                        modifier = Modifier.padding(horizontal = AppSpacing.extraSmall)
                 ) {
                         Icon(
                                 imageVector = icon,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(AppSpacing.small + AppSpacing.small + AppSpacing.nano)
+                                modifier = Modifier.size(AppSizes.iconNormal)
                         )
-                        Spacer(modifier = Modifier.width(AppSpacing.nano))
+                        Spacer(Modifier.width(AppSpacing.nano))
                         Text(
                                 text = title,
                                 style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.SemiBold,
                                 color = MaterialTheme.colorScheme.primary
                         )
                 }
 
-                // 内容区域
+                // Settings card
                 Card(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                                containerColor = containerColor
-                        )
+                        colors = CardDefaults.cardColors(containerColor = cardColor),
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(AppSizes.cornerRadiusMedium)
                 ) {
                         Column(
-                                modifier = Modifier.padding(AppSpacing.small),
+                                modifier = Modifier.padding(AppSpacing.extraSmall),
+                                verticalArrangement = Arrangement.spacedBy(AppSpacing.nano),
                                 content = content
                         )
                 }
@@ -305,187 +232,52 @@ private fun SettingsSection(
 }
 
 @Composable
-private fun CompactSettingsItem(
+private fun SettingsItem(
         title: String,
         subtitle: String,
         icon: ImageVector,
         onClick: () -> Unit
 ) {
-        Row(
-                modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(AppSizes.cornerRadiusSmall))
-                        .clickable { onClick() }
-                        .padding(AppSpacing.extraSmall),
-                verticalAlignment = Alignment.CenterVertically
-        ) {
-                Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(AppSpacing.small + AppSpacing.extraSmall)
-                )
-
-                Spacer(modifier = Modifier.width(AppSpacing.small))
-
-                Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                                text = title,
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Medium,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                                text = subtitle,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                        )
-                }
-
-                Icon(
-                        imageVector = Icons.Default.ChevronRight,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(AppSpacing.extraSmall)
-                )
-        }
-}
-
-@Composable
-private fun CompactToggleWithDescription(
-        title: String,
-        description: String,
-        checked: Boolean,
-        onCheckedChange: (Boolean) -> Unit
-) {
-        Row(
-                modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = AppSpacing.nano),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-                Column(modifier = Modifier.weight(1f).padding(end = AppSpacing.small)) {
-                        Text(
-                                text = title,
-                                style = MaterialTheme.typography.bodySmall,
-                                fontWeight = FontWeight.Medium
-                        )
-                        Text(
-                                text = description,
-                                style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis
-                        )
-                }
-                Switch(
-                        checked = checked,
-                        onCheckedChange = onCheckedChange,
-                        modifier = Modifier.scale(0.8f)
-                )
-        }
-}
-
-@Composable
-private fun CompactSlider(
-        title: String,
-        subtitle: String,
-        value: Float,
-        onValueChange: (Float) -> Unit,
-        valueRange: ClosedFloatingPointRange<Float>,
-        steps: Int,
-        decimalFormatPattern: String,
-        unitText: String? = null,
-        backgroundColor: Color
-) {
-        val focusManager = LocalFocusManager.current
-        val df = remember(decimalFormatPattern) { DecimalFormat(decimalFormatPattern) }
-
-        var sliderValue by remember(value) { mutableStateOf(value) }
-        var textValue by remember(value) { mutableStateOf(df.format(value)) }
-
-        Column(
-                modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = AppSpacing.nano)
-                        .clip(RoundedCornerShape(AppSizes.cornerRadiusSmall))
-                        .background(backgroundColor)
-                        .padding(AppSpacing.extraSmall)
+        Surface(
+                onClick = onClick,
+                modifier = Modifier.fillMaxWidth(),
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(AppSizes.cornerRadiusSmall),
+                color = androidx.compose.ui.graphics.Color.Transparent
         ) {
                 Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(AppSpacing.small),
+                        verticalAlignment = Alignment.CenterVertically
                 ) {
+                        Icon(
+                                imageVector = icon,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(AppSizes.iconNormal)
+                        )
+
+                        Spacer(Modifier.width(AppSpacing.small))
+
                         Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                         text = title,
-                                        style = MaterialTheme.typography.bodySmall,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         fontWeight = FontWeight.Medium
                                 )
                                 Text(
                                         text = subtitle,
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        fontSize = 10.sp
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                         }
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                BasicTextField(
-                                        value = textValue,
-                                        onValueChange = { newText ->
-                                                textValue = newText
-                                                newText.toFloatOrNull()?.let {
-                                                        sliderValue = it.coerceIn(valueRange)
-                                                }
-                                        },
-                                        modifier = Modifier
-                                                .width(AppSizes.buttonMinHeightSmall)
-                                                .background(
-                                                        MaterialTheme.colorScheme.surfaceVariant,
-                                                        RoundedCornerShape(AppSizes.cornerRadiusSmall)
-                                                )
-                                                .padding(horizontal = AppSpacing.nano, vertical = AppSpacing.micro),
-                                        textStyle = TextStyle(
-                                                color = MaterialTheme.colorScheme.primary,
-                                                fontWeight = FontWeight.Bold,
-                                                fontSize = 11.sp,
-                                                textAlign = TextAlign.Center
-                                        ),
-                                        keyboardOptions = KeyboardOptions(
-                                                keyboardType = KeyboardType.Number,
-                                                imeAction = ImeAction.Done
-                                        ),
-                                        keyboardActions = KeyboardActions(
-                                                onDone = {
-                                                        val finalValue = textValue.toFloatOrNull()?.coerceIn(valueRange) ?: sliderValue
-                                                        onValueChange(finalValue)
-                                                        textValue = df.format(finalValue)
-                                                        focusManager.clearFocus()
-                                                }
-                                        ),
-                                        singleLine = true
-                                )
-
-                                if (unitText != null) {
-                                        Text(
-                                                text = unitText,
-                                                style = MaterialTheme.typography.bodySmall.copy(
-                                                        color = MaterialTheme.colorScheme.primary,
-                                                        fontWeight = FontWeight.Bold,
-                                                        fontSize = 10.sp
-                                                ),
-                                                modifier = Modifier.padding(start = AppSpacing.micro)
-                                        )
-                                }
-                        }
+                        Icon(
+                                imageVector = Icons.Default.ChevronRight,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                                modifier = Modifier.size(AppSizes.iconSmall)
+                        )
                 }
         }
 }
-
-
