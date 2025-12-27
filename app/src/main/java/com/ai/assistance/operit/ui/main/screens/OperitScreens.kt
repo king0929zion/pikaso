@@ -636,7 +636,7 @@ sealed class Screen(
 
     // 权限配置页面
     data object PermissionGuide :
-        Screen(parentScreen = Settings, navItem = NavItem.Settings, titleRes = R.string.permission_guide_title) {
+        Screen(parentScreen = Settings, navItem = NavItem.Settings) {
         @Composable
         override fun Content(
             navController: NavController,
