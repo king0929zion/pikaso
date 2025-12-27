@@ -83,6 +83,7 @@ fun HtmlText(html: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun LicenseDialog(onDismiss: () -> Unit) {
+    val context = LocalContext.current
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.open_source_licenses)) },
@@ -96,17 +97,14 @@ fun LicenseDialog(onDismiss: () -> Unit) {
                     HorizontalDivider()
                 }
                 item {
+                    val intent = android.content.Intent(
+                        android.content.Intent.ACTION_VIEW,
+                        Uri.parse("$GITHUB_PROJECT_URL/blob/main/LICENSE")
+                    ).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
                     ListItem(
                         headlineContent = { Text("View Full List on GitHub") },
                         leadingContent = { Icon(Icons.Default.Public, null) },
-                        modifier = Modifier.clickable {
-                            val context = LocalContext.current
-                            val intent = android.content.Intent(
-                                android.content.Intent.ACTION_VIEW,
-                                Uri.parse("$GITHUB_PROJECT_URL/blob/main/LICENSE")
-                            ).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                            context.startActivity(intent)
-                        }
+                        modifier = Modifier.clickable { context.startActivity(intent) }
                     )
                 }
             }
