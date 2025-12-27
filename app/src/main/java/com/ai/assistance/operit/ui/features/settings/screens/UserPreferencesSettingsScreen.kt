@@ -221,7 +221,7 @@ fun UserPreferencesSettingsScreen(
                                 ),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                 ) {
-                    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+                    Column(modifier = Modifier.padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall)) {
                         // 水平分隔线 - 减小垂直间距
                         HorizontalDivider(
                                 thickness = 0.5.dp,
@@ -518,7 +518,7 @@ fun UserPreferencesSettingsScreen(
                                         ),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                         ) {
-                            Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
+                            Column(modifier = Modifier.fillMaxWidth().padding(AppSpacing.small)) {
                                 // 标题和引导按钮
                                 Row(
                                         modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),

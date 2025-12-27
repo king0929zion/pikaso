@@ -86,7 +86,7 @@ fun WaifuModeSettingsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp)
+                .padding(AppSpacing.medium)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -98,7 +98,7 @@ fun WaifuModeSettingsScreen(
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(AppSpacing.medium)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -136,7 +136,7 @@ fun WaifuModeSettingsScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(AppSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -167,7 +167,7 @@ fun WaifuModeSettingsScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(AppSpacing.medium)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -208,7 +208,7 @@ fun WaifuModeSettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(AppSpacing.medium)
                     ) {
                         Text(
                             text = stringResource(R.string.typing_speed_settings),
@@ -278,7 +278,7 @@ fun WaifuModeSettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(AppSpacing.medium)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -320,7 +320,7 @@ fun WaifuModeSettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(AppSpacing.medium)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -368,7 +368,7 @@ fun WaifuModeSettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(AppSpacing.medium)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -420,7 +420,7 @@ fun WaifuModeSettingsScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(AppSpacing.medium),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -455,7 +455,7 @@ fun WaifuModeSettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(AppSpacing.medium)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -544,7 +544,7 @@ fun WaifuModeSettingsScreen(
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(AppSpacing.medium)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -582,7 +582,7 @@ fun WaifuModeSettingsScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(AppSpacing.medium),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
