@@ -24,6 +24,7 @@ import com.ai.assistance.operit.services.floating.StatusIndicatorStyle
 import com.ai.assistance.operit.ui.components.CustomScaffold
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import com.ai.assistance.operit.ui.theme.AppSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
