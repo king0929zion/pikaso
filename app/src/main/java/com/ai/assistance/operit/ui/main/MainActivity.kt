@@ -69,9 +69,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var anrMonitor: AnrMonitor
     private lateinit var mcpRepository: MCPRepository
 
-    // ======== 导航状态 ========
-    private var showPreferencesGuide by mutableStateOf(false)
-
     // ======== 数据迁移状态 ========
     private lateinit var migrationManager: ChatHistoryMigrationManager
     private var showMigrationScreen by mutableStateOf(false)
@@ -143,7 +140,6 @@ class MainActivity : ComponentActivity() {
         initializeComponents()
         cleanTemporaryFiles()
         anrMonitor.start()
-        setupPreferencesListener()
         configureDisplaySettings()
 
         // 设置初始界面 - 显示加载占位符
@@ -396,13 +392,9 @@ class MainActivity : ComponentActivity() {
 
         anrMonitor = AnrMonitor(this, lifecycleScope)
 
-        // 初始化用户偏好管理器并直接检查初始化状态
+        // 初始化用户偏好管理器
         preferencesManager = UserPreferencesManager.getInstance(this)
-        showPreferencesGuide = !preferencesManager.isPreferencesInitialized()
-        AppLogger.d(
-                TAG,
-                "初始化检查: 用户偏好已初始化=${!showPreferencesGuide}，将${if(showPreferencesGuide) "" else "不"}显示引导界面"
-        )
+        AppLogger.d(TAG, "用户偏好管理器初始化完成")
 
         // 初始化协议偏好管理器
         agreementPreferences = AgreementPreferences(this)
@@ -452,22 +444,6 @@ class MainActivity : ComponentActivity() {
                 TAG,
                 "权限级别检查: 已设置=${!showPermissionGuide}, 将${if(showPermissionGuide) "" else "不"}显示权限引导界面"
         )
-    }
-
-    // ======== 偏好监听器设置 ========
-    private fun setupPreferencesListener() {
-        // 监听偏好变化
-        lifecycleScope.launch {
-            preferencesManager.getUserPreferencesFlow().collect { profile ->
-                // 只有当状态变化时才更新UI
-                val newValue = !profile.isInitialized
-                if (showPreferencesGuide != newValue) {
-                    AppLogger.d(TAG, "偏好变更: 从 $showPreferencesGuide 变为 $newValue")
-                    showPreferencesGuide = newValue
-                    setAppContent()
-                }
-            }
-        }
     }
 
     // ======== 显示与性能配置 ========
@@ -565,11 +541,7 @@ class MainActivity : ComponentActivity() {
                             
                             // 主应用界面 (始终存在于底层)
                             OperitApp(
-                                    initialNavItem =
-                                            when {
-                                                showPreferencesGuide -> NavItem.UserPreferencesGuide
-                                                else -> NavItem.AiChat
-                                            },
+                                    initialNavItem = NavItem.AiChat,  // 直接进入聊天界面
                                     toolHandler = toolHandler
                             )
                         }
