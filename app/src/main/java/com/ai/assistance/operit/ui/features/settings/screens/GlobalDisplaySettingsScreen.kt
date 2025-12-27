@@ -92,7 +92,7 @@ fun GlobalDisplaySettingsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall)
                 .verticalScroll(scrollState)
         ) {
             // ======= 消息显示设置 =======
@@ -473,7 +473,7 @@ fun GlobalDisplaySettingsScreen(
                 showSaveSuccessMessage = false
             }
             Snackbar(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(AppSpacing.medium),
                 action = {
                     TextButton(onClick = { showSaveSuccessMessage = false }) {
                         Text(stringResource(id = android.R.string.ok))

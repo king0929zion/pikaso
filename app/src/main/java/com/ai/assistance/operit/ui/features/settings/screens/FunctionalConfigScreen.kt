@@ -94,7 +94,7 @@ fun FunctionalConfigScreen(
                                                     )
                                     )
                     ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
+                        Column(modifier = Modifier.padding(AppSpacing.medium)) {
                             Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.padding(bottom = 8.dp)
@@ -103,7 +103,7 @@ fun FunctionalConfigScreen(
                                         imageVector = Icons.Default.Settings,
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.size(24.dp)
+                                        modifier = Modifier.size(AppSizes.iconNormal)
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
@@ -221,7 +221,7 @@ fun FunctionalConfigScreen(
                                         )
                         ) {
                             Row(
-                                    modifier = Modifier.padding(16.dp),
+                                    modifier = Modifier.padding(AppSpacing.medium),
                                     verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
@@ -294,7 +294,7 @@ fun FunctionConfigCard(
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             // 功能标题和描述
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(AppSpacing.medium)) {
                 Text(
                         text = getFunctionDisplayName(functionType),
                         style = MaterialTheme.typography.titleMedium,
@@ -316,7 +316,7 @@ fun FunctionConfigCard(
                         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                 ) {
                     Row(
-                            modifier = Modifier.fillMaxWidth().padding(12.dp),
+                            modifier = Modifier.fillMaxWidth().padding(AppSpacing.small),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -457,7 +457,7 @@ fun FunctionConfigCard(
             // 配置列表
             Box(modifier = Modifier.fillMaxWidth()) {
                 androidx.compose.animation.AnimatedVisibility(visible = expanded) {
-                    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+                    Column(modifier = Modifier.padding(horizontal = AppSpacing.medium, vertical = AppSpacing.extraSmall)) {
                         Text(
                                 text = stringResource(id = R.string.select_config),
                                 style = MaterialTheme.typography.labelMedium,
@@ -510,7 +510,7 @@ fun FunctionConfigCard(
                                                 )
                                 ) {
                                     Row(
-                                            modifier = Modifier.fillMaxWidth().padding(12.dp),
+                                            modifier = Modifier.fillMaxWidth().padding(AppSpacing.small),
                                             verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         if (isSelected && !hasMultipleModels) {
