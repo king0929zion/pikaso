@@ -144,7 +144,7 @@ fun ShizukuDemoScreen(
                 isOperitTerminalInstalled = uiState.isOperitTerminalInstalled.value,
                 isDeviceRooted = uiState.isDeviceRooted.value,
                 hasRootAccess = uiState.hasRootAccess.value,
-                isAccessibilityProviderInstalled = uiState.isAccessibilityProviderInstalled.value,
+                isAccessibilityProviderInstalled = true, // 无障碍服务现在是内置的
                 isAccessibilityUpdateNeeded = isAccessibilityUpdateNeeded,
                 isRefreshing = uiState.isRefreshing.value,
                 onRefresh = {
@@ -292,8 +292,7 @@ fun ShizukuDemoScreen(
         val needAccessibilitySetupGuide =
             (currentDisplayedPermissionLevel == AndroidPermissionLevel.ACCESSIBILITY ||
                     currentDisplayedPermissionLevel == AndroidPermissionLevel.DEBUGGER) &&
-                    (!uiState.isAccessibilityProviderInstalled.value ||
-                            !uiState.hasAccessibilityServiceEnabled.value ||
+                    (!uiState.hasAccessibilityServiceEnabled.value ||
                             isAccessibilityUpdateNeeded)
 
 

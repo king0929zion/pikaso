@@ -98,7 +98,7 @@ class OperitInputMethodService : InputMethodService() {
         return try {
             // 选中文本并删除
             val extractedText = ic.getExtractedText(0, Int.MAX_VALUE)
-            if (extractedText != null && extractedText.isNotEmpty()) {
+            if (extractedText != null && extractedText.text.isNotEmpty()) {
                 ic.setComposingText("", 1)
                 ic.commitText("", 1)
             }

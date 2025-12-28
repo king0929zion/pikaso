@@ -1,6 +1,7 @@
 package com.ai.assistance.operit.core.actions
 
 import android.content.Context
+import android.view.accessibility.AccessibilityService
 import com.ai.assistance.operit.core.accessibility.OperitAccessibilityService
 import com.ai.assistance.operit.core.vision.VisionActionExecutor
 import com.ai.assistance.operit.util.AppLogger
@@ -84,7 +85,7 @@ object ActionExecutor {
      */
     suspend fun pressBack(context: Context): Boolean {
         return if (OperitAccessibilityService.isAccessibilityServiceEnabled()) {
-            OperitAccessibilityService.performGlobalAction(android.view.accessibility.AccessibilityService.GLOBAL_ACTION_BACK)
+            OperitAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
         } else {
             VisionActionExecutor.pressBack(context)
         }
@@ -95,7 +96,7 @@ object ActionExecutor {
      */
     suspend fun pressHome(context: Context): Boolean {
         return if (OperitAccessibilityService.isAccessibilityServiceEnabled()) {
-            OperitAccessibilityService.performGlobalAction(android.view.accessibility.AccessibilityService.GLOBAL_ACTION_HOME)
+            OperitAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME)
         } else {
             VisionActionExecutor.pressHome(context)
         }
@@ -106,7 +107,7 @@ object ActionExecutor {
      */
     suspend fun pressRecent(context: Context): Boolean {
         return if (OperitAccessibilityService.isAccessibilityServiceEnabled()) {
-            OperitAccessibilityService.performGlobalAction(android.view.accessibility.AccessibilityService.GLOBAL_ACTION_RECENTS)
+            OperitAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS)
         } else {
             VisionActionExecutor.pressRecent(context)
         }
