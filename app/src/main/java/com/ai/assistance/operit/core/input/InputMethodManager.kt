@@ -1,7 +1,9 @@
 package com.ai.assistance.operit.core.input
 
 import android.content.Context
+import android.content.Intent
 import com.ai.assistance.operit.util.AppLogger
+import kotlinx.coroutines.delay
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuRemoteProcess
 import java.nio.charset.StandardCharsets
@@ -168,6 +170,77 @@ object InputMethodManager {
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to enable Operit IME", e)
             false
+        }
+    }
+
+    /**
+     * 输入文本 - 通过切换输入法实现
+     * 1. 切换到Operit输入法
+     * 2. 发送广播输入文本
+     * 3. 恢复原输入法
+     */
+    suspend fun inputText(context: Context, text: String): Boolean {
+        // 切换到Operit输入法
+        val originalIME = switchToOperitIME(context)
+        if (originalIME == null) {
+            AppLogger.e(TAG, "Failed to switch to Operit IME for input")
+            return false
+        }
+
+        try {
+            // 等待输入法切换生效
+            delay(300)
+
+            // 发送广播输入文本
+            val intent = Intent(OperitInputMethodService.ACTION_INPUT_TEXT).apply {
+                putExtra(OperitInputMethodService.EXTRA_TEXT, text)
+                `package` = context.packageName
+            }
+            context.sendBroadcast(intent)
+            AppLogger.d(TAG, "Sent input broadcast: $text")
+
+            // 等待输入完成
+            delay(200)
+
+            return true
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to input text", e)
+            return false
+        } finally {
+            // 恢复原输入法
+            delay(100)
+            restoreIME(context, originalIME)
+        }
+    }
+
+    /**
+     * 清空输入框
+     */
+    suspend fun clearText(context: Context): Boolean {
+        // 切换到Operit输入法
+        val originalIME = switchToOperitIME(context)
+        if (originalIME == null) {
+            return false
+        }
+
+        try {
+            delay(300)
+
+            // 发送广播清空文本
+            val intent = Intent(OperitInputMethodService.ACTION_CLEAR_TEXT).apply {
+                `package` = context.packageName
+            }
+            context.sendBroadcast(intent)
+
+            delay(200)
+
+            return true
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to clear text", e)
+            return false
+        } finally {
+            delay(100)
+            restoreIME(context, originalIME)
         }
     }
 }
