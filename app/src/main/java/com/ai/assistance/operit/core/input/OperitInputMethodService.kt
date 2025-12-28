@@ -10,6 +10,10 @@ import android.view.inputmethod.InputConnection
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.ExtractedText
 import android.view.inputmethod.ExtractedTextRequest
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import com.ai.assistance.operit.util.AppLogger
 
 /**
@@ -33,12 +37,32 @@ class OperitInputMethodService : InputMethodService() {
         const val ACTION_INPUT_TEXT = "com.ai.assistance.operit.INPUT_TEXT"
         const val ACTION_CLEAR_TEXT = "com.ai.assistance.operit.CLEAR_TEXT"
         const val EXTRA_TEXT = "text"
+        const val EXTRA_REQUEST_ID = "request_id"
+
+        data class ImeCommandResult(
+            val requestId: String,
+            val action: String,
+            val success: Boolean,
+            val error: String? = null
+        )
 
         @Volatile
         private var instance: OperitInputMethodService? = null
 
         // 保存之前的输入法ID
         private var previousInputMethodId: String? = null
+
+        private val _commandResults =
+            MutableSharedFlow<ImeCommandResult>(
+                replay = 0,
+                extraBufferCapacity = 16,
+                onBufferOverflow = BufferOverflow.DROP_OLDEST
+            )
+        val commandResults: SharedFlow<ImeCommandResult> = _commandResults.asSharedFlow()
+
+        internal fun emitCommandResult(result: ImeCommandResult) {
+            _commandResults.tryEmit(result)
+        }
 
         fun getCurrentInputConnection(): InputConnection? {
             return instance?.activeInputConnection

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -35,9 +36,10 @@ import com.ai.assistance.operit.ui.theme.AppSpacing
  */
 @Composable
 fun AutoGlmToolScreen(
-    viewModel: AutoGlmViewModel = viewModel(),
     onNavigateToPermissions: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+    val viewModel: AutoGlmViewModel = viewModel(factory = AutoGlmViewModelFactory(context))
     val uiState by viewModel.uiState.collectAsState()
 
     AutoGlmToolContent(
@@ -46,7 +48,9 @@ fun AutoGlmToolScreen(
         onExecute = viewModel::executeTask,
         onCancel = viewModel::cancelTask,
         onClearTask = viewModel::clearTask,
-        onNavigateToPermissions = onNavigateToPermissions
+        onNavigateToPermissions = onNavigateToPermissions,
+        onToggleLogExpanded = viewModel::toggleLogExpanded,
+        onClearError = viewModel::clearError
     )
 }
 
@@ -57,7 +61,9 @@ private fun AutoGlmToolContent(
     onExecute: (String) -> Unit,
     onCancel: () -> Unit,
     onClearTask: () -> Unit,
-    onNavigateToPermissions: () -> Unit
+    onNavigateToPermissions: () -> Unit,
+    onToggleLogExpanded: () -> Unit,
+    onClearError: () -> Unit
 ) {
     val logScrollState = rememberScrollState()
 
@@ -66,42 +72,49 @@ private fun AutoGlmToolContent(
             .fillMaxSize()
             .padding(AppSpacing.screenPadding)
     ) {
-        // Header Section
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(R.string.autoglm_title),
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontWeight = FontWeight.Bold
-                )
+        OutlinedCard(shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppSpacing.cardPadding),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.autoglm_title),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontWeight = FontWeight.SemiBold
+                    )
 
-                Spacer(modifier = Modifier.height(AppSpacing.small))
+                    Spacer(modifier = Modifier.height(AppSpacing.nano))
 
-                Text(
-                    text = stringResource(R.string.autoglm_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+                    Text(
+                        text = stringResource(R.string.autoglm_description),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
 
-            // Permission settings button
-            FilledTonalButton(onClick = onNavigateToPermissions) {
-                Icon(
-                    imageVector = Icons.Default.Security,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(stringResource(R.string.permissions))
+                Spacer(modifier = Modifier.width(AppSpacing.medium))
+
+                FilledTonalIconButton(onClick = onNavigateToPermissions) {
+                    Icon(
+                        imageVector = Icons.Default.Security,
+                        contentDescription = stringResource(R.string.permissions),
+                        modifier = Modifier.size(AppSizes.iconNormal)
+                    )
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(AppSpacing.large))
+
+        uiState.error?.let { message ->
+            ErrorBanner(message = message, onDismiss = onClearError)
+            Spacer(modifier = Modifier.height(AppSpacing.medium))
+        }
 
         // Task Input Section
         TaskInputSection(
@@ -138,8 +151,50 @@ private fun AutoGlmToolContent(
         ExecutionLogSection(
             log = uiState.log,
             logScrollState = logScrollState,
-            isExpanded = uiState.isLogExpanded
+            isExpanded = uiState.isLogExpanded,
+            onToggleExpanded = onToggleLogExpanded
         )
+    }
+}
+
+@Composable
+private fun ErrorBanner(message: String, onDismiss: () -> Unit) {
+    OutlinedCard(
+        colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+        shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppSpacing.medium),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.error.copy(alpha = 0.12f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ErrorOutline,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.size(AppSizes.iconNormal)
+                )
+            }
+            Spacer(modifier = Modifier.width(AppSpacing.medium))
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(modifier = Modifier.width(AppSpacing.small))
+            IconButton(onClick = onDismiss) {
+                Icon(imageVector = Icons.Default.Close, contentDescription = null)
+            }
+        }
     }
 }
 
@@ -234,12 +289,9 @@ private fun StatusSection(
     isLoading: Boolean,
     progress: Int
 ) {
-    Card(
+    OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+        shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)
     ) {
         Column(
             modifier = Modifier.padding(AppSpacing.medium)
@@ -266,7 +318,7 @@ private fun StatusSection(
                     Text(
                         text = statusText,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -280,7 +332,7 @@ private fun StatusSection(
                         .height(4.dp)
                         .clip(RoundedCornerShape(2.dp)),
                     color = MaterialTheme.colorScheme.primary,
-                    trackColor = MaterialTheme.colorScheme.surfaceVariant
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
                 )
                 Spacer(modifier = Modifier.height(AppSpacing.nano))
                 Text(
@@ -297,7 +349,8 @@ private fun StatusSection(
 private fun ExecutionLogSection(
     log: String,
     logScrollState: ScrollState,
-    isExpanded: Boolean
+    isExpanded: Boolean,
+    onToggleExpanded: () -> Unit
 ) {
     Column {
         Row(
@@ -313,7 +366,7 @@ private fun ExecutionLogSection(
             )
 
             TextButton(
-                onClick = { /* Toggle expansion */ }
+                onClick = onToggleExpanded
             ) {
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
@@ -327,12 +380,11 @@ private fun ExecutionLogSection(
 
         Spacer(modifier = Modifier.height(AppSpacing.small))
 
-        Box(
+        OutlinedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(if (isExpanded) 300.dp else 200.dp)
-                .clip(RoundedCornerShape(AppSizes.cornerRadiusMedium))
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .height(if (isExpanded) 320.dp else 200.dp),
+            shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)
         ) {
             LaunchedEffect(log) {
                 if (logScrollState.maxValue > 0) {
@@ -352,7 +404,7 @@ private fun ExecutionLogSection(
                 color = if (log.isEmpty()) {
                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                 } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    MaterialTheme.colorScheme.onSurface
                 }
             )
         }

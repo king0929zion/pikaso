@@ -1616,6 +1616,10 @@
     <string name="permission_storage_desc">用于保存截图、日志和配置文件。</string>
     <string name="permission_notification">通知权限</string>
     <string name="permission_notification_desc">用于接收任务完成通知和状态更新。</string>
+    <string name="permission_install_unknown_apps">安装未知应用</string>
+    <string name="permission_install_unknown_apps_desc">用于安装网页转 APK 生成的安装包（仅对本应用生效）。</string>
+    <string name="permission_battery_optimization">电池优化豁免</string>
+    <string name="permission_battery_optimization_desc">允许应用在后台稳定运行，避免自动化过程中被系统回收。</string>
     
     <string name="target_format">目标格式</string>
     <string name="start_conversion">开始转换</string>

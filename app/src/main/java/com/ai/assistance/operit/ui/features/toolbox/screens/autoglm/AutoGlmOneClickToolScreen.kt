@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.AutoMode
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
@@ -29,6 +30,7 @@ import com.ai.assistance.operit.data.model.ModelParameter
 import com.ai.assistance.operit.data.preferences.FunctionalConfigManager
 import com.ai.assistance.operit.data.preferences.ModelConfigManager
 import com.ai.assistance.operit.ui.components.CustomScaffold
+import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.launch
 
@@ -38,15 +40,35 @@ fun AutoGlmOneClickToolScreen(
     navController: NavController,
     onNavigateToModelConfig: () -> Unit
 ) {
-    CustomScaffold { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            AutoGlmOneClickScreen(onNavigateToModelConfig = onNavigateToModelConfig)
+    CustomScaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = stringResource(R.string.screen_title_autoglm_one_click)) },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onNavigateToModelConfig) {
+                        Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                    }
+                }
+            )
         }
+    ) { paddingValues ->
+        AutoGlmOneClickScreen(
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(AppSpacing.screenPadding),
+            onNavigateToModelConfig = onNavigateToModelConfig
+        )
     }
 }
 
 @Composable
 private fun AutoGlmOneClickScreen(
+    modifier: Modifier = Modifier,
     onNavigateToModelConfig: () -> Unit
 ) {
     val context = LocalContext.current
@@ -210,11 +232,10 @@ private fun AutoGlmOneClickScreen(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
             .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(AppSpacing.medium)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(

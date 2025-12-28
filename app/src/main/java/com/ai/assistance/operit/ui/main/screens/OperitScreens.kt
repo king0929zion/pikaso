@@ -282,7 +282,8 @@ sealed class Screen(
                     onProcessLimitRemoverSelected = { navigateTo(ProcessLimitRemover) },
                     onHtmlPackagerSelected = { navigateTo(HtmlPackager) },
                     onAutoGlmOneClickSelected = { navigateTo(AutoGlmOneClick) },
-                    onAutoGlmToolSelected = { navigateTo(AutoGlmTool) }
+                    onAutoGlmToolSelected = { navigateTo(AutoGlmTool) },
+                    onToolPermissionsSelected = { navigateTo(ToolPermission) }
             )
         }
     }

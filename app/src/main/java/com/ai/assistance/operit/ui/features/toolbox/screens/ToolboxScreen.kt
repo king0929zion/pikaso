@@ -1,16 +1,19 @@
 package com.ai.assistance.operit.ui.features.toolbox.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +40,8 @@ fun ToolboxScreen(
     onProcessLimitRemoverSelected: () -> Unit,
     onHtmlPackagerSelected: () -> Unit,
     onAutoGlmOneClickSelected: () -> Unit,
-    onAutoGlmToolSelected: () -> Unit
+    onAutoGlmToolSelected: () -> Unit,
+    onToolPermissionsSelected: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -69,24 +73,43 @@ fun ToolboxScreen(
     )
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(AppSpacing.screenPadding)
     ) {
         // Header
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(AppSpacing.medium)
-        ) {
-            Text(
-                text = context.getString(R.string.toolbox),
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            Text(
-                text = context.getString(R.string.toolbox_description),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        OutlinedCard(shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppSpacing.cardPadding),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = context.getString(R.string.toolbox),
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(modifier = Modifier.height(AppSpacing.nano))
+                    Text(
+                        text = context.getString(R.string.toolbox_description),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(AppSpacing.medium))
+
+                FilledTonalIconButton(onClick = onToolPermissionsSelected) {
+                    Icon(
+                        imageVector = Icons.Default.Security,
+                        contentDescription = context.getString(R.string.permissions),
+                        modifier = Modifier.size(AppSizes.iconNormal)
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(AppSpacing.small))
@@ -94,7 +117,7 @@ fun ToolboxScreen(
         // Tools grid
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 150.dp),
-            contentPadding = PaddingValues(AppSpacing.medium),
+            contentPadding = PaddingValues(top = AppSpacing.medium),
             horizontalArrangement = Arrangement.spacedBy(AppSpacing.medium),
             verticalArrangement = Arrangement.spacedBy(AppSpacing.medium),
             modifier = Modifier.weight(1f)
@@ -108,41 +131,56 @@ fun ToolboxScreen(
 
 @Composable
 fun ToolCard(tool: Tool) {
-    Card(
+    OutlinedCard(
         onClick = tool.onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 120.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
+            .heightIn(min = 112.dp),
+        shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(AppSpacing.medium),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AppSpacing.small)
+                .padding(AppSpacing.cardPadding),
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = tool.icon,
+                    contentDescription = tool.name,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.size(AppSizes.iconNormal)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(AppSpacing.medium))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = tool.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1
+                )
+                Spacer(modifier = Modifier.height(AppSpacing.nano))
+                Text(
+                    text = tool.description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 3
+                )
+            }
+
             Icon(
-                imageVector = tool.icon,
-                contentDescription = tool.name,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(AppSizes.iconLarge)
-            )
-
-            Text(
-                text = tool.name,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                maxLines = 1
-            )
-
-            Text(
-                text = tool.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 2
+                imageVector = Icons.Default.ChevronRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(AppSizes.iconMedium)
             )
         }
     }

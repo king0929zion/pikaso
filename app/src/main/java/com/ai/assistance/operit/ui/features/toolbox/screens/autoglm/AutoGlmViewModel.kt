@@ -253,6 +253,10 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
         _uiState.value = _uiState.value.copy(error = null)
     }
 
+    fun toggleLogExpanded() {
+        _uiState.value = _uiState.value.copy(isLogExpanded = !_uiState.value.isLogExpanded)
+    }
+
     private fun buildUiAutomationSystemPrompt(): String {
         val calendar = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault())

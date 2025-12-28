@@ -7,10 +7,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.PowerManager
 import android.provider.Settings
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -64,6 +64,8 @@ fun AutoGlmPermissionScreen(
         val overlayEnabled = Settings.canDrawOverlays(context)
         val storageEnabled = checkStoragePermission(context)
         val notificationEnabled = checkNotificationPermission(context)
+        val installUnknownAppsEnabled = checkInstallUnknownAppsPermission(context)
+        val batteryOptimizationIgnored = checkIgnoreBatteryOptimization(context)
 
         permissions =
             listOf(
@@ -157,6 +159,46 @@ fun AutoGlmPermissionScreen(
                             })
                         }
                     }
+                ),
+                PermissionItem(
+                    name = context.getString(R.string.permission_install_unknown_apps),
+                    description = context.getString(R.string.permission_install_unknown_apps_desc),
+                    icon = Icons.Default.Download,
+                    color = Color(0xFF607D8B),
+                    isGranted = installUnknownAppsEnabled,
+                    action = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            context.startActivity(
+                                Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
+                                    data = Uri.parse("package:${context.packageName}")
+                                }
+                            )
+                        } else {
+                            context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:${context.packageName}")
+                            })
+                        }
+                    }
+                ),
+                PermissionItem(
+                    name = context.getString(R.string.permission_battery_optimization),
+                    description = context.getString(R.string.permission_battery_optimization_desc),
+                    icon = Icons.Default.BatterySaver,
+                    color = Color(0xFF8BC34A),
+                    isGranted = batteryOptimizationIgnored,
+                    action = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            context.startActivity(
+                                Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                                    data = Uri.parse("package:${context.packageName}")
+                                }
+                            )
+                        } else {
+                            context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:${context.packageName}")
+                            })
+                        }
+                    }
                 )
             )
 
@@ -169,7 +211,18 @@ fun AutoGlmPermissionScreen(
         onDispose { ShizukuAuthorizer.removeStateChangeListener(listener) }
     }
 
-    CustomScaffold { paddingValues ->
+    CustomScaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = stringResource(R.string.autoglm_permission_title)) },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -180,12 +233,6 @@ fun AutoGlmPermissionScreen(
             // Header
             item {
                 Column {
-                    Text(
-                        text = stringResource(R.string.autoglm_permission_title),
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(R.string.autoglm_permission_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
@@ -220,7 +267,9 @@ fun AutoGlmPermissionScreen(
                             Spacer(modifier = Modifier.height(12.dp))
 
                             LinearProgressIndicator(
-                                progress = { grantedCount.toFloat() / permissions.size },
+                                progress = {
+                                    if (permissions.isEmpty()) 0f else grantedCount.toFloat() / permissions.size
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(8.dp)
@@ -317,10 +366,9 @@ fun PermissionCard(
 ) {
     val context = LocalContext.current
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onToggle() },
+    OutlinedCard(
+        onClick = onToggle,
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp)
     ) {
         Column {
@@ -440,6 +488,23 @@ private fun checkNotificationPermission(context: Context): Boolean {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
+    } else {
+        true
+    }
+}
+
+private fun checkInstallUnknownAppsPermission(context: Context): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        context.packageManager.canRequestPackageInstalls()
+    } else {
+        true
+    }
+}
+
+private fun checkIgnoreBatteryOptimization(context: Context): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+        pm.isIgnoringBatteryOptimizations(context.packageName)
     } else {
         true
     }
