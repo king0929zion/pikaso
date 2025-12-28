@@ -50,7 +50,7 @@ import com.ai.assistance.operit.ui.features.settings.screens.TagMarketScreen
 import com.ai.assistance.operit.ui.features.settings.screens.SettingsScreen
 import com.ai.assistance.operit.ui.features.settings.screens.SpeechServicesSettingsScreen
 import com.ai.assistance.operit.ui.features.settings.screens.ThemeSettingsScreen
-import com.ai.assistance.operit.ui.features.settings.screens.ToolPermissionSettingsScreen
+import com.ai.assistance.operit.ui.features.toolbox.screens.permissions.CoreToolPermissionsScreen
 import com.ai.assistance.operit.ui.features.settings.screens.UserPreferencesGuideScreen
 import com.ai.assistance.operit.ui.features.settings.screens.UserPreferencesSettingsScreen
 import com.ai.assistance.operit.ui.features.settings.screens.CustomHeadersSettingsScreen
@@ -283,7 +283,7 @@ sealed class Screen(
                     onHtmlPackagerSelected = { navigateTo(HtmlPackager) },
                     onAutoGlmOneClickSelected = { navigateTo(AutoGlmOneClick) },
                     onAutoGlmToolSelected = { navigateTo(AutoGlmTool) },
-                    onToolPermissionsSelected = { navigateTo(ToolPermission) }
+                    onToolPermissionsSelected = { navigateTo(ToolPermissionsDetail) }
             )
         }
     }
@@ -318,7 +318,7 @@ sealed class Screen(
                 onGestureConsumed: (Boolean) -> Unit
         ) {
             SettingsScreen(
-                    navigateToToolPermissions = { navigateTo(ToolPermission) },
+                    navigateToToolPermissions = { navigateTo(ToolPermissions) },
                     onNavigateToUserPreferences = { navigateTo(UserPreferencesSettings) },
                     navigateToModelConfig = { navigateTo(ModelConfig) },
                     navigateToThemeSettings = { navigateTo(ThemeSettings) },
@@ -481,9 +481,9 @@ sealed class Screen(
         }
     }
 
-    // Secondary screens - Settings
-    data object ToolPermission :
-            Screen(parentScreen = Settings, navItem = NavItem.Settings, titleRes = R.string.screen_title_tool_permissions) {
+    // Core tool permission/config screen (primary)
+    data object ToolPermissions :
+            Screen(navItem = NavItem.ToolPermissions, titleRes = R.string.screen_title_tool_permissions) {
         @Composable
         override fun Content(
                 navController: NavController,
@@ -495,7 +495,25 @@ sealed class Screen(
                 onError: (String) -> Unit,
                 onGestureConsumed: (Boolean) -> Unit
         ) {
-            ToolPermissionSettingsScreen(navigateBack = onGoBack)
+            CoreToolPermissionsScreen()
+        }
+    }
+
+    // Same screen, but reachable from Toolbox with back navigation
+    data object ToolPermissionsDetail :
+            Screen(parentScreen = Toolbox, navItem = NavItem.ToolPermissions, titleRes = R.string.screen_title_tool_permissions) {
+        @Composable
+        override fun Content(
+                navController: NavController,
+                navigateTo: ScreenNavigationHandler,
+                updateNavItem: NavItemChangeHandler,
+                onGoBack: () -> Unit,
+                hasBackgroundImage: Boolean,
+                onLoading: (Boolean) -> Unit,
+                onError: (String) -> Unit,
+                onGestureConsumed: (Boolean) -> Unit
+        ) {
+            CoreToolPermissionsScreen()
         }
     }
 
@@ -1209,7 +1227,7 @@ object OperitRouter {
             NavItem.EventCampaign -> Screen.EventCampaign
             NavItem.Packages -> Screen.Packages
             NavItem.Toolbox -> Screen.Toolbox
-            NavItem.ToolPermissions -> Screen.ToolPermission
+            NavItem.ToolPermissions -> Screen.ToolPermissions
             NavItem.ShizukuCommands -> Screen.ShizukuCommands
             NavItem.Settings -> Screen.Settings
             NavItem.Help -> Screen.Help

@@ -1,54 +1,55 @@
 # 核心工具与权限说明
 
-本项目当前 UI 默认只呈现 4 个核心工具模块（入口：`工具箱`）。
+应用 UI 目前只保留 4 个核心工具入口（`工具箱`），并提供统一的权限配置页（`工具权限`）。
+
+## 0) 权限配置页（入口）
+- 页面：`app/src/main/java/com/ai/assistance/operit/ui/features/toolbox/screens/permissions/CoreToolPermissionsScreen.kt`
+- 入口：
+  - 侧边栏：`工具权限`
+  - 工具箱右上角：盾牌按钮
 
 ## 1) 解除幻象进程限制
-
-- 目的：提升后台/多进程相关任务的稳定性，避免系统对“幻象进程”过度限制
-- 实现：通过具备 shell 权限的通道执行 `device_config` 相关命令
-- 关键页面：`app/src/main/java/com/ai/assistance/operit/ui/features/toolbox/screens/processlimit/ProcessLimitRemoverScreen.kt`
+- 目标：提升后台多进程任务的稳定性，调整 phantom process 限制
+- 实现：通过 Shell 执行 `device_config` 相关命令
+- 页面：`app/src/main/java/com/ai/assistance/operit/ui/features/toolbox/screens/processlimit/ProcessLimitRemoverScreen.kt`
+- 关键执行器：`app/src/main/java/com/ai/assistance/operit/core/tools/system/AndroidShellExecutor.kt`
 
 需要：
-- Shizuku 服务运行 + 授权（推荐）
+- Shizuku 安装、服务运行、已授权（推荐/通常必需）
+
+备注：
+- `AndroidShellExecutor` 会在“首选执行器失败时”回退到当前可用的最高权限级别，以减少因权限不足导致的失败。
 
 ## 2) AutoGLM 执行器
-
-AutoGLM 的执行策略：
-
-- 点击/滑动/长按：优先走无障碍（`OperitAccessibilityService`）
-- 文本输入：仅在需要输入时走 Shizuku（切换到 Operit 输入法 → 发送输入广播 → 恢复原输入法）
-- 虚拟屏幕：保留 `VirtualDisplayOverlay` 的悬浮可视化与交互逻辑
+执行策略（必须遵守）：
+- 点击/滑动/长按/全局返回/Home：优先使用无障碍（稳定、可控）
+- 文本输入：仅在需要输入时使用 Shizuku 进行输入法切换（`ime set`），随后恢复原输入法
+- 虚拟屏幕：保留 VirtualDisplay/Overlay 的可视化与交互逻辑
 
 关键实现：
-- 无障碍：`app/src/main/java/com/ai/assistance/operit/core/accessibility/OperitAccessibilityService.kt`
 - 控制器：`app/src/main/java/com/ai/assistance/operit/core/autoglm/AutoGLMController.kt`
+- 无障碍：`app/src/main/java/com/ai/assistance/operit/core/accessibility/OperitAccessibilityService.kt`
 - 输入法切换：`app/src/main/java/com/ai/assistance/operit/core/input/InputMethodManager.kt`
 - 输入法服务：`app/src/main/java/com/ai/assistance/operit/core/input/OperitInputMethodService.kt`
+- 虚拟屏幕 UI：`app/src/main/java/com/ai/assistance/operit/ui/common/displays/VirtualDisplayOverlay.kt`
 
 需要：
-- 无障碍服务（必选，首选通道）
-- Shizuku 服务运行 + 授权（输入时必选）
-- 在系统里启用 `Operit 输入法`（输入时必选）
-- 悬浮窗（按需：虚拟屏幕/悬浮层）
+- 无障碍服务：必需
+- Shizuku：输入时必需（用于临时切换输入法）
+- Operit 输入法：系统里启用（输入时必需）
+- 悬浮窗权限：按需（虚拟屏幕/悬浮层）
 
 ## 3) AutoGLM 配置器（一键配置）
-
-- 目的：为 AutoGLM 相关模型/参数提供快速配置入口
-- 入口：工具箱中的 “AutoGLM 配置器”
+- 目标：快速创建/更新 `autoglm-phone` 模型配置，并切换 AutoGLM 工具包
+- 页面：`app/src/main/java/com/ai/assistance/operit/ui/features/toolbox/screens/autoglm/AutoGlmOneClickToolScreen.kt`
 
 需要：
-- 网络（用于拉取/提交配置相关请求，取决于你选择的模型供应商）
+- 网络（用于模型配置的请求与校验，取决于所选供应商）
 
 ## 4) 网页转 APK 打包器
-
-- 目的：将一份网页（HTML/CSS/JS）打包为可安装 APK
-- 入口：工具箱中的 “网页转 APK 打包器”
+- 目标：选择网页工程目录与入口 HTML，导出为可安装 APK
+- 页面：`app/src/main/java/com/ai/assistance/operit/ui/features/toolbox/screens/htmlpackager/HtmlPackagerScreen.kt`
 
 需要：
-- 存储权限（按需：读写输入/输出文件）
+- 通常无需存储权限：使用系统文件选择器（SAF）访问目录与文件
 
-## 权限页
-
-建议优先在应用内的权限页完成检查与跳转：
-- 入口：`工具箱` → 右上角 `权限`
-- 组件：`app/src/main/java/com/ai/assistance/operit/ui/features/toolbox/screens/autoglm/AutoGlmPermissionScreen.kt`

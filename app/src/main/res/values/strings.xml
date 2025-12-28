@@ -1398,6 +1398,37 @@
     <string name="tool_process_limit_remover">解除幻象进程限制</string>
     <string name="tool_process_limit_remover_desc">管理Android 12+的幻象进程数量限制，允许更多后台子进程</string>
 
+    <!-- Core tool permission/config screen -->
+    <string name="core_permissions_title">权限配置</string>
+    <string name="core_permissions_subtitle">为四个核心工具配置系统权限与 Shizuku（优先无障碍执行动作，Shizuku 仅用于输入法切换/必要的 Shell）。</string>
+    <string name="core_permissions_refresh">刷新</string>
+    <string name="core_permissions_status_ok">已就绪</string>
+    <string name="core_permissions_status_missing">未配置</string>
+
+    <string name="core_permissions_process_limit_desc">用于解除 Android 幻象进程限制（需要 Shizuku 执行 device_config）。</string>
+    <string name="core_permissions_autoglm_executor_desc">用于 AutoGLM 执行器：点击/滑动/截图/虚拟屏幕优先使用无障碍。</string>
+    <string name="core_permissions_autoglm_config_desc">用于 AutoGLM 配置器：Shizuku 用于输入时临时切换到 Operit 输入法并在完成后切回。</string>
+    <string name="core_permissions_html_packager_desc">用于网页转 APK 打包器：选择文件夹、导出与通知提示。</string>
+
+    <string name="core_permissions_shizuku_installed">Shizuku 已安装</string>
+    <string name="core_permissions_shizuku_running">Shizuku 服务运行中</string>
+    <string name="core_permissions_shizuku_granted">已授予 Shizuku 权限</string>
+    <string name="core_permissions_install_shizuku">安装/更新 Shizuku</string>
+    <string name="core_permissions_open_shizuku">打开 Shizuku</string>
+    <string name="core_permissions_request_shizuku">请求 Shizuku 授权</string>
+    <string name="core_permissions_copy_shizuku_start_cmd">复制启动命令</string>
+
+    <string name="core_permissions_accessibility">无障碍服务已启用</string>
+    <string name="core_permissions_overlay">悬浮窗权限已授予</string>
+    <string name="core_permissions_notifications">通知权限已授予</string>
+    <string name="core_permissions_operit_ime_enabled">Operit 输入法已启用</string>
+
+    <string name="core_permissions_open_accessibility_settings">打开无障碍设置</string>
+    <string name="core_permissions_open_overlay_settings">打开悬浮窗设置</string>
+    <string name="core_permissions_open_ime_settings">打开输入法设置</string>
+    <string name="core_permissions_request_notifications">请求通知权限</string>
+    <string name="core_permissions_open_app_settings">打开应用设置</string>
+
     <string name="tool_html_packager">HTML打包器</string>
     <string name="tool_html_packager_desc">将HTML文件及其依赖打包成单个HTML文件，方便分享和部署</string>
 

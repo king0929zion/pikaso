@@ -40,7 +40,22 @@ class AndroidShellExecutor {
             if (preferredExecutor.isAvailable() && permStatus.granted) {
                 // AppLogger.d(TAG, "Executing command with preferred permission level: $preferredLevel")
                 val result = preferredExecutor.executeCommand(command)
-                return CommandResult(result.success, result.stdout, result.stderr, result.exitCode)
+                val preferredResult = CommandResult(result.success, result.stdout, result.stderr, result.exitCode)
+
+                // 首选执行器失败时，回退到当前可用的最高权限级别，提升工具稳定性
+                if (preferredResult.success) {
+                    return preferredResult
+                }
+
+                val (fallbackExecutor, fallbackStatus) = ShellExecutorFactory.getHighestAvailableExecutor(ctx)
+                if (fallbackStatus.granted &&
+                    fallbackExecutor.getPermissionLevel() != preferredExecutor.getPermissionLevel()
+                ) {
+                    val fallback = fallbackExecutor.executeCommand(command)
+                    return CommandResult(fallback.success, fallback.stdout, fallback.stderr, fallback.exitCode)
+                }
+
+                return preferredResult
             }
 
                         AppLogger.d(

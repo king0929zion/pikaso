@@ -1,40 +1,32 @@
-# Pikaso (Operit) - Android Automation Toolkit
+# Operit (Open-AutoGLM)
 
-Pikaso/Operit is an Android 8.0+ automation toolkit that currently focuses on 4 core modules:
+Operit is an Android-oriented AutoGLM automation assistant. Core principles:
+- Actions: prefer Accessibility (tap/swipe/long-press/global back/home/screenshot/UI hierarchy)
+- Text input: use Shizuku only when input is needed, temporarily switch to Operit IME, then restore the previous IME
+- Virtual screen: keep VirtualDisplay / overlay logic intact
 
+## Only 4 tools are exposed in UI
 1. Phantom process limit remover
-2. AutoGLM Executor (UI automation execution)
-3. AutoGLM Configurator (one-click AutoGLM configuration)
-4. Web-to-APK Packager (HTML -> APK)
+2. AutoGLM executor
+3. AutoGLM configurator (one-click)
+4. Web-to-APK packager
 
-## Design Principles
+## Quick start (required)
+1. Open `Tool Permissions` from the sidebar or the shield button on Toolbox.
+2. Finish the required setup:
+   - Shizuku: install / start / grant permission
+   - Accessibility service: enable Operit Accessibility
+   - Operit IME: enable in system settings
+   - Overlay / notification permissions: enable if needed
+3. Go back to `Toolbox` and use the 4 tools.
 
-- UI actions: prioritize Accessibility Service for tap/swipe/long-press, hierarchy, and screenshots
-- Text input: use Shizuku only when input is required (temporarily switch to the built-in Operit IME, then restore the original IME)
-- Virtual screen: keep and maintain `VirtualDisplayOverlay` logic for visualization and interaction
-- UI style: minimalist layout inspired by https://www.anthropic.com/
+## Key code
+- AutoGLM controller: `app/src/main/java/com/ai/assistance/operit/core/autoglm/AutoGLMController.kt`
+- Accessibility: `app/src/main/java/com/ai/assistance/operit/core/accessibility/OperitAccessibilityService.kt`
+- IME switching: `app/src/main/java/com/ai/assistance/operit/core/input/InputMethodManager.kt`
+- Virtual screen UI: `app/src/main/java/com/ai/assistance/operit/ui/common/displays/VirtualDisplayOverlay.kt`
+- Permission page: `app/src/main/java/com/ai/assistance/operit/ui/features/toolbox/screens/permissions/CoreToolPermissionsScreen.kt`
 
-## Required Permissions
+## Build
+This repo builds and publishes via GitHub Actions on every push to `main`.
 
-In-app entry: `Toolbox` → top-right `Permissions` button.
-
-- Accessibility Service (primary channel for UI actions)
-- Shizuku (IME switching during text input; also used by some shell-based tools)
-- Operit IME enabled in system settings
-- Overlay (optional; for overlays/virtual screen)
-- Storage (optional; for Web-to-APK and file operations)
-- Notifications (Android 13+; optional)
-
-See `docs/TOOLS.md` for details.
-
-## Key Paths
-
-- `app/src/main/java/com/ai/assistance/operit/core/accessibility/OperitAccessibilityService.kt`
-- `app/src/main/java/com/ai/assistance/operit/core/autoglm/AutoGLMController.kt`
-- `app/src/main/java/com/ai/assistance/operit/core/input/InputMethodManager.kt`
-- `app/src/main/java/com/ai/assistance/operit/ui/common/displays/VirtualDisplayOverlay.kt`
-- `app/src/main/java/com/ai/assistance/operit/ui/features/toolbox/screens/ToolboxScreen.kt`
-
-## CI Build
-
-GitHub Actions builds signed Release APKs via `.github/workflows/build.yml`.

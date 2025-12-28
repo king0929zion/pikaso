@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.ui.components.PageContainer
 import com.ai.assistance.operit.ui.theme.AppSizes
 import com.ai.assistance.operit.ui.theme.AppSpacing
 
@@ -72,11 +73,7 @@ fun ToolboxScreen(
         )
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(AppSpacing.screenPadding)
-    ) {
+    PageContainer {
         // Header
         OutlinedCard(shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)) {
             Row(
