@@ -84,7 +84,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
         var uiXml = ""
 
         while (retryCount < MAX_RETRY_COUNT) {
-            uiXml = UIHierarchyManager.getUIHierarchy(context)
+            uiXml = UIHierarchyManager.getUIHierarchy()
             if (uiXml.isNotEmpty()) {
                 return uiXml
             }
@@ -164,14 +164,14 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
                 AppLogger.w(TAG, "无法获取UI层次结构XML，使用默认值。")
                 focusInfo.packageName = "android"
                 // 即使XML获取失败，仍然尝试获取Activity名称
-                focusInfo.activityName = UIHierarchyManager.getCurrentActivityName(context) ?: "ForegroundActivity"
+                focusInfo.activityName = UIHierarchyManager.getCurrentActivityName() ?: "ForegroundActivity"
                 return focusInfo
             }
 
             // 2. 从XML中解析包名
             val packageName = extractPackageNameFromXml(hierarchyXml)
             // 3. 从服务中直接获取当前Activity名称
-            val activityName = UIHierarchyManager.getCurrentActivityName(context)
+            val activityName = UIHierarchyManager.getCurrentActivityName()
 
             focusInfo.packageName = packageName
             focusInfo.activityName = activityName // 使用从服务获取的Activity名称
@@ -407,7 +407,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
         val text = tool.parameters.find { it.name == "text" }?.value ?: ""
 
             // 通过UIHierarchyManager请求远程服务找到焦点节点的ID
-            val focusedNodeId = UIHierarchyManager.findFocusedNodeId(context)
+            val focusedNodeId = UIHierarchyManager.findFocusedNodeId()
             if (focusedNodeId.isNullOrEmpty()) {
                     return@withAccessibilityCheck ToolResult(
                         toolName = tool.name,
@@ -424,7 +424,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
             }
 
             // 通过UIHierarchyManager请求远程服务设置文本
-            val result = UIHierarchyManager.setTextOnNode(context, focusedNodeId, text)
+            val result = UIHierarchyManager.setTextOnNode(focusedNodeId, text)
 
                 if (result) {
                 // 成功后主动隐藏overlay
@@ -644,7 +644,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
     // 使用无障碍服务执行点击的辅助方法
     private suspend fun performAccessibilityClick(x: Int, y: Int): Boolean {
         return try {
-            UIHierarchyManager.performClick(context, x, y)
+            UIHierarchyManager.performClick(x, y)
         } catch (e: Exception) {
             AppLogger.e(TAG, "Error performing accessibility click", e)
             return false
@@ -654,7 +654,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
     // 使用无障碍服务执行长按的辅助方法
     private suspend fun performAccessibilityLongPress(x: Int, y: Int): Boolean {
         return try {
-            UIHierarchyManager.performLongPress(context, x, y)
+            UIHierarchyManager.performLongPress(x, y)
         } catch (e: Exception) {
             AppLogger.e(TAG, "Error performing accessibility long press", e)
             return false
@@ -670,7 +670,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
             duration: Int
     ): Boolean {
         return try {
-            UIHierarchyManager.performSwipe(context, startX, startY, endX, endY, duration.toLong())
+            UIHierarchyManager.performSwipe(startX, startY, endX, endY, duration.toLong())
         } catch (e: Exception) {
             AppLogger.e(TAG, "Error performing accessibility swipe", e)
             return false
@@ -704,7 +704,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
 
             if (keyAction != null) {
                 // 通过UIHierarchyManager请求远程服务执行操作
-                val success = UIHierarchyManager.performGlobalAction(context, keyAction)
+                val success = UIHierarchyManager.performGlobalAction(keyAction)
                 return if (success) {
                     ToolResult(
                             toolName = tool.name,
@@ -757,7 +757,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
             val shortName = System.currentTimeMillis().toString().takeLast(4)
             val file = File(screenshotDir, "$shortName.png")
 
-            val success = UIHierarchyManager.takeScreenshot(context, file.absolutePath, "png")
+            val success = UIHierarchyManager.takeScreenshot(file.absolutePath)
             if (!success) {
                 AppLogger.w(TAG, "captureScreenshotForAgent: AIDL takeScreenshot failed")
                 return Pair(null, null)
