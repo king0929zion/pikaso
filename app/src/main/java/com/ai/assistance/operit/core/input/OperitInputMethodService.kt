@@ -4,7 +4,7 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
-import android.os.Build
+import android.os.IBinder
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
@@ -62,22 +62,33 @@ class OperitInputMethodService : InputMethodService() {
             return try {
                 val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 previousInputMethodId?.let { prevId ->
-                    // 使用 setInputMethodWithToken 或直接设置
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        imm.setInputMethod(currentInputConnection?.token, prevId)
-                    } else {
-                        // 对于旧版本，使用反射或其他方法
-                        try {
-                            val method = InputMethodManager::class.java.getMethod(
-                                "setInputMethod",
-                                IBinder::class.java,
-                                String::class.java
-                            )
-                            method.invoke(imm, currentInputConnection?.token, prevId)
-                        } catch (e: Exception) {
-                            AppLogger.e(TAG, "Failed to restore input method via reflection", e)
-                            return false
+                    // 尝试使用 InputMethodManager 的方法
+                    try {
+                        val method = InputMethodManager::class.java.getMethod(
+                            "setInputMethod",
+                            IBinder::class.java,
+                            String::class.java
+                        )
+                        // 获取当前输入法的token
+                        val currentToken = getCurrentInputConnection()?.token
+                        if (currentToken != null) {
+                            method.invoke(imm, currentToken, prevId)
+                        } else {
+                            // 如果无法获取token，直接使用方法名切换
+                            try {
+                                val switchMethod = InputMethodManager::class.java.getMethod(
+                                    "switchInputMethod",
+                                    String::class.java
+                                )
+                                switchMethod.invoke(imm, prevId)
+                            } catch (e2: Exception) {
+                                AppLogger.e(TAG, "Failed to switch input method", e2)
+                                return false
+                            }
                         }
+                    } catch (e: Exception) {
+                        AppLogger.e(TAG, "Failed to restore input method", e)
+                        return false
                     }
                     AppLogger.d(TAG, "Restored previous input method: $prevId")
                     previousInputMethodId = null
@@ -106,22 +117,16 @@ class OperitInputMethodService : InputMethodService() {
                         !it.id.contains("operit", ignoreCase = true)
                     }?.id ?: inputMethodList.first().id
 
-                    // 使用 setInputMethodWithToken 或直接设置
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        imm.setInputMethod(currentInputConnection?.token, defaultId)
-                    } else {
-                        // 对于旧版本，使用反射
-                        try {
-                            val method = InputMethodManager::class.java.getMethod(
-                                "setInputMethod",
-                                IBinder::class.java,
-                                String::class.java
-                            )
-                            method.invoke(imm, currentInputConnection?.token, defaultId)
-                        } catch (e: Exception) {
-                            AppLogger.e(TAG, "Failed to switch input method via reflection", e)
-                            return false
-                        }
+                    // 尝试使用 switchInputMethod
+                    try {
+                        val method = InputMethodManager::class.java.getMethod(
+                            "switchInputMethod",
+                            String::class.java
+                        )
+                        method.invoke(imm, defaultId)
+                    } catch (e: Exception) {
+                        AppLogger.e(TAG, "Failed to switch input method", e)
+                        return false
                     }
                     AppLogger.d(TAG, "Switched to default input method: $defaultId")
                     true
@@ -247,7 +252,8 @@ class OperitInputMethodService : InputMethodService() {
     @Suppress("DEPRECATION")
     private fun getExtractedText(ic: InputConnection, request: ExtractedTextRequest): ExtractedText? {
         return try {
-            ic.getExtractedText(request)
+            // flags: 0 for normal, or INPUT_CONNECTION_GET_EXTRACTED_TEXT_MONITOR
+            ic.getExtractedText(request, 0)
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to get extracted text", e)
             null

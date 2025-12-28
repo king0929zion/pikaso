@@ -369,8 +369,8 @@ object InputMethodManager {
             !Shizuku.pingBinder() -> {
                 "Shizuku服务未运行。请先启动Shizuku应用并授予权限。"
             }
-            !Shizuku.isBound() -> {
-                "Shizuku权限未授予。请在Shizuku中授权Operit使用Shizuku。"
+            !Shizuku.isServiceAvailable() -> {
+                "Shizuku服务不可用。请确保Shizuku正在运行。"
             }
             else -> {
                 "无法切换输入法。请确保Operit输入法已在系统设置中启用。"
