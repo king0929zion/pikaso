@@ -429,10 +429,10 @@ class MainActivity : ComponentActivity() {
                     // 直接显示主应用界面
                     processPendingSharedFiles()
 
-                    OperitApp(
-                        initialNavItem = NavItem.Toolbox,  // 默认进入工具箱（仅保留核心工具）
-                        toolHandler = toolHandler
-                    )
+                     OperitApp(
+                        initialNavItem = NavItem.AiChat,  // 默认进入对话页（工具保留在工具箱）
+                         toolHandler = toolHandler
+                     )
 
                     // 方向改变时显示对话框
                     if (showOrientationChangeDialog) {

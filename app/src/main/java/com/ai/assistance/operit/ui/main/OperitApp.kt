@@ -50,7 +50,7 @@ val LocalTopBarActions = compositionLocalOf<(@Composable (RowScope.() -> Unit)) 
 data class NavGroup(val title: String, val items: List<NavItem>)
 
 @Composable
-fun OperitApp(initialNavItem: NavItem = NavItem.Toolbox, toolHandler: AIToolHandler? = null) {
+fun OperitApp(initialNavItem: NavItem = NavItem.AiChat, toolHandler: AIToolHandler? = null) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -148,12 +148,22 @@ fun OperitApp(initialNavItem: NavItem = NavItem.Toolbox, toolHandler: AIToolHand
         showChatBindingAnnouncement = false
     }
 
-    // Navigation items grouped by category (simplified)
+    // Navigation items grouped by category (restored: Chat + Toolbox + Settings)
     val navGroups = listOf(
+        NavGroup(
+            "对话",
+            listOf(NavItem.AiChat)
+        ),
         NavGroup(
             "工具",
             listOf(
                 NavItem.Toolbox,
+            )
+        ),
+        NavGroup(
+            "设置",
+            listOf(
+                NavItem.Settings,
                 NavItem.ToolPermissions
             )
         )
