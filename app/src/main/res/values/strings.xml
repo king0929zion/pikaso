@@ -1592,6 +1592,30 @@
     <string name="permission_group_other_granted">其他已授权权限</string>
     <string name="permission_group_other_denied">其他未授权权限</string>
     <string name="permission_group_other">其他权限</string>
+
+    <!-- AutoGLM Permission Screen -->
+    <string name="autoglm_permission_title">权限配置</string>
+    <string name="autoglm_permission_subtitle">请确保以下权限已正确配置，以获得最佳使用体验</string>
+    <string name="permissions_granted">权限已授予</string>
+    <string name="quick_actions">快捷操作</string>
+    <string name="app_settings">应用设置</string>
+    <string name="shizuku_settings">Shizuku设置</string>
+    <string name="grant_permission">授予权限</string>
+    <string name="permission_granted">已授予</string>
+    <string name="permission_not_granted">未授予</string>
+    <string name="permissions">权限</string>
+
+    <!-- Individual Permissions -->
+    <string name="permission_accessibility">无障碍服务</string>
+    <string name="permission_accessibility_desc">用于获取UI层次结构和执行自动化操作。这是AutoGLM的核心权限。</string>
+    <string name="permission_shizuku">Shizuku</string>
+    <string name="permission_shizuku_desc">用于执行系统级命令和操作。请确保Shizuku正在运行并已授权。</string>
+    <string name="permission_overlay">悬浮窗权限</string>
+    <string name="permission_overlay_desc">用于显示悬浮窗和操作提示。</string>
+    <string name="permission_storage">存储权限</string>
+    <string name="permission_storage_desc">用于保存截图、日志和配置文件。</string>
+    <string name="permission_notification">通知权限</string>
+    <string name="permission_notification_desc">用于接收任务完成通知和状态更新。</string>
     
     <string name="target_format">目标格式</string>
     <string name="start_conversion">开始转换</string>
@@ -2752,6 +2776,7 @@
     <string name="screen_title_process_limit_remover">解除幻象进程限制</string>
     <string name="screen_title_autoglm_one_click">AutoGLM 一键配置</string>
     <string name="screen_title_autoglm_tool">autoglm执行</string>
+    <string name="screen_title_autoglm_permission">权限配置</string>
 
     <string name="screen_title_default_assistant_guide">默认助手设置</string>
     <string name="screen_title_mcp_market">MCP 市场</string>

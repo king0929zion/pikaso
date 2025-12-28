@@ -35,7 +35,8 @@ import com.ai.assistance.operit.ui.theme.AppSpacing
  */
 @Composable
 fun AutoGlmToolScreen(
-    viewModel: AutoGlmViewModel = viewModel()
+    viewModel: AutoGlmViewModel = viewModel(),
+    onNavigateToPermissions: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -44,7 +45,8 @@ fun AutoGlmToolScreen(
         onTaskChange = viewModel::setTask,
         onExecute = viewModel::executeTask,
         onCancel = viewModel::cancelTask,
-        onClearTask = viewModel::clearTask
+        onClearTask = viewModel::clearTask,
+        onNavigateToPermissions = onNavigateToPermissions
     )
 }
 
@@ -54,7 +56,8 @@ private fun AutoGlmToolContent(
     onTaskChange: (String) -> Unit,
     onExecute: (String) -> Unit,
     onCancel: () -> Unit,
-    onClearTask: () -> Unit
+    onClearTask: () -> Unit,
+    onNavigateToPermissions: () -> Unit
 ) {
     val logScrollState = rememberScrollState()
 
@@ -64,20 +67,39 @@ private fun AutoGlmToolContent(
             .padding(AppSpacing.screenPadding)
     ) {
         // Header Section
-        Text(
-            text = stringResource(R.string.autoglm_title),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Bold
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.autoglm_title),
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Bold
+                )
 
-        Spacer(modifier = Modifier.height(AppSpacing.small))
+                Spacer(modifier = Modifier.height(AppSpacing.small))
 
-        Text(
-            text = stringResource(R.string.autoglm_description),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+                Text(
+                    text = stringResource(R.string.autoglm_description),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            // Permission settings button
+            FilledTonalButton(onClick = onNavigateToPermissions) {
+                Icon(
+                    imageVector = Icons.Default.Security,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(stringResource(R.string.permissions))
+            }
+        }
 
         Spacer(modifier = Modifier.height(AppSpacing.large))
 

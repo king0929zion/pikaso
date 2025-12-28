@@ -70,6 +70,7 @@ import com.ai.assistance.operit.ui.features.toolbox.screens.htmlpackager.HtmlPac
 import com.ai.assistance.operit.ui.features.toolbox.screens.speechtotext.SpeechToTextToolScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.texttospeech.TextToSpeechToolScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.tooltester.ToolTesterScreen
+import com.ai.assistance.operit.ui.features.toolbox.screens.autoglm.AutoGlmPermissionScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.autoglm.AutoGlmOneClickToolScreen
 import com.ai.assistance.operit.ui.features.toolbox.screens.autoglm.AutoGlmToolScreen
 import com.ai.assistance.operit.ui.features.update.screens.UpdateScreen
@@ -278,17 +279,6 @@ sealed class Screen(
         ) {
             ToolboxScreen(
                     navController = navController,
-                    onFileManagerSelected = { navigateTo(FileManager) },
-                    onAppPermissionsSelected = { navigateTo(AppPermissions) },
-                    onUIDebuggerSelected = { navigateTo(UIDebugger) },
-                    onFFmpegToolboxSelected = { navigateTo(FFmpegToolbox) },
-                    onShellExecutorSelected = { navigateTo(ShellExecutor) },
-                    onLogcatSelected = { navigateTo(Logcat) },
-                    onTextToSpeechSelected = { navigateTo(TextToSpeech) },
-                    onSpeechToTextSelected = { navigateTo(SpeechToText) },
-                    onToolTesterSelected = { navigateTo(ToolTester) },
-                    onAgreementSelected = { navigateTo(Agreement) },
-                    onDefaultAssistantGuideSelected = { navigateTo(DefaultAssistantGuide) },
                     onProcessLimitRemoverSelected = { navigateTo(ProcessLimitRemover) },
                     onHtmlPackagerSelected = { navigateTo(HtmlPackager) },
                     onAutoGlmOneClickSelected = { navigateTo(AutoGlmOneClick) },
@@ -1151,7 +1141,25 @@ sealed class Screen(
                 onError: (String) -> Unit,
                 onGestureConsumed: (Boolean) -> Unit
         ) {
-            AutoGlmToolScreen()
+            AutoGlmToolScreen(
+                onNavigateToPermissions = { navigateTo(AutoGlmPermission) }
+            )
+        }
+    }
+
+    data object AutoGlmPermission : Screen(parentScreen = AutoGlmTool, navItem = NavItem.Toolbox, titleRes = R.string.screen_title_autoglm_permission) {
+        @Composable
+        override fun Content(
+                navController: NavController,
+                navigateTo: ScreenNavigationHandler,
+                updateNavItem: NavItemChangeHandler,
+                onGoBack: () -> Unit,
+                hasBackgroundImage: Boolean,
+                onLoading: (Boolean) -> Unit,
+                onError: (String) -> Unit,
+                onGestureConsumed: (Boolean) -> Unit
+        ) {
+            AutoGlmPermissionScreen(onNavigateBack = onGoBack)
         }
     }
 
