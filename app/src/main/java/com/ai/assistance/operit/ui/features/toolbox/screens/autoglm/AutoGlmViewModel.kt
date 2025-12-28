@@ -4,20 +4,18 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ai.assistance.operit.api.chat.EnhancedAIService
+import com.ai.assistance.operit.core.autoglm.AutoGLMController
+import com.ai.assistance.operit.core.autoglm.PermissionCheckResult
 import com.ai.assistance.operit.core.config.FunctionalPrompts
 import com.ai.assistance.operit.core.tools.agent.ActionHandler
 import com.ai.assistance.operit.core.tools.agent.AgentConfig
 import com.ai.assistance.operit.core.tools.agent.PhoneAgent
-import com.ai.assistance.operit.core.tools.agent.ToolImplementations
 import com.ai.assistance.operit.core.tools.agent.StepResult
-import com.ai.assistance.operit.core.tools.StringResultData
 import com.ai.assistance.operit.core.tools.defaultTool.ToolGetter
-import com.ai.assistance.operit.core.tools.defaultTool.standard.StandardUITools
-import com.ai.assistance.operit.data.model.AITool
 import com.ai.assistance.operit.data.model.FunctionType
-import com.ai.assistance.operit.data.model.ToolResult
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,70 +26,160 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-import kotlinx.coroutines.Job
+/**
+ * AutoGLM UI State
+ */
+data class AutoGlmUiState(
+    val isLoading: Boolean = false,
+    val task: String = "",
+    val status: String? = null,
+    val progress: Int = 0,
+    val log: String = "Ready to execute task.",
+    val isLogExpanded: Boolean = false,
+    val permissions: PermissionCheckResult = PermissionCheckResult(false, false, false),
+    val error: String? = null
+)
 
+/**
+ * AutoGLM ViewModel
+ *
+ * Manages the UI state and coordinates with AutoGLMController
+ * for permission checking and basic operations
+ */
 class AutoGlmViewModel(private val context: Context) : ViewModel() {
 
+    private val controller = AutoGLMController.getInstance(context)
     private var executionJob: Job? = null
 
     private val _uiState = MutableStateFlow(AutoGlmUiState())
     val uiState: StateFlow<AutoGlmUiState> = _uiState.asStateFlow()
 
+    init {
+        // 监听控制器状态
+        viewModelScope.launch {
+            controller.isExecuting.collect { isExecuting ->
+                _uiState.value = _uiState.value.copy(isLoading = isExecuting)
+            }
+        }
+
+        viewModelScope.launch {
+            controller.statusMessage.collect { status ->
+                _uiState.value = _uiState.value.copy(status = status)
+            }
+        }
+
+        viewModelScope.launch {
+            controller.progress.collect { progress ->
+                _uiState.value = _uiState.value.copy(progress = progress)
+            }
+        }
+
+        viewModelScope.launch {
+            controller.executionLog.collect { log ->
+                _uiState.value = _uiState.value.copy(log = log)
+            }
+        }
+
+        viewModelScope.launch {
+            controller.error.collect { error ->
+                _uiState.value = _uiState.value.copy(error = error)
+            }
+        }
+
+        // 初始化时检查权限
+        checkPermissions()
+    }
+
+    /**
+     * 检查权限状态
+     */
+    fun checkPermissions() {
+        val permissions = controller.checkPermissions()
+        _uiState.value = _uiState.value.copy(permissions = permissions)
+    }
+
     fun setTask(task: String) {
-        _uiState.value = _uiState.value.copy(task = task)
+        _uiState.value = _uiState.value.copy(task = task, error = null)
     }
 
     fun clearTask() {
-        _uiState.value = _uiState.value.copy(task = "")
+        _uiState.value = _uiState.value.copy(task = "", error = null)
+        controller.clearTask()
     }
 
     fun executeTask(task: String) {
-        if (task.isBlank()) return
+        if (task.isBlank()) {
+            _uiState.value = _uiState.value.copy(error = "请输入任务描述")
+            return
+        }
+
+        val permissions = controller.checkPermissions()
+        if (!permissions.canExecute) {
+            _uiState.value = _uiState.value.copy(
+                error = buildString {
+                    appendLine("需要以下权限才能执行自动化任务：")
+                    if (!permissions.accessibilityEnabled) {
+                        appendLine("- 无障碍服务（用于点击、滑动等操作）")
+                    }
+                    if (!permissions.shizukuEnabled) {
+                        appendLine("- Shizuku服务（用于文本输入）")
+                    }
+                    appendLine()
+                    appendLine("请在设置中启用相关权限后重试。")
+                }
+            )
+            return
+        }
 
         executionJob = viewModelScope.launch {
             _uiState.value = AutoGlmUiState(
                 isLoading = true,
                 task = task,
                 status = context.getString(R.string.initializing),
-                log = "Initializing agent..."
+                log = "Initializing agent...\nPermission check: OK",
+                permissions = permissions
             )
 
             try {
-                val uiService = EnhancedAIService.getAIServiceForFunction(context, com.ai.assistance.operit.data.model.FunctionType.UI_CONTROLLER)
+                val uiService = EnhancedAIService.getAIServiceForFunction(
+                    context,
+                    FunctionType.UI_CONTROLLER
+                )
                 val systemPrompt = buildUiAutomationSystemPrompt()
 
                 val agentConfig = AgentConfig(maxSteps = 25)
-                // Get the real UI tools implementation based on the user's preferred permission level.
                 val uiTools = ToolGetter.getUITools(context)
                 val actionHandler = ActionHandler(
                     context = context,
                     screenWidth = context.resources.displayMetrics.widthPixels,
                     screenHeight = context.resources.displayMetrics.heightPixels,
-                    // Use the real UI tools implementation to ensure Tap/Swipe/PressKey/Screenshot actions are executed.
                     toolImplementations = uiTools
                 )
 
                 val agent = PhoneAgent(
                     context = context,
                     config = agentConfig,
-                    uiService = uiService, // Directly pass the specialized AIService
+                    uiService = uiService,
                     actionHandler = actionHandler
                 )
 
                 val logBuilder = StringBuilder()
 
-                // Header section，尽量贴近官方 CLI
+                // Header section
                 appendWithTimestamp(logBuilder, "==================================================")
                 appendWithTimestamp(logBuilder, "Task: $task")
                 appendWithTimestamp(logBuilder, "Max Steps: ${agentConfig.maxSteps}")
                 appendWithTimestamp(logBuilder, "==================================================")
                 appendWithTimestamp(logBuilder, "")
 
-                // 先把头部显示出来
-                _uiState.value = AutoGlmUiState(isLoading = true, log = logBuilder.toString())
+                _uiState.value = AutoGlmUiState(
+                    isLoading = true,
+                    log = logBuilder.toString(),
+                    permissions = permissions
+                )
 
                 var stepIndex = 1
-                val pausedState = kotlinx.coroutines.flow.MutableStateFlow(false)
+                val pausedState = MutableStateFlow(false)
 
                 withContext(Dispatchers.IO) {
                     val finalMessage = agent.run(
@@ -103,13 +191,14 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
 
                             _uiState.value = AutoGlmUiState(
                                 isLoading = true,
-                                log = logBuilder.toString().trimEnd()
+                                log = logBuilder.toString().trimEnd(),
+                                permissions = permissions
                             )
                         },
                         isPausedFlow = pausedState
                     )
 
-                    // 追加最终结果，使用 🎉 / ✅ 样式
+                    // 追加最终结果
                     val finalTime = currentTimeString()
                     fun appendFinal(line: String) {
                         logBuilder.append("[")
@@ -118,11 +207,11 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
                         logBuilder.appendLine(line)
                     }
 
-                    appendFinal("🎉 ==================================================")
+                    appendFinal("==================================================")
 
                     val finalLines = finalMessage.lines()
                     if (finalLines.isNotEmpty()) {
-                        appendFinal("✅ 任务完成: ${finalLines.first().trim()}")
+                        appendFinal("Task completed: ${finalLines.first().trim()}")
                         finalLines.drop(1).forEach { line ->
                             if (line.isNotBlank()) {
                                 appendFinal(line.trim())
@@ -132,20 +221,35 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
 
                     _uiState.value = AutoGlmUiState(
                         isLoading = false,
-                        log = logBuilder.toString().trimEnd()
+                        log = logBuilder.toString().trimEnd(),
+                        permissions = permissions
                     )
                 }
 
             } catch (e: Exception) {
                 AppLogger.e("AutoGlmViewModel", "Error executing task", e)
-                _uiState.value = AutoGlmUiState(isLoading = false, log = "Error: ${e.message}")
+                _uiState.value = AutoGlmUiState(
+                    isLoading = false,
+                    log = "Error: ${e.message}",
+                    error = "执行出错: ${e.message}",
+                    permissions = permissions
+                )
             }
         }
     }
 
     fun cancelTask() {
         executionJob?.cancel()
-        _uiState.value = AutoGlmUiState(isLoading = false, log = _uiState.value.log + "[Execution Cancelled by User]")
+        controller.cancelTask()
+        _uiState.value = AutoGlmUiState(
+            isLoading = false,
+            log = _uiState.value.log + "\n[Execution Cancelled by User]",
+            permissions = _uiState.value.permissions
+        )
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(error = null)
     }
 
     private fun buildUiAutomationSystemPrompt(): String {
@@ -156,11 +260,6 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
         val weekday = weekdayNames[calendar.get(Calendar.DAY_OF_WEEK) - 1]
         val formattedDate = "$datePart $weekday"
         return FunctionalPrompts.UI_AUTOMATION_AGENT_PROMPT.replace("{{current_date}}", formattedDate)
-    }
-    
-    private fun extractTagContent(text: String, tag: String): String? {
-        val pattern = Regex("""<$tag>(.*?)</$tag>""", RegexOption.DOT_MATCHES_ALL)
-        return pattern.find(text)?.groupValues?.getOrNull(1)?.trim()
     }
 
     private fun appendStepLog(builder: StringBuilder, stepIndex: Int, stepResult: StepResult) {
@@ -173,12 +272,10 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
             builder.appendLine(line)
         }
 
-        // 步骤分隔线
         append("==================================================")
 
-        // 💭 思考过程
         stepResult.thinking?.takeIf { it.isNotBlank() }?.let { thinking ->
-            append("💭 思考过程:")
+            append("思考过程:")
             append("--------------------------------------------------")
             thinking.trim().lines().forEach { line ->
                 if (line.isNotBlank()) {
@@ -187,10 +284,9 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
             }
         }
 
-        // 🎯 执行动作
         stepResult.action?.let { action ->
             append("--------------------------------------------------")
-            append("🎯 执行动作:")
+            append("执行动作:")
 
             val jsonLines = mutableListOf<String>()
             action.actionName?.let { name ->
@@ -211,7 +307,6 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
             append("}")
         }
 
-        // 对于非 finish 步骤，如果有额外消息则补充一段说明
         stepResult.message
             ?.takeIf { it.isNotBlank() && stepResult.action?.metadata != "finish" }
             ?.let { msg ->
@@ -239,12 +334,3 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
         builder.appendLine(line)
     }
 }
-
-data class AutoGlmUiState(
-    val isLoading: Boolean = false,
-    val task: String = "",
-    val status: String? = null,
-    val progress: Int = 0,
-    val log: String = "Ready to execute task.",
-    val isLogExpanded: Boolean = false
-)

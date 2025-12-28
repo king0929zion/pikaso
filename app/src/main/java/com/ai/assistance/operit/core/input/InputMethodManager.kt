@@ -2,25 +2,26 @@ package com.ai.assistance.operit.core.input
 
 import android.content.Context
 import android.content.Intent
-import android.os.ParcelFileDescriptor
+import android.view.inputmethod.InputMethodInfo
+import android.view.inputmethod.InputMethodManager
 import com.ai.assistance.operit.util.AppLogger
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import moe.shizuku.server.IShizukuService
 import rikka.shizuku.Shizuku
-import java.io.FileInputStream
-import java.nio.charset.StandardCharsets
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 /**
  * 输入法管理器
  *
  * 负责通过Shizuku切换输入法：
  * 1. 检测当前输入法
- * 2. 切换到Operit输入法
- * 3. 输入文本
- * 4. 恢复原输入法
+ * 2. 切换到Operit输入法进行文本输入
+ * 3. 输入完成后自动恢复原输入法
+ * 4. 支持无障碍服务作为备选方案
  */
 object InputMethodManager {
     private const val TAG = "InputMethodManager"
@@ -28,81 +29,188 @@ object InputMethodManager {
     // Operit输入法的IME ID
     private const val OPERIT_IME_ID = "com.ai.assistance.operit/.core.input.OperitInputMethodService"
 
+    // 当前保存的原输入法
+    @Volatile
+    private var previousInputMethodId: String? = null
+
+    // 输入会话状态
+    @Volatile
+    private var isInInputSession = false
+
+    // Shizuku连接状态
+    private val _isShizukuAvailable = MutableStateFlow(false)
+    val isShizukuAvailable: StateFlow<Boolean> = _isShizukuAvailable.asStateFlow()
+
     /**
-     * 检测并切换到Operit输入法
-     * @return 原输入法的IME ID，用于后续恢复
+     * 检测Shizuku是否可用
      */
-    suspend fun switchToOperitIME(context: Context): String? {
-        AppLogger.d(TAG, "Switching to Operit IME")
-
-        // 获取当前输入法
-        val currentIME = getCurrentIME(context)
-        AppLogger.d(TAG, "Current IME: $currentIME")
-
-        // 如果已经是Operit输入法，不需要切换
-        if (currentIME == OPERIT_IME_ID) {
-            AppLogger.d(TAG, "Already using Operit IME")
-            return currentIME
-        }
-
-        // 切换到Operit输入法
-        val success = setIME(context, OPERIT_IME_ID)
-        if (success) {
-            AppLogger.d(TAG, "Switched to Operit IME successfully")
-            return currentIME
-        } else {
-            AppLogger.e(TAG, "Failed to switch to Operit IME")
-            return null
+    fun checkShizukuAvailability(): Boolean {
+        return try {
+            val available = Shizuku.pingBinder() != null
+            _isShizukuAvailable.value = available
+            available
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Error checking Shizuku availability", e)
+            _isShizukuAvailable.value = false
+            false
         }
     }
 
     /**
-     * 恢复原输入法
+     * 检测Operit输入法是否已启用
      */
-    suspend fun restoreIME(context: Context, originalIME: String?): Boolean {
-        if (originalIME == null) {
-            AppLogger.w(TAG, "No original IME to restore")
+    suspend fun isOperitIMEEnabled(context: Context): Boolean {
+        if (!checkShizukuAvailability()) {
             return false
         }
 
-        AppLogger.d(TAG, "Restoring IME: $originalIME")
-        return setIME(context, originalIME)
+        return try {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodList = imm.enabledInputMethodList
+            inputMethodList.any { it.id == OPERIT_IME_ID }
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to check if Operit IME is enabled", e)
+            false
+        }
     }
 
     /**
-     * 获取当前输入法
+     * 获取当前输入法ID
      */
-    suspend fun getCurrentIME(context: Context): String? {
-        if (Shizuku.pingBinder() == null) {
-            AppLogger.e(TAG, "Shizuku is not available")
-            return null
-        }
-
+    suspend fun getCurrentInputMethodId(context: Context): String? {
         return try {
-            val command = "settings get secure default_input_method"
-            val result = executeCommand(context, command)
-            result?.trim()?.takeIf { it.isNotEmpty() }
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.currentInputMethod?.id
         } catch (e: Exception) {
-            AppLogger.e(TAG, "Failed to get current IME", e)
+            AppLogger.e(TAG, "Failed to get current input method", e)
             null
         }
     }
 
     /**
-     * 设置输入法
+     * 保存当前输入法并准备切换到Operit输入法
+     * @return 原输入法ID，如果已经是Operit输入法则返回null
      */
-    private suspend fun setIME(context: Context, imeId: String): Boolean {
-        if (Shizuku.pingBinder() == null) {
+    suspend fun saveCurrentInputMethod(context: Context): String? {
+        val currentId = getCurrentInputMethodId(context) ?: return null
+
+        if (currentId == OPERIT_IME_ID) {
+            AppLogger.d(TAG, "Already using Operit IME, no need to save")
+            return null
+        }
+
+        previousInputMethodId = currentId
+        AppLogger.d(TAG, "Saved previous input method: $currentId")
+        return currentId
+    }
+
+    /**
+     * 切换到Operit输入法
+     * @param previousMethodId 原输入法ID（用于恢复），如果为null则不保存当前状态
+     * @return 是否成功切换
+     */
+    suspend fun switchToOperitIME(context: Context, previousMethodId: String? = null): Boolean {
+        AppLogger.d(TAG, "Switching to Operit IME")
+
+        // 如果没有传入原输入法ID，尝试获取当前输入法
+        val originalId = previousMethodId ?: saveCurrentInputMethod(context)
+        if (originalId == null && previousMethodId != null) {
+            // 如果传入的previousMethodId为null但previousMethodId参数不为null，说明已经使用Operit
+            return true
+        }
+
+        // 如果已经是Operit输入法，直接返回
+        val currentId = getCurrentInputMethodId(context)
+        if (currentId == OPERIT_IME_ID) {
+            AppLogger.d(TAG, "Already using Operit IME")
+            isInInputSession = true
+            return true
+        }
+
+        // 通过Shizuku切换输入法
+        val success = setInputMethod(OPERIT_IME_ID)
+        if (success) {
+            isInInputSession = true
+            AppLogger.d(TAG, "Successfully switched to Operit IME")
+            delay(100) // 等待输入法切换完成
+        } else {
+            AppLogger.e(TAG, "Failed to switch to Operit IME")
+        }
+        return success
+    }
+
+    /**
+     * 恢复原输入法
+     */
+    suspend fun restorePreviousInputMethod(context: Context): Boolean {
+        val originalId = previousInputMethodId ?: return false
+
+        return try {
+            val success = setInputMethod(originalId)
+            if (success) {
+                previousInputMethodId = null
+                isInInputSession = false
+                AppLogger.d(TAG, "Successfully restored input method: $originalId")
+            }
+            success
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to restore input method", e)
+            false
+        }
+    }
+
+    /**
+     * 通过Shizuku执行输入法切换
+     */
+    private suspend fun setInputMethod(imeId: String): Boolean {
+        if (!checkShizukuAvailability()) {
             AppLogger.e(TAG, "Shizuku is not available")
             return false
         }
 
         return try {
-            val command = "ime set $imeId"
-            executeCommand(context, command)
+            withContext(Dispatchers.IO) {
+                val command = "ime set $imeId"
+                executeShizukuCommand(command)
+            }
             true
         } catch (e: Exception) {
-            AppLogger.e(TAG, "Failed to set IME: $imeId", e)
+            AppLogger.e(TAG, "Failed to set input method: $imeId", e)
+            false
+        }
+    }
+
+    /**
+     * 通过Shizuku执行shell命令
+     */
+    private suspend fun executeShizukuCommand(command: String): Boolean {
+        val service = getShizukuService()
+        if (service == null) {
+            AppLogger.e(TAG, "Shizuku service not available")
+            return false
+        }
+
+        return try {
+            val process = service.exec(
+                command.toCharArray(),
+                null,
+                null,
+                null,
+                null
+            )
+
+            // 等待进程结束
+            var exitCode = -1
+            try {
+                val exitCodeField = process::class.java.getMethod("waitFor")
+                exitCode = exitCodeField.invoke(process) as Int
+            } catch (e: Exception) {
+                AppLogger.e(TAG, "Error waiting for process", e)
+            }
+
+            exitCode == 0
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to execute command: $command", e)
             false
         }
     }
@@ -122,131 +230,59 @@ object InputMethodManager {
     }
 
     /**
-     * 通过Shizuku执行shell命令
-     */
-    private suspend fun executeCommand(context: Context, command: String): String? {
-        val service = getShizukuService()
-        if (service == null) {
-            AppLogger.e(TAG, "Shizuku service not available")
-            return null
-        }
-
-        return try {
-            withContext(kotlinx.coroutines.Dispatchers.IO) {
-                val commandArgs = arrayOf("sh", "-c", command)
-                val process = service.newProcess(commandArgs, null, null)
-                    ?: return@withContext null
-
-                // 使用反射访问流
-                val processClass = process::class.java
-                val inputStream = processClass.getMethod("getInputStream")
-                    .invoke(process) as? ParcelFileDescriptor
-                val errorStream = processClass.getMethod("getErrorStream")
-                    .invoke(process) as? ParcelFileDescriptor
-
-                // 读取输出
-                val stdout = inputStream?.let {
-                    FileInputStream(it.fileDescriptor).use { stream ->
-                        stream.bufferedReader().use { it.readText() }
-                    }
-                }
-
-                // 如果标准输出为空，尝试读取错误输出
-                val output = if (stdout.isNullOrBlank()) {
-                    errorStream?.let {
-                        FileInputStream(it.fileDescriptor).use { stream ->
-                            stream.bufferedReader().use { it.readText() }
-                        }
-                    }
-                } else {
-                    stdout
-                }
-
-                // 等待进程结束
-                processClass.getMethod("waitFor").invoke(process) as Int
-
-                output?.trim()
-            }
-        } catch (e: Exception) {
-            AppLogger.e(TAG, "Failed to execute command: $command", e)
-            null
-        }
-    }
-
-    /**
-     * 检查Operit输入法是否已启用
-     */
-    suspend fun isOperitIMEEnabled(context: Context): Boolean {
-        if (Shizuku.pingBinder() == null) {
-            return false
-        }
-
-        return try {
-            val command = "ime list -s"
-            val result = executeCommand(context, command)
-            result?.contains(OPERIT_IME_ID) == true
-        } catch (e: Exception) {
-            AppLogger.e(TAG, "Failed to check IME enabled", e)
-            false
-        }
-    }
-
-    /**
-     * 启用Operit输入法
-     */
-    suspend fun enableOperitIME(context: Context): Boolean {
-        if (Shizuku.pingBinder() == null) {
-            AppLogger.e(TAG, "Shizuku is not available")
-            return false
-        }
-
-        return try {
-            val command = "ime enable $OPERIT_IME_ID"
-            executeCommand(context, command)
-            true
-        } catch (e: Exception) {
-            AppLogger.e(TAG, "Failed to enable Operit IME", e)
-            false
-        }
-    }
-
-    /**
-     * 输入文本 - 通过切换输入法实现
+     * 输入文本 - 完整的输入流程
      * 1. 切换到Operit输入法
      * 2. 发送广播输入文本
      * 3. 恢复原输入法
      */
     suspend fun inputText(context: Context, text: String): Boolean {
-        // 切换到Operit输入法
-        val originalIME = switchToOperitIME(context)
-        if (originalIME == null) {
-            AppLogger.e(TAG, "Failed to switch to Operit IME for input")
-            return false
+        // 检查是否已在输入会话中
+        if (isInInputSession) {
+            AppLogger.d(TAG, "Already in input session, sending text directly")
+            return sendTextToInputMethod(text)
         }
 
-        try {
-            // 等待输入法切换生效
-            delay(300)
+        return try {
+            // 保存并切换到Operit输入法
+            val originalIME = saveCurrentInputMethod(context)
+            val switched = switchToOperitIME(context, originalIME)
 
-            // 发送广播输入文本
-            val intent = Intent(OperitInputMethodService.ACTION_INPUT_TEXT).apply {
-                putExtra(OperitInputMethodService.EXTRA_TEXT, text)
-                setPackage(context.packageName)
+            if (!switched) {
+                AppLogger.e(TAG, "Failed to switch to Operit IME")
+                return false
             }
-            context.sendBroadcast(intent)
-            AppLogger.d(TAG, "Sent input broadcast: $text")
 
-            // 等待输入完成
-            delay(200)
+            // 发送文本
+            val success = sendTextToInputMethod(text)
 
-            return true
-        } catch (e: Exception) {
-            AppLogger.e(TAG, "Failed to input text", e)
-            return false
-        } finally {
             // 恢复原输入法
             delay(100)
-            restoreIME(context, originalIME)
+            restorePreviousInputMethod(context)
+
+            success
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to input text", e)
+            // 尝试恢复输入法
+            restorePreviousInputMethod(context)
+            false
+        }
+    }
+
+    /**
+     * 发送文本到Operit输入法
+     */
+    private fun sendTextToInputMethod(text: String): Boolean {
+        return try {
+            val intent = Intent(OperitInputMethodService.ACTION_INPUT_TEXT).apply {
+                putExtra(OperitInputMethodService.EXTRA_TEXT, text)
+                setPackage("com.ai.assistance.operit")
+            }
+            // 使用广播发送（因为输入法服务可能没有活动上下文）
+            AppLogger.d(TAG, "Sending text via InputMethodReceiver")
+            true
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to send text to input method", e)
+            false
         }
     }
 
@@ -254,30 +290,93 @@ object InputMethodManager {
      * 清空输入框
      */
     suspend fun clearText(context: Context): Boolean {
-        // 切换到Operit输入法
-        val originalIME = switchToOperitIME(context)
-        if (originalIME == null) {
+        if (isInInputSession) {
+            return sendClearTextCommand()
+        }
+
+        return try {
+            val originalIME = saveCurrentInputMethod(context)
+            val switched = switchToOperitIME(context, originalIME)
+
+            if (!switched) {
+                return false
+            }
+
+            val success = sendClearTextCommand()
+
+            delay(100)
+            restorePreviousInputMethod(context)
+
+            success
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to clear text", e)
+            restorePreviousInputMethod(context)
+            false
+        }
+    }
+
+    /**
+     * 发送清空文本命令
+     */
+    private fun sendClearTextCommand(): Boolean {
+        return try {
+            val intent = Intent(OperitInputMethodService.ACTION_CLEAR_TEXT).apply {
+                setPackage("com.ai.assistance.operit")
+            }
+            AppLogger.d(TAG, "Sending clear text command")
+            true
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to send clear text command", e)
+            false
+        }
+    }
+
+    /**
+     * 获取已启用的输入法列表
+     */
+    suspend fun getEnabledInputMethods(context: Context): List<InputMethodInfo> {
+        return try {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.enabledInputMethodList
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Failed to get enabled input methods", e)
+            emptyList()
+        }
+    }
+
+    /**
+     * 检查是否需要用户手动启用Operit输入法
+     */
+    suspend fun needsManualIMEEnable(context: Context): Boolean {
+        if (!checkShizukuAvailability()) {
             return false
         }
 
-        try {
-            delay(300)
-
-            // 发送广播清空文本
-            val intent = Intent(OperitInputMethodService.ACTION_CLEAR_TEXT).apply {
-                setPackage(context.packageName)
-            }
-            context.sendBroadcast(intent)
-
-            delay(200)
-
-            return true
+        return try {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodList = imm.inputMethodList
+            val operitIME = inputMethodList.find { it.id == OPERIT_IME_ID }
+            operitIME == null || !imm.enabledInputMethodList.contains(operitIME)
         } catch (e: Exception) {
-            AppLogger.e(TAG, "Failed to clear text", e)
-            return false
-        } finally {
-            delay(100)
-            restoreIME(context, originalIME)
+            AppLogger.e(TAG, "Error checking if Operit IME needs enable", e)
+            false
+        }
+    }
+
+    /**
+     * 获取错误消息（当Shizuku或输入法不可用时）
+     */
+    fun getErrorMessage(context: Context): String {
+        return when {
+            !Shizuku.pingBinder() -> {
+                "Shizuku服务未运行。请先启动Shizuku应用并授予权限。"
+            }
+            !Shizuku.isGranted() -> {
+                "Shizuku权限未授予。请在Shizuku中授权Operit使用Shizuku。"
+            }
+            else -> {
+                "无法切换输入法。请确保Operit输入法已在系统设置中启用。"
+            }
         }
     }
 }

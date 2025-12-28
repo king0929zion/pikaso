@@ -4,18 +4,25 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.PixelFormat
 import android.graphics.Rect
+import android.hardware.display.DisplayManager
+import android.hardware.display.VirtualDisplay
+import android.media.Image
+import android.media.ImageReader
+import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
+import android.view.Display
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.xmlpull.v1.XmlSerializer
 import java.io.File
+import java.io.FileOutputStream
 
 /**
  * Operit 内置无障碍服务
@@ -25,6 +32,7 @@ import java.io.File
  * - 执行点击、滑动、长按等操作
  * - 截取屏幕截图
  * - 监听Activity变化
+ * - 支持虚拟屏幕操作
  */
 class OperitAccessibilityService : AccessibilityService() {
 
@@ -41,6 +49,16 @@ class OperitAccessibilityService : AccessibilityService() {
         // 当前Activity名称
         private val _currentActivityName = MutableStateFlow("")
         val currentActivityName: StateFlow<String> = _currentActivityName.asStateFlow()
+
+        // 虚拟屏幕状态
+        private val _isVirtualDisplayActive = MutableStateFlow(false)
+        val isVirtualDisplayActive: StateFlow<Boolean> = _isVirtualDisplayActive.asStateFlow()
+
+        // 虚拟屏幕实例
+        @Volatile
+        private var virtualDisplay: VirtualDisplay? = null
+        @Volatile
+        private var imageReader: ImageReader? = null
 
         // 获取UI层次结构
         fun getUIHierarchy(): String {
@@ -100,7 +118,9 @@ class OperitAccessibilityService : AccessibilityService() {
             sb.append("</node>")
         }
 
-        // 执行点击 - 优先使用手势，更可靠
+        /**
+         * 执行点击 - 优先使用节点操作，其次使用手势
+         */
         fun performClick(x: Int, y: Int): Boolean {
             val service = instance ?: return false
             return try {
@@ -128,26 +148,23 @@ class OperitAccessibilityService : AccessibilityService() {
                 )
                 if (gestureCompleted) {
                     AppLogger.d(TAG, "Gesture click succeeded at ($x, $y)")
-                    true
-                } else {
-                    AppLogger.e(TAG, "Gesture click failed at ($x, $y)")
-                    false
                 }
+                gestureCompleted
             } catch (e: Exception) {
                 AppLogger.e(TAG, "Failed to perform click at ($x, $y)", e)
                 false
             }
         }
 
-        // 执行双击
+        /**
+         * 执行双击
+         */
         fun performDoubleTap(x: Int, y: Int): Boolean {
             val service = instance ?: return false
             return try {
-                // 双击间隔 100ms
-                val gesture = createClickGesture(x, y)
-                val result1 = service.dispatchGesture(gesture, null, null)
+                val result1 = service.dispatchGesture(createClickGesture(x, y), null, null)
                 Thread.sleep(100)
-                val result2 = service.dispatchGesture(gesture, null, null)
+                val result2 = service.dispatchGesture(createClickGesture(x, y), null, null)
                 result1 && result2
             } catch (e: Exception) {
                 AppLogger.e(TAG, "Failed to perform double tap at ($x, $y)", e)
@@ -155,7 +172,9 @@ class OperitAccessibilityService : AccessibilityService() {
             }
         }
 
-        // 执行长按
+        /**
+         * 执行长按
+         */
         fun performLongPress(x: Int, y: Int): Boolean {
             val service = instance ?: return false
             return try {
@@ -176,8 +195,7 @@ class OperitAccessibilityService : AccessibilityService() {
                 }
 
                 // 使用手势执行长按 (500ms)
-                val gesture = createLongPressGesture(x, y)
-                val result = service.dispatchGesture(gesture, null, null)
+                val result = service.dispatchGesture(createLongPressGesture(x, y), null, null)
                 if (result) {
                     AppLogger.d(TAG, "Gesture long press succeeded at ($x, $y)")
                 }
@@ -188,11 +206,12 @@ class OperitAccessibilityService : AccessibilityService() {
             }
         }
 
-        // 执行滑动 - 支持多种滑动模式
+        /**
+         * 执行滑动
+         */
         fun performSwipe(startX: Int, startY: Int, endX: Int, endY: Int, duration: Long): Boolean {
             val service = instance ?: return false
             return try {
-                // 确保坐标在屏幕范围内
                 val displayMetrics = service.resources.displayMetrics
                 val safeStartX = startX.coerceIn(0, displayMetrics.widthPixels)
                 val safeStartY = startY.coerceIn(0, displayMetrics.heightPixels)
@@ -214,7 +233,9 @@ class OperitAccessibilityService : AccessibilityService() {
             }
         }
 
-        // 执行滑动手势序列（用于复杂手势）
+        /**
+         * 执行滑动手势序列（用于复杂手势）
+         */
         fun performGestureSequence(strokes: List<GestureDescription.StrokeDescription>): Boolean {
             val service = instance ?: return false
             return try {
@@ -227,7 +248,9 @@ class OperitAccessibilityService : AccessibilityService() {
             }
         }
 
-        // 执行全局操作（返回、Home等）
+        /**
+         * 执行全局操作（返回、Home等）
+         */
         fun performGlobalAction(action: Int): Boolean {
             val service = instance ?: return false
             return try {
@@ -238,7 +261,9 @@ class OperitAccessibilityService : AccessibilityService() {
             }
         }
 
-        // 设置文本
+        /**
+         * 设置文本到指定节点
+         */
         fun setText(nodeId: String, text: String): Boolean {
             val service = instance ?: return false
             return try {
@@ -264,7 +289,9 @@ class OperitAccessibilityService : AccessibilityService() {
             }
         }
 
-        // 查找焦点节点ID
+        /**
+         * 查找焦点节点ID
+         */
         fun findFocusedNodeId(): String? {
             val service = instance ?: return null
             return try {
@@ -279,18 +306,20 @@ class OperitAccessibilityService : AccessibilityService() {
             }
         }
 
-        // 截取屏幕截图 (Android 13+)
+        /**
+         * 截取屏幕截图 (Android 13+)
+         */
         fun takeScreenshot(): Bitmap? {
             val service = instance ?: return null
             return try {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                    var result: Bitmap? = null
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    val callback = ScreenshotCallback()
                     service.takeScreenshot(
-                        android.view.Display.DEFAULT_DISPLAY,
-                        MainActivityExecutor { result = it },
-                        null
+                        Display.DEFAULT_DISPLAY,
+                        service.mainExecutor,
+                        callback
                     )
-                    result
+                    callback.getBitmap()
                 } else {
                     null
                 }
@@ -300,7 +329,9 @@ class OperitAccessibilityService : AccessibilityService() {
             }
         }
 
-        // 保存截图到文件
+        /**
+         * 保存截图到文件
+         */
         fun saveScreenshotToFile(path: String): Boolean {
             val bitmap = takeScreenshot() ?: return false
             return try {
@@ -316,20 +347,114 @@ class OperitAccessibilityService : AccessibilityService() {
             }
         }
 
-        // 检查服务是否在系统设置中启用
-        fun isAccessibilityServiceEnabled(): Boolean {
-            return _isServiceEnabled.value
+        /**
+         * 获取当前包名
+         */
+        fun getCurrentPackageName(): String? {
+            val service = instance ?: return null
+            return service.rootInActiveWindow?.packageName?.toString()
         }
 
-        // 根据坐标查找节点
-        private fun AccessibilityService.createPathForCoordinates(x: Int, y: Int): AccessibilityNodeInfo? {
-            val rootNode = this.rootInActiveWindow ?: return null
-            val result = findNodeAtCoordinates(rootNode, x, y)
-            if (result != rootNode) {
-                rootNode.recycle()
+        /**
+         * 检查服务是否在系统设置中启用
+         */
+        fun isAccessibilityServiceEnabled(): Boolean = _isServiceEnabled.value
+
+        /**
+         * 创建虚拟屏幕
+         */
+        fun createVirtualDisplay(width: Int, height: Int, densityDpi: Int): Int? {
+            val service = instance ?: return null
+            return try {
+                releaseVirtualDisplay()
+
+                imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 2)
+
+                virtualDisplay = service.displayManager.createVirtualDisplay(
+                    "OperitVirtualDisplay",
+                    width,
+                    height,
+                    densityDpi,
+                    imageReader?.surface,
+                    DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR
+                )
+
+                _isVirtualDisplayActive.value = true
+                virtualDisplay?.display?.displayId
+            } catch (e: Exception) {
+                AppLogger.e(TAG, "Failed to create virtual display", e)
+                null
             }
-            return result
         }
+
+        /**
+         * 释放虚拟屏幕
+         */
+        fun releaseVirtualDisplay() {
+            try {
+                virtualDisplay?.release()
+                imageReader?.close()
+                virtualDisplay = null
+                imageReader = null
+                _isVirtualDisplayActive.value = false
+                AppLogger.d(TAG, "Virtual display released")
+            } catch (e: Exception) {
+                AppLogger.e(TAG, "Error releasing virtual display", e)
+            }
+        }
+
+        /**
+         * 获取虚拟屏幕截图
+         */
+        fun getVirtualDisplayScreenshot(): Bitmap? {
+            val reader = imageReader ?: return null
+            return try {
+                val image = reader.acquireLatestImage()
+                if (image != null) {
+                    val planes = image.planes
+                    val buffer = planes[0].buffer
+                    val pixelStride = planes[0].pixelStride
+                    val rowStride = planes[0].rowStride
+                    val rowPadding = rowStride - pixelStride * image.width
+
+                    val bitmap = Bitmap.createBitmap(
+                        image.width + rowPadding / pixelStride,
+                        image.height,
+                        Bitmap.Config.ARGB_8888
+                    )
+                    buffer.rewind()
+                    bitmap.copyPixelsFromBuffer(buffer)
+
+                    // 裁剪到实际大小
+                    val cropped = Bitmap.createBitmap(bitmap, 0, 0, image.width, image.height)
+                    bitmap.recycle()
+                    image.close()
+                    cropped
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                AppLogger.e(TAG, "Failed to get virtual display screenshot", e)
+                null
+            }
+        }
+
+        /**
+         * 在虚拟屏幕上执行点击
+         */
+        fun performClickOnVirtualDisplay(x: Int, y: Int): Boolean {
+            val service = instance ?: return false
+            return try {
+                val displayId = virtualDisplay?.display?.displayId ?: return false
+                val gesture = createClickGesture(x, y)
+                service.dispatchGesture(gesture, null, null)
+            } catch (e: Exception) {
+                AppLogger.e(TAG, "Failed to perform click on virtual display", e)
+                false
+            }
+        }
+
+        // ========== 私有辅助方法 ==========
 
         private fun findNodeAtCoordinates(node: AccessibilityNodeInfo, x: Int, y: Int): AccessibilityNodeInfo? {
             val bounds = Rect()
@@ -339,7 +464,6 @@ class OperitAccessibilityService : AccessibilityService() {
                 return null
             }
 
-            // 检查子节点
             for (i in node.childCount - 1 downTo 0) {
                 val child = node.getChild(i) ?: continue
                 val result = findNodeAtCoordinates(child, x, y)
@@ -352,7 +476,6 @@ class OperitAccessibilityService : AccessibilityService() {
                 child.recycle()
             }
 
-            // 如果没有子节点匹配，返回当前节点
             return AccessibilityNodeInfo.obtain(node)
         }
 
@@ -392,20 +515,6 @@ class OperitAccessibilityService : AccessibilityService() {
             return null
         }
 
-        private fun createClickPath(x: Int, y: Int): android.graphics.Path {
-            val path = android.graphics.Path()
-            path.moveTo(x.toFloat(), y.toFloat())
-            return path
-        }
-
-        private fun createSwipePath(x1: Int, y1: Int, x2: Int, y2: Int): android.graphics.Path {
-            val path = android.graphics.Path()
-            path.moveTo(x1.toFloat(), y1.toFloat())
-            path.lineTo(x2.toFloat(), y2.toFloat())
-            return path
-        }
-
-        // 创建点击手势 - 100ms 持续时间
         private fun createClickGesture(x: Int, y: Int): GestureDescription {
             val path = android.graphics.Path()
             path.moveTo(x.toFloat(), y.toFloat())
@@ -413,7 +522,6 @@ class OperitAccessibilityService : AccessibilityService() {
             return GestureDescription.Builder().addStroke(stroke).build()
         }
 
-        // 创建长按手势 - 500ms 持续时间
         private fun createLongPressGesture(x: Int, y: Int): GestureDescription {
             val path = android.graphics.Path()
             path.moveTo(x.toFloat(), y.toFloat())
@@ -421,15 +529,44 @@ class OperitAccessibilityService : AccessibilityService() {
             return GestureDescription.Builder().addStroke(stroke).build()
         }
 
-        // 创建滑动手势
-        private fun createSwipeGesture(
-            startX: Int, startY: Int, endX: Int, endY: Int, durationMs: Long
-        ): GestureDescription {
+        private fun createSwipeGesture(startX: Int, startY: Int, endX: Int, endY: Int, durationMs: Long): GestureDescription {
             val path = android.graphics.Path()
             path.moveTo(startX.toFloat(), startY.toFloat())
             path.lineTo(endX.toFloat(), endY.toFloat())
             val stroke = GestureDescription.StrokeDescription(path, 0, durationMs)
             return GestureDescription.Builder().addStroke(stroke).build()
+        }
+
+        /**
+         * 截图回调类
+         */
+        private class ScreenshotCallback : AccessibilityService.TakeScreenshotCallback {
+            private val handler = Handler(Looper.getMainLooper())
+            private var result: Bitmap? = null
+            private var isComplete = false
+
+            override fun onSuccess(screenshot: AccessibilityService.ScreenshotResult) {
+                val hardwareBuffer = screenshot.hardwareBuffer
+                if (hardwareBuffer != null) {
+                    result = Bitmap.wrapHardwareBuffer(hardwareBuffer, null)?.copy(Bitmap.Config.ARGB_8888, false)
+                    hardwareBuffer.close()
+                }
+                isComplete = true
+            }
+
+            override fun onFailure(error: Int) {
+                AppLogger.e(TAG, "Screenshot failed with error code: $error")
+                isComplete = true
+            }
+
+            fun getBitmap(): Bitmap? {
+                // 等待结果（最多2秒）
+                val startTime = System.currentTimeMillis()
+                while (!isComplete && System.currentTimeMillis() - startTime < 2000) {
+                    Thread.sleep(50)
+                }
+                return result
+            }
         }
     }
 
@@ -443,7 +580,6 @@ class OperitAccessibilityService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         event ?: return
 
-        // 监听窗口状态变化，获取当前Activity名称
         if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             val className = event.className?.toString()
             if (!className.isNullOrEmpty()) {
@@ -461,6 +597,7 @@ class OperitAccessibilityService : AccessibilityService() {
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
+        releaseVirtualDisplay()
         instance = null
         _isServiceEnabled.value = false
         _currentActivityName.value = ""
@@ -468,23 +605,8 @@ class OperitAccessibilityService : AccessibilityService() {
         return super.onUnbind(intent)
     }
 
-    // 截图回调 (Android 13+)
-    private class MainActivityExecutor(private val callback: (Bitmap?) -> Unit) :
-        AccessibilityService.TakeScreenshotCallback {
-        override fun onSuccess(screenshot: ScreenshotResult) {
-            val hardwareBuffer = screenshot.hardwareBuffer
-            if (hardwareBuffer != null) {
-                val bitmap = Bitmap.wrapHardwareBuffer(hardwareBuffer, null)
-                callback(bitmap?.copy(Bitmap.Config.ARGB_8888, false))
-                hardwareBuffer.close()
-            } else {
-                callback(null)
-            }
-        }
-
-        override fun onFailure(error: Int) {
-            AppLogger.e(TAG, "Screenshot failed with error code: $error")
-            callback(null)
-        }
+    override fun onDestroy() {
+        releaseVirtualDisplay()
+        super.onDestroy()
     }
 }
