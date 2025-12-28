@@ -41,6 +41,18 @@ val AnthropicMidGray = Color(0xFFb0aea5)
  */
 val AnthropicLightGray = Color(0xFFe8e6dc)
 
+/**
+ * Warm gray for elevated surfaces in dark theme
+ * #2a2a27 - Elevated dark surface
+ */
+val AnthropicElevatedDark = Color(0xFF2a2a27)
+
+/**
+ * Surface color for light theme
+ * #f5f3eb - Warm surface tone
+ */
+val AnthropicSurfaceLight = Color(0xFFf5f3eb)
+
 // ============================================================================
 // Accent Colors (Anthropic)
 // ============================================================================

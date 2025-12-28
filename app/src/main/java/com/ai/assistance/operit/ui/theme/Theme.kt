@@ -89,10 +89,10 @@ private val DarkColorScheme = darkColorScheme(
         background = AnthropicDark,
         onBackground = AnthropicLightGray,
 
-        surface = Color(0xFF1a1a19),
+        surface = AnthropicElevatedDark,
         onSurface = AnthropicLightGray,
 
-        surfaceVariant = Color(0xFF2a2a27),
+        surfaceVariant = Color(0xFF3a3a36),
         onSurfaceVariant = AnthropicMidGray,
 
         outline = AnthropicMidGray,
@@ -131,10 +131,10 @@ private val LightColorScheme = lightColorScheme(
         background = AnthropicLight,
         onBackground = AnthropicDark,
 
-        surface = Color(0xFFf5f3eb),
+        surface = AnthropicSurfaceLight,
         onSurface = AnthropicDark,
 
-        surfaceVariant = AnthropicLightGray,
+        surfaceVariant = Color(0xFFe8e6dc),
         onSurfaceVariant = AnthropicMidGray,
 
         outline = AnthropicMidGray,
