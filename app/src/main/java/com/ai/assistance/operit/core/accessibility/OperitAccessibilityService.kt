@@ -2,6 +2,7 @@ package com.ai.assistance.operit.core.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
@@ -370,7 +371,10 @@ class OperitAccessibilityService : AccessibilityService() {
 
                 imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 2)
 
-                virtualDisplay = service.displayManager.createVirtualDisplay(
+                val displayManager = service.getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager
+                    ?: throw IllegalStateException("DisplayManager not available")
+
+                virtualDisplay = displayManager.createVirtualDisplay(
                     "OperitVirtualDisplay",
                     width,
                     height,
