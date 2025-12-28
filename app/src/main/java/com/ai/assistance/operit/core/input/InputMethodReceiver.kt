@@ -27,7 +27,7 @@ class InputMethodReceiver : BroadcastReceiver() {
         when (action) {
             OperitInputMethodService.ACTION_INPUT_TEXT -> {
                 val text = intent.getStringExtra(OperitInputMethodService.EXTRA_TEXT) ?: ""
-                val imeService = OperitInputMethodService.instance
+                val imeService = OperitInputMethodService.getInstance()
                 if (imeService != null) {
                     imeService.commitText(text)
                 } else {
@@ -35,7 +35,7 @@ class InputMethodReceiver : BroadcastReceiver() {
                 }
             }
             OperitInputMethodService.ACTION_CLEAR_TEXT -> {
-                val imeService = OperitInputMethodService.instance
+                val imeService = OperitInputMethodService.getInstance()
                 if (imeService != null) {
                     imeService.clearText()
                 } else {

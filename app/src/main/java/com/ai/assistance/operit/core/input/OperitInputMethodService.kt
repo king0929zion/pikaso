@@ -8,6 +8,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import android.view.inputmethod.InputMethodManager
+import android.view.inputmethod.ExtractedTextRequest
 import com.ai.assistance.operit.util.AppLogger
 
 /**
@@ -59,7 +60,7 @@ class OperitInputMethodService : InputMethodService() {
             return try {
                 val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 previousInputMethodId?.let { prevId ->
-                    imm.showInputMethodPickerWithTitle(prevId)
+                    imm.switchInputMethod(prevId)
                     AppLogger.d(TAG, "Restored previous input method: $prevId")
                     previousInputMethodId = null
                     true
@@ -87,7 +88,7 @@ class OperitInputMethodService : InputMethodService() {
                         !it.id.contains("operit", ignoreCase = true)
                     }?.id ?: inputMethodList.first().id
 
-                    imm.showInputMethodPickerWithTitle(defaultId)
+                    imm.switchInputMethod(defaultId)
                     AppLogger.d(TAG, "Switched to default input method: $defaultId")
                     true
                 } else {
@@ -140,9 +141,9 @@ class OperitInputMethodService : InputMethodService() {
         instance = null
     }
 
-    override fun onHideWindow(hidingReasons: Int) {
-        super.onHideWindow(hidingReasons)
-        AppLogger.d(TAG, "onHideWindow: reasons=$hidingReasons")
+    override fun onHideWindow() {
+        super.onHideWindow()
+        AppLogger.d(TAG, "onHideWindow")
         // 当输入法窗口隐藏时，标记输入结束
         isInputActive = false
     }
@@ -204,7 +205,8 @@ class OperitInputMethodService : InputMethodService() {
         val ic = currentInputConnection ?: return false
         return try {
             // 选中文本并删除
-            val extractedText = ic.getExtractedText(0, Int.MAX_VALUE)
+            val request = ExtractedTextRequest()
+            val extractedText = ic.getExtractedText(request)
             if (extractedText != null && extractedText.text.isNotEmpty()) {
                 ic.setComposingText("", 1)
                 ic.commitText("", 1)
@@ -223,7 +225,8 @@ class OperitInputMethodService : InputMethodService() {
     fun getCurrentText(): String? {
         val ic = currentInputConnection ?: return null
         return try {
-            ic.getExtractedText(0, Int.MAX_VALUE)?.text?.toString()
+            val request = ExtractedTextRequest()
+            ic.getExtractedText(request)?.text?.toString()
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to get current text", e)
             null
@@ -245,30 +248,5 @@ class OperitInputMethodService : InputMethodService() {
             AppLogger.e(TAG, "Failed to delete characters", e)
             false
         }
-    }
-
-    /**
-     * 模拟按下回车键
-     */
-    fun pressEnterKey(): Boolean {
-        val ic = currentInputConnection ?: return false
-        return try {
-            ic.performEditorAction(EditorInfo.IME_ACTION_DONE)
-            AppLogger.d(TAG, "Pressed enter key")
-            true
-        } catch (e: Exception) {
-            AppLogger.e(TAG, "Failed to press enter key", e)
-            false
-        }
-    }
-
-    /**
-     * 执行输入完成操作并切换回原输入法
-     */
-    fun finishInputAndSwitchBack(context: Context): Boolean {
-        val result = pressEnterKey()
-        // 切换回原输入法
-        switchToDefaultInputMethod(context)
-        return result
     }
 }
