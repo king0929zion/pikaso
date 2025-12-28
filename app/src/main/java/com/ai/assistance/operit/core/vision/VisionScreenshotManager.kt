@@ -37,7 +37,7 @@ object VisionScreenshotManager {
      * @return 截图的Bitmap或null
      */
     suspend fun captureScreenshot(context: Context, format: Format = Format.PNG): Bitmap? {
-        if (!Shizuku.pingBinder().isOk) {
+        if (Shizuku.pingBinder() == null) {
             AppLogger.e(TAG, "Shizuku is not available")
             return null
         }
@@ -142,7 +142,7 @@ object VisionScreenshotManager {
      * 实际上通过Shizuku的ADB命令不需要额外权限
      */
     fun hasPermission(): Boolean {
-        return Shizuku.pingBinder().isOk
+        return Shizuku.pingBinder() != null
     }
 
     /**
@@ -151,7 +151,7 @@ object VisionScreenshotManager {
      * @return Pair<width, height> 或 null
      */
     suspend fun getScreenSize(context: Context): Pair<Int, Int>? {
-        if (!Shizuku.pingBinder().isOk) {
+        if (Shizuku.pingBinder() == null) {
             return null
         }
 

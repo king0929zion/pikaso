@@ -196,7 +196,7 @@ object VisionActionExecutor {
      * @return 是否成功
      */
     private suspend fun executeCommand(context: Context, command: String, delayMs: Long = 0): Boolean {
-        if (!Shizuku.pingBinder().isOk) {
+        if (Shizuku.pingBinder() == null) {
             AppLogger.e(TAG, "Shizuku is not available")
             return false
         }
@@ -237,6 +237,6 @@ object VisionActionExecutor {
      * 检查是否有执行权限
      */
     fun hasPermission(): Boolean {
-        return Shizuku.pingBinder().isOk
+        return Shizuku.pingBinder() != null
     }
 }

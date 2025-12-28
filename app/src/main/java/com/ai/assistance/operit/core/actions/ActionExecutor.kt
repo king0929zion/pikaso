@@ -5,6 +5,8 @@ import com.ai.assistance.operit.core.accessibility.OperitAccessibilityService
 import com.ai.assistance.operit.core.vision.VisionActionExecutor
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.delay
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * 统一动作执行器

@@ -1,6 +1,7 @@
 package com.ai.assistance.operit.core.accessibility
 
 import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.GestureDescription
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Rect
@@ -84,7 +85,6 @@ class OperitAccessibilityService : AccessibilityService() {
             sb.append(" enabled=\"${node.isEnabled}\"")
             sb.append(" focusable=\"${node.isFocusable}\"")
             sb.append(" focused=\"${node.isFocused}\"")
-            sb.append(" selectable=\"${node.isSelectable}\"")
             sb.append(" selected=\"${node.isSelected}\"")
 
             sb.append(">")

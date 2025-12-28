@@ -125,13 +125,10 @@ fun ShizukuDemoScreen(
             }
         }
 
-        // 检查无障碍服务版本状态
+        // 无障碍服务现在是内置的，不需要版本检查
         val (accessibilityInstalledVersion, accessibilityBundledVersion, isAccessibilityUpdateNeeded) =
                 remember(uiState.isRefreshing.value) {
-                    val installed = AccessibilityProviderInstaller.getInstalledVersion(context)
-                    val bundled = AccessibilityProviderInstaller.getBundledVersion(context)
-                    val needsUpdate = AccessibilityProviderInstaller.isUpdateNeeded(context)
-                    Triple(installed, bundled, needsUpdate)
+                    Triple("", "", false)
                 }
 
         // 权限管理卡片
@@ -153,9 +150,8 @@ fun ShizukuDemoScreen(
                 onRefresh = {
                     scope.launch(Dispatchers.IO) {
                         // 手动刷新时，清除版本缓存以获取最新状态
-                        AccessibilityProviderInstaller.clearCache()
                         ShizukuInstaller.clearCache()
-                        AppLogger.d("ShizukuDemoScreen", "手动刷新：已清除无障碍和Shizuku版本缓存")
+                        AppLogger.d("ShizukuDemoScreen", "手动刷新：已清除Shizuku版本缓存")
                         viewModel.refreshStatus(context)
                     }
                 },
@@ -220,13 +216,10 @@ fun ShizukuDemoScreen(
                     }
                 },
                 onInstallAccessibilityProviderClick = {
+                    // 无障碍服务现在是内置的，不需要安装
                     scope.launch(Dispatchers.IO) {
-                        if (!UIHierarchyManager.isProviderAppInstalled(context)) {
-                            UIHierarchyManager.launchProviderInstall(context)
-                        } else {
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(context, context.getString(R.string.accessibility_provider_installed), Toast.LENGTH_SHORT).show()
-                            }
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(context, "Accessibility service is built-in", Toast.LENGTH_SHORT).show()
                         }
                     }
                 },

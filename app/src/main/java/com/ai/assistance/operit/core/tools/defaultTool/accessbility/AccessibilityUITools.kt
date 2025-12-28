@@ -26,6 +26,36 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
         private const val TAG = "AccessibilityUITools"
         private const val MAX_RETRY_COUNT = 3
         private const val RETRY_DELAY_MS = 300L
+
+        /**
+         * 从UI层次结构XML中提取包名
+         */
+        private fun extractPackageNameFromXml(xml: String): String? {
+            return try {
+                val factory = XmlPullParserFactory.newInstance()
+                factory.isNamespaceAware = false
+                val parser = factory.newPullParser()
+                parser.setInput(StringReader(xml))
+
+                var eventType = parser.eventType
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG && parser.name == "node") {
+                        // 获取第一个node的package属性
+                        for (i in 0 until parser.attributeCount) {
+                            if (parser.getAttributeName(i) == "package") {
+                                return parser.getAttributeValue(i)
+                            }
+                        }
+                        break
+                    }
+                    eventType = parser.next()
+                }
+                null
+            } catch (e: Exception) {
+                AppLogger.e(TAG, "Failed to extract package name from XML", e)
+                null
+            }
+        }
     }
 
     /**
@@ -139,7 +169,7 @@ open class AccessibilityUITools(context: Context) : StandardUITools(context) {
             }
 
             // 2. 从XML中解析包名
-            val (packageName, _) = UIHierarchyManager.extractWindowInfo(hierarchyXml)
+            val packageName = extractPackageNameFromXml(hierarchyXml)
             // 3. 从服务中直接获取当前Activity名称
             val activityName = UIHierarchyManager.getCurrentActivityName(context)
 

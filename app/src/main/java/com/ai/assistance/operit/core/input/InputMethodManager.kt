@@ -68,7 +68,7 @@ object InputMethodManager {
      * 获取当前输入法
      */
     suspend fun getCurrentIME(context: Context): String? {
-        if (!Shizuku.pingBinder().isOk) {
+        if (Shizuku.pingBinder() == null) {
             AppLogger.e(TAG, "Shizuku is not available")
             return null
         }
@@ -87,7 +87,7 @@ object InputMethodManager {
      * 设置输入法
      */
     private suspend fun setIME(context: Context, imeId: String): Boolean {
-        if (!Shizuku.pingBinder().isOk) {
+        if (Shizuku.pingBinder() == null) {
             AppLogger.e(TAG, "Shizuku is not available")
             return false
         }
@@ -140,7 +140,7 @@ object InputMethodManager {
      * 检查Operit输入法是否已启用
      */
     suspend fun isOperitIMEEnabled(context: Context): Boolean {
-        if (!Shizuku.pingBinder().isOk) {
+        if (Shizuku.pingBinder() == null) {
             return false
         }
 
@@ -158,7 +158,7 @@ object InputMethodManager {
      * 启用Operit输入法
      */
     suspend fun enableOperitIME(context: Context): Boolean {
-        if (!Shizuku.pingBinder().isOk) {
+        if (Shizuku.pingBinder() == null) {
             AppLogger.e(TAG, "Shizuku is not available")
             return false
         }
