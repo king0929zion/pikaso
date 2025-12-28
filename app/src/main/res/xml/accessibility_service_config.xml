@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+<accessibility-service
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/accessibility_service_description"
-    android:accessibilityEventTypes="typeAllMask"
-    android:accessibilityFlags="flagReportViewIds|flagIncludeNotImportantViews|flagRequestEnhancedWebAccessibility"
+    android:accessibilityEventTypes="typeViewClicked|typeViewScrolled|typeWindowContentChanged|typeWindowStateChanged|typeViewFocused|typeViewTextChanged"
     android:accessibilityFeedbackType="feedbackGeneric"
     android:notificationTimeout="100"
+    android:accessibilityFlags="flagDefault|flagIncludeNotImportantViews|flagReportViewIds|flagRetrieveInteractiveWindows|flagRequestTouchExplorationMode"
     android:canRetrieveWindowContent="true"
-    android:settingsActivity="com.ai.assistance.operit.MainActivity"
-    android:canPerformGestures="true" /> 
+    android:canPerformGestures="true"
+    android:canTakeScreenshot="true" />

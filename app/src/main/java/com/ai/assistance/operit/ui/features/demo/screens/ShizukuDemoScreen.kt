@@ -25,7 +25,6 @@ import com.ai.assistance.operit.R
 import com.ai.assistance.operit.core.tools.system.AndroidPermissionLevel
 import com.ai.assistance.operit.ui.main.screens.Screen
 import com.ai.assistance.operit.ui.main.screens.ScreenNavigationHandler
-import com.ai.assistance.operit.core.tools.system.AccessibilityProviderInstaller
 import com.ai.assistance.operit.core.tools.system.ShizukuAuthorizer
 import com.ai.assistance.operit.core.tools.system.ShizukuInstaller
 import com.ai.assistance.operit.data.repository.UIHierarchyManager
@@ -341,30 +340,11 @@ fun ShizukuDemoScreen(
             // Accessibility向导卡片
             if (needAccessibilitySetupGuide) {
                 AccessibilityWizardCard(
-                    isProviderInstalled = uiState.isAccessibilityProviderInstalled.value,
                     isServiceEnabled = uiState.hasAccessibilityServiceEnabled.value,
                     showWizard = uiState.showAccessibilityWizard.value,
                     onToggleWizard = { viewModel.toggleAccessibilityWizard() },
-                    onInstallProvider = {
-                        scope.launch(Dispatchers.IO) {
-                            UIHierarchyManager.launchProviderInstall(context)
-                        }
-                    },
                     onOpenAccessibilitySettings = {
-                        try {
-                            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                            context.startActivity(intent)
-                        } catch (e: Exception) {
-                            Toast.makeText(context, context.getString(R.string.cannot_open_accessibility_settings), Toast.LENGTH_SHORT).show()
-                        }
-                    },
-                    updateNeeded = isAccessibilityUpdateNeeded,
-                    installedVersion = accessibilityInstalledVersion,
-                    bundledVersion = accessibilityBundledVersion,
-                    onUpdateProvider = {
-                        scope.launch(Dispatchers.IO) {
-                            UIHierarchyManager.launchProviderInstall(context)
-                        }
+                        UIHierarchyManager.openAccessibilitySettings(context)
                     }
                 )
                 Spacer(modifier = Modifier.height(AppSpacing.small))

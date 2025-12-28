@@ -23,7 +23,6 @@ import android.content.pm.PackageManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.ai.assistance.operit.core.tools.system.AccessibilityProviderInstaller
 import com.ai.assistance.operit.core.tools.system.ShizukuAuthorizer
 import com.ai.assistance.operit.data.mcp.plugins.MCPSharedSession
 
@@ -224,9 +223,6 @@ class DemoStateManager(private val context: Context, private val coroutineScope:
                     updateBatteryOptimizationExemption = {
                         _uiState.value.hasBatteryOptimizationExemption.value = it
                     },
-                    updateAccessibilityProviderInstalled = {
-                        _uiState.value.isAccessibilityProviderInstalled.value = it
-                    },
                     updateAccessibilityServiceEnabled = {
                         _uiState.value.hasAccessibilityServiceEnabled.value = it
                     }
@@ -289,7 +285,6 @@ suspend fun refreshPermissionsAndStatus(
     updateLocationPermission: (Boolean) -> Unit,
     updateOverlayPermission: (Boolean) -> Unit,
     updateBatteryOptimizationExemption: (Boolean) -> Unit,
-    updateAccessibilityProviderInstalled: (Boolean) -> Unit,
     updateAccessibilityServiceEnabled: (Boolean) -> Unit
 ) {
     AppLogger.d(TAG, "刷新应用权限状态...")
@@ -347,16 +342,7 @@ suspend fun refreshPermissionsAndStatus(
         powerManager.isIgnoringBatteryOptimizations(context.packageName)
     updateBatteryOptimizationExemption(hasBatteryOptimizationExemption)
 
-    // 检查无障碍服务提供者和服务的状态
-    val isProviderInstalled = UIHierarchyManager.isProviderAppInstalled(context)
-    updateAccessibilityProviderInstalled(isProviderInstalled)
-
-    // 只有在提供者安装后才尝试绑定并检查服务状态
-    if (isProviderInstalled) {
-        // 确保服务已绑定
-        UIHierarchyManager.bindToService(context)
-    }
-
+    // 检查内置无障碍服务是否启用
     val hasAccessibilityServiceEnabled =
         UIHierarchyManager.isAccessibilityServiceEnabled(context)
     updateAccessibilityServiceEnabled(hasAccessibilityServiceEnabled)
@@ -373,7 +359,6 @@ data class DemoScreenState(
         val hasOverlayPermission: MutableState<Boolean> = mutableStateOf(false),
         val hasBatteryOptimizationExemption: MutableState<Boolean> = mutableStateOf(false),
         val hasAccessibilityServiceEnabled: MutableState<Boolean> = mutableStateOf(false),
-        val isAccessibilityProviderInstalled: MutableState<Boolean> = mutableStateOf(false),
         val hasLocationPermission: MutableState<Boolean> = mutableStateOf(false),
         val isDeviceRooted: MutableState<Boolean> = mutableStateOf(false),
         val hasRootAccess: MutableState<Boolean> = mutableStateOf(false),

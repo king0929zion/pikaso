@@ -54,15 +54,10 @@
     
     <!-- Voice Interaction Service permissions -->
     <uses-permission android:name="android.permission.BIND_VOICE_INTERACTION" />
-    
+
     <!-- Workflow scheduling permissions -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-
-    <queries>
-        <!-- 允许查询和绑定到无障碍服务提供者应用 -->
-        <package android:name="com.ai.assistance.operit.provider" />
-    </queries>
 
     <application
         android:name=".core.application.OperitApplication"
@@ -304,7 +299,20 @@
             android:name=".services.assistant.OperitVoiceInteractionSessionService"
             android:permission="android.permission.BIND_VOICE_INTERACTION"
             android:exported="true" />
-        
+
+        <!-- Operit Accessibility Service -->
+        <service
+            android:name=".core.accessibility.OperitAccessibilityService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config"/>
+        </service>
+
     </application>
 
 </manifest>
