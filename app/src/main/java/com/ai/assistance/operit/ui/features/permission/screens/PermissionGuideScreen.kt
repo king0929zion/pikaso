@@ -46,6 +46,8 @@ fun PermissionGuideScreen(
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
     // Initialize
     LaunchedEffect(Unit) {
@@ -182,7 +184,13 @@ fun PermissionGuideScreen(
             val hasSelectedLevel = uiState.selectedPermissionLevel != null
 
             Button(
-                onClick = { viewModel.savePermissionLevel() },
+                onClick = {
+                    val (success, error) = viewModel.validateAndSavePermissionLevel(context)
+                    if (!success) {
+                        errorMessage = error ?: "未知错误"
+                        showErrorDialog = true
+                    }
+                },
                 enabled = hasSelectedLevel,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(AppSizes.cornerRadiusMedium)
@@ -209,6 +217,25 @@ fun PermissionGuideScreen(
                 )
             }
         }
+    }
+
+    // Error Dialog
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            title = { Text("权限要求未满足") },
+            text = { Text(errorMessage) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showErrorDialog = false
+                        viewModel.clearSaveError()
+                    }
+                ) {
+                    Text("知道了")
+                }
+            }
+        )
     }
 }
 
