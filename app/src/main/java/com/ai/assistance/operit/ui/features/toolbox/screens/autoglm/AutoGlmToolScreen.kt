@@ -34,7 +34,7 @@ import com.ai.assistance.operit.ui.theme.AppSpacing
  */
 @Composable
 fun AutoGlmToolScreen(
-    viewModel: AutoGlmViewModel = viewModel(factory = AutoGlmViewModelFactory(LocalContext.current))
+    viewModel: AutoGlmViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
