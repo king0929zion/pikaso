@@ -172,6 +172,43 @@ object VisionActionExecutor {
     }
 
     /**
+     * 按电源键
+     * @param delayMs 操作后延迟（毫秒）
+     */
+    suspend fun pressPower(context: Context, delayMs: Long = 300): Boolean {
+        AppLogger.d(TAG, "Press power")
+        return executeCommand(context, "input keyevent 26", delayMs)
+    }
+
+    /**
+     * 展开通知栏
+     * @param delayMs 操作后延迟（毫秒）
+     */
+    suspend fun expandNotification(context: Context, delayMs: Long = 300): Boolean {
+        AppLogger.d(TAG, "Expand notification")
+        return executeCommand(context, "cmd statusbar expand-notifications", delayMs)
+    }
+
+    /**
+     * 展开快速设置
+     * @param delayMs 操作后延迟（毫秒）
+     */
+    suspend fun expandQuickSettings(context: Context, delayMs: Long = 300): Boolean {
+        AppLogger.d(TAG, "Expand quick settings")
+        return executeCommand(context, "cmd statusbar expand-settings", delayMs)
+    }
+
+    /**
+     * 打开URL
+     * @param url 要打开的URL
+     * @param delayMs 操作后延迟（毫秒）
+     */
+    suspend fun openUrl(context: Context, url: String, delayMs: Long = 500): Boolean {
+        AppLogger.d(TAG, "Open URL: $url")
+        return executeCommand(context, "am start -a android.intent.action.VIEW -d \"$url\"", delayMs)
+    }
+
+    /**
      * 获取当前焦点窗口的包名
      * @return 包名或null
      */

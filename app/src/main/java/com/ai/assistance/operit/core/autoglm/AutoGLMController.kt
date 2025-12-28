@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Build
 import android.view.accessibility.AccessibilityNodeInfo
+import android.accessibilityservice.AccessibilityService
 import com.ai.assistance.operit.core.accessibility.OperitAccessibilityService
 import com.ai.assistance.operit.core.input.InputMethodManager
 import com.ai.assistance.operit.core.vision.VisionActionExecutor
@@ -144,8 +145,6 @@ class AutoGLMController(private val context: Context) {
     // ========== 私有方法 ==========
 
     private suspend fun executeTaskInternal(task: String): ExecutionResult {
-        executionJob = CoroutineScope(Dispatchers.IO).coroutineContext.job
-
         // 示例：执行一系列操作
         // 实际实现应该根据任务内容调用相应的操作
 
@@ -154,7 +153,7 @@ class AutoGLMController(private val context: Context) {
             repeat(maxSteps) { step ->
                 if (!kotlinx.coroutines.coroutineContext.isActive) {
                     addLog("执行被中断")
-                    return@withContext ExecutionResult(success = false, error = "执行被中断")
+                    return ExecutionResult(success = false, error = "执行被中断")
                 }
 
                 currentStep = step + 1
@@ -172,18 +171,18 @@ class AutoGLMController(private val context: Context) {
             _statusMessage.value = "任务完成"
             addLog("任务执行完成")
 
-            ExecutionResult(
+            return ExecutionResult(
                 success = true,
                 message = "任务执行完成，共执行 $currentStep 步"
             )
         } catch (e: CancellationException) {
             addLog("任务被取消")
-            ExecutionResult(success = false, error = "任务被取消")
+            return ExecutionResult(success = false, error = "任务被取消")
         } catch (e: Exception) {
             val errorMsg = "执行出错: ${e.message}"
             addLog(errorMsg)
             _error.value = errorMsg
-            ExecutionResult(success = false, error = errorMsg)
+            return ExecutionResult(success = false, error = errorMsg)
         }
     }
 
@@ -304,7 +303,7 @@ class AutoGLMController(private val context: Context) {
      */
     suspend fun pressBack(): Boolean {
         return withContext(Dispatchers.IO) {
-            if (OperitAccessibilityService.performGlobalAction(AccessibilityNodeInfo.ACTION_BACK)) {
+            if (OperitAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)) {
                 addLog("按下返回键 - 无障碍服务")
                 return@withContext true
             }
@@ -324,7 +323,7 @@ class AutoGLMController(private val context: Context) {
      */
     suspend fun pressHome(): Boolean {
         return withContext(Dispatchers.IO) {
-            if (OperitAccessibilityService.performGlobalAction(AccessibilityNodeInfo.ACTION_HOME)) {
+            if (OperitAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME)) {
                 addLog("按下Home键 - 无障碍服务")
                 return@withContext true
             }

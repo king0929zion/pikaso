@@ -80,7 +80,7 @@ object InputMethodManager {
     suspend fun getCurrentInputMethodId(context: Context): String? {
         return try {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.currentInputMethod?.id
+            imm.currentInputMethodInfo?.id
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to get current input method", e)
             null
@@ -191,10 +191,8 @@ object InputMethodManager {
         }
 
         return try {
-            val process = service.exec(
-                command.toCharArray(),
-                null,
-                null,
+            val process = service.newProcess(
+                arrayOf("sh", "-c", command),
                 null,
                 null
             )
@@ -371,7 +369,7 @@ object InputMethodManager {
             !Shizuku.pingBinder() -> {
                 "Shizuku服务未运行。请先启动Shizuku应用并授予权限。"
             }
-            !Shizuku.isGranted() -> {
+            !Shizuku.isBinderAlive() -> {
                 "Shizuku权限未授予。请在Shizuku中授权Operit使用Shizuku。"
             }
             else -> {

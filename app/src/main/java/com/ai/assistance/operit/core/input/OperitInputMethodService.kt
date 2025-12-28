@@ -141,16 +141,16 @@ class OperitInputMethodService : InputMethodService() {
         instance = null
     }
 
-    override fun onHideWindow() {
-        super.onHideWindow()
-        AppLogger.d(TAG, "onHideWindow")
+    override fun onHideWindow(hidingReasons: Int) {
+        super.onHideWindow(hidingReasons)
+        AppLogger.d(TAG, "onHideWindow: reasons=$hidingReasons")
         // 当输入法窗口隐藏时，标记输入结束
         isInputActive = false
     }
 
-    override fun onShowWindow(shown: Boolean) {
-        super.onShowWindow(shown)
-        AppLogger.d(TAG, "onShowWindow: shown=$shown")
+    override fun onShowWindow() {
+        super.onShowWindow()
+        AppLogger.d(TAG, "onShowWindow")
     }
 
     /**
