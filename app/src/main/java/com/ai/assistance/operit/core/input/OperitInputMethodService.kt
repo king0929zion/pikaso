@@ -4,7 +4,6 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
-import android.os.IBinder
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
@@ -62,30 +61,13 @@ class OperitInputMethodService : InputMethodService() {
             return try {
                 val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 previousInputMethodId?.let { prevId ->
-                    // 尝试使用 InputMethodManager 的方法
+                    // 尝试使用 switchInputMethod 方法
                     try {
                         val method = InputMethodManager::class.java.getMethod(
-                            "setInputMethod",
-                            IBinder::class.java,
+                            "switchInputMethod",
                             String::class.java
                         )
-                        // 获取当前输入法的token
-                        val currentToken = getCurrentInputConnection()?.token
-                        if (currentToken != null) {
-                            method.invoke(imm, currentToken, prevId)
-                        } else {
-                            // 如果无法获取token，直接使用方法名切换
-                            try {
-                                val switchMethod = InputMethodManager::class.java.getMethod(
-                                    "switchInputMethod",
-                                    String::class.java
-                                )
-                                switchMethod.invoke(imm, prevId)
-                            } catch (e2: Exception) {
-                                AppLogger.e(TAG, "Failed to switch input method", e2)
-                                return false
-                            }
-                        }
+                        method.invoke(imm, prevId)
                     } catch (e: Exception) {
                         AppLogger.e(TAG, "Failed to restore input method", e)
                         return false

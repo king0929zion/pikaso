@@ -3,6 +3,7 @@ package com.ai.assistance.operit.ui.features.toolbox.screens.autoglm
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ai.assistance.operit.R
 import com.ai.assistance.operit.api.chat.EnhancedAIService
 import com.ai.assistance.operit.core.autoglm.AutoGLMController
 import com.ai.assistance.operit.core.autoglm.PermissionCheckResult
