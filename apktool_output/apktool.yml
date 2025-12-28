@@ -1,0 +1,32 @@
+!!brut.androlib.meta.MetaInfo
+apkFileName: base.apk
+compressionType: false
+doNotCompress:
+- resources.arsc
+- assets/dexopt/baseline.prof
+- assets/dexopt/baseline.profm
+- lib/arm64-v8a/libandroidx.graphics.path.so
+- lib/armeabi-v7a/libandroidx.graphics.path.so
+- lib/x86/libandroidx.graphics.path.so
+- lib/x86_64/libandroidx.graphics.path.so
+- png
+isFrameworkApk: false
+packageInfo:
+  forcedPackageId: '127'
+  renameManifestPackage: null
+sdkInfo:
+  minSdkVersion: '26'
+  targetSdkVersion: '34'
+sharedLibrary: false
+sparseResources: false
+unknownFiles:
+  DebugProbesKt.bin: '8'
+  kotlin-tooling-metadata.json: '8'
+usesFramework:
+  ids:
+  - 1
+  tag: null
+version: 2.5.0-dirty
+versionInfo:
+  versionCode: '3'
+  versionName: '1.4'

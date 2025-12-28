@@ -194,7 +194,7 @@ object InputMethodManager {
             // 发送广播输入文本
             val intent = Intent(OperitInputMethodService.ACTION_INPUT_TEXT).apply {
                 putExtra(OperitInputMethodService.EXTRA_TEXT, text)
-                `package` = context.packageName
+                setPackage(context.packageName)
             }
             context.sendBroadcast(intent)
             AppLogger.d(TAG, "Sent input broadcast: $text")
@@ -228,7 +228,7 @@ object InputMethodManager {
 
             // 发送广播清空文本
             val intent = Intent(OperitInputMethodService.ACTION_CLEAR_TEXT).apply {
-                `package` = context.packageName
+                setPackage(context.packageName)
             }
             context.sendBroadcast(intent)
 
