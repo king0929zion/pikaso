@@ -53,12 +53,35 @@ jobs:
           cat app/keystore.properties | sed 's/Password=.*/Password=***/'
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease --stacktrace --no-daemon
+        id: build_apk
+        continue-on-error: true
+        run: |
+          set +e
+          set -o pipefail
+          ./gradlew assembleRelease --stacktrace --no-daemon 2>&1 | tee gradle-build.log
+          EXIT_CODE=${PIPESTATUS[0]}
+          echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+          exit $EXIT_CODE
         env:
           GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
+      - name: Report Build Failure (Gradle)
+        if: steps.build_apk.outcome != 'success'
+        run: |
+          echo "::error::Gradle assembleRelease failed (exit_code=${{ steps.build_apk.outputs.exit_code }})"
+          echo "::group::Gradle error highlights (tail)"
+          tail -n 200 gradle-build.log || true
+          echo "::endgroup::"
+
+          echo "::group::Gradle error highlights (grep)"
+          grep -nE "(^e: )|(\\berror: )|(FAILURE: )|(\\* What went wrong)|(\\> Task .* FAILED)" gradle-build.log | tail -n 80 || true
+          echo "::endgroup::"
+
+          exit 1
+
       - name: Get version
         id: version
+        if: steps.build_apk.outcome == 'success'
         run: |
           VERSION=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*versionName = "\(.*\)".*/\1/')
           VERSION_CODE=$(grep 'versionCode' app/build.gradle.kts | head -1 | sed 's/.*versionCode = \(.*\)/\1/')
@@ -69,10 +92,12 @@ jobs:
           echo "shortSha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
 
       - name: Rename APK
+        if: steps.build_apk.outcome == 'success'
         run: |
           mv app/build/outputs/apk/release/app-release.apk "app/build/outputs/apk/release/Pikaso-v${{ steps.version.outputs.version }}-build.${{ steps.version.outputs.buildNumber }}.apk"
 
       - name: Upload APK Artifact
+        if: steps.build_apk.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: Pikaso-APK-${{ steps.version.outputs.buildNumber }}

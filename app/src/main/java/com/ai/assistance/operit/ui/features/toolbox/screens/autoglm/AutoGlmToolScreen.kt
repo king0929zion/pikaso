@@ -160,7 +160,7 @@ private fun AutoGlmToolContent(
 @Composable
 private fun ErrorBanner(message: String, onDismiss: () -> Unit) {
     OutlinedCard(
-        colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
         shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)
     ) {
         Row(
