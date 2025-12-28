@@ -160,7 +160,7 @@ object VisionActionExecutor {
      */
     suspend fun getCurrentPackage(context: Context): String? {
         return try {
-            val process: ShizukuRemoteProcess = Shizuku.newProcess(
+            val process = Shizuku.exec(
                 arrayOf("sh", "-c", "dumpsys window | grep mCurrentFocus")
             )
 
@@ -203,7 +203,7 @@ object VisionActionExecutor {
 
         return try {
             withContext(Dispatchers.IO) {
-                val process: ShizukuRemoteProcess = Shizuku.newProcess(
+                val process = Shizuku.exec(
                     arrayOf("sh", "-c", command)
                 )
 

@@ -113,7 +113,7 @@ object VisionScreenshotManager {
      */
     private suspend fun executeScreenshotCommand(context: Context): ByteArray? {
         return try {
-            val process: ShizukuRemoteProcess = Shizuku.newProcess(
+            val process = Shizuku.exec(
                 arrayOf("sh", "-c", "screencap -p")
             )
 
@@ -156,7 +156,7 @@ object VisionScreenshotManager {
         }
 
         return try {
-            val process: ShizukuRemoteProcess = Shizuku.newProcess(
+            val process = Shizuku.exec(
                 arrayOf("sh", "-c", "wm size")
             )
 

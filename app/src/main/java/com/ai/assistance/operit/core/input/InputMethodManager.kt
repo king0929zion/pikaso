@@ -5,7 +5,6 @@ import android.content.Intent
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.delay
 import rikka.shizuku.Shizuku
-import rikka.shizuku.ShizukuRemoteProcess
 import java.nio.charset.StandardCharsets
 
 /**
@@ -107,8 +106,7 @@ object InputMethodManager {
      */
     private suspend fun executeCommand(context: Context, command: String): String? {
         return try {
-            val process: ShizukuRemoteProcess = Shizuku.newProcess(arrayOf("sh", "-c", command))
-            val outputStream = process.outputStream
+            val process = Shizuku.exec(arrayOf("sh", "-c", command))
 
             // 等待命令执行
             process.waitFor()
