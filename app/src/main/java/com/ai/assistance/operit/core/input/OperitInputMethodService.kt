@@ -32,19 +32,19 @@ import com.ai.assistance.operit.util.AppLogger
  */
 class OperitInputMethodService : InputMethodService() {
 
+    data class ImeCommandResult(
+        val requestId: String,
+        val action: String,
+        val success: Boolean,
+        val error: String? = null
+    )
+
     companion object {
         private const val TAG = "OperitIME"
         const val ACTION_INPUT_TEXT = "com.ai.assistance.operit.INPUT_TEXT"
         const val ACTION_CLEAR_TEXT = "com.ai.assistance.operit.CLEAR_TEXT"
         const val EXTRA_TEXT = "text"
         const val EXTRA_REQUEST_ID = "request_id"
-
-        data class ImeCommandResult(
-            val requestId: String,
-            val action: String,
-            val success: Boolean,
-            val error: String? = null
-        )
 
         @Volatile
         private var instance: OperitInputMethodService? = null
