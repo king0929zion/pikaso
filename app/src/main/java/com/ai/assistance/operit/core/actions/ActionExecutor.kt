@@ -1,7 +1,7 @@
 package com.ai.assistance.operit.core.actions
 
 import android.content.Context
-import android.view.accessibility.AccessibilityService
+import android.accessibilityservice.AccessibilityService
 import com.ai.assistance.operit.core.accessibility.OperitAccessibilityService
 import com.ai.assistance.operit.core.vision.VisionActionExecutor
 import com.ai.assistance.operit.util.AppLogger
