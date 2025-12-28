@@ -3,14 +3,16 @@ package com.ai.assistance.operit.core.vision
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.ParcelFileDescriptor
 import android.util.Base64
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import moe.shizuku.server.IShizukuService
 import rikka.shizuku.Shizuku
-import rikka.shizuku.ShizukuRemoteProcess
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileInputStream
 
 /**
  * 纯视觉截图管理器
@@ -20,6 +22,20 @@ import java.io.File
  */
 object VisionScreenshotManager {
     private const val TAG = "VisionScreenshotManager"
+
+    /**
+     * 获取Shizuku服务
+     */
+    private fun getShizukuService(): IShizukuService? {
+        return try {
+            val binder = Shizuku.getBinder() ?: return null
+            if (!binder.isBinderAlive) return null
+            IShizukuService.Stub.asInterface(binder)
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Error getting Shizuku service", e)
+            null
+        }
+    }
 
     /**
      * 截图格式
@@ -112,24 +128,39 @@ object VisionScreenshotManager {
      * @return PNG图片数据
      */
     private suspend fun executeScreenshotCommand(context: Context): ByteArray? {
+        val service = getShizukuService()
+        if (service == null) {
+            AppLogger.e(TAG, "Shizuku service not available")
+            return null
+        }
+
         return try {
-            val process = Shizuku.exec(
-                arrayOf("sh", "-c", "screencap -p")
-            )
+            withContext(Dispatchers.IO) {
+                val commandArgs = arrayOf("sh", "-c", "screencap -p")
+                val process = service.newProcess(commandArgs, null, null)
+                    ?: return@withContext null
 
-            // 等待命令执行完成
-            process.waitFor()
+                // 使用反射访问流
+                val processClass = process::class.java
+                val inputStream = processClass.getMethod("getInputStream")
+                    .invoke(process) as? ParcelFileDescriptor
 
-            // 读取输出
-            val available = process.inputStream.available()
-            if (available > 0) {
-                val bytes = ByteArray(available)
-                process.inputStream.read(bytes)
-                // Android的screencap -p输出的是PNG格式，但可能需要处理\r\n转换为\n
-                bytes
-            } else {
-                AppLogger.e(TAG, "screencap command produced no output")
-                null
+                // 读取输出
+                val output = inputStream?.let {
+                    FileInputStream(it.fileDescriptor).use { stream ->
+                        stream.readBytes()
+                    }
+                }
+
+                // 等待进程结束
+                processClass.getMethod("waitFor").invoke(process) as Int
+
+                if (output != null && output.isNotEmpty()) {
+                    output
+                } else {
+                    AppLogger.e(TAG, "screencap command produced no output")
+                    null
+                }
             }
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to execute screencap command", e)
@@ -151,37 +182,52 @@ object VisionScreenshotManager {
      * @return Pair<width, height> 或 null
      */
     suspend fun getScreenSize(context: Context): Pair<Int, Int>? {
-        if (Shizuku.pingBinder() == null) {
+        val service = getShizukuService()
+        if (service == null) {
             return null
         }
 
         return try {
-            val process = Shizuku.exec(
-                arrayOf("sh", "-c", "wm size")
-            )
+            withContext(Dispatchers.IO) {
+                val commandArgs = arrayOf("sh", "-c", "wm size")
+                val process = service.newProcess(commandArgs, null, null)
+                    ?: return@withContext null
 
-            process.waitFor()
+                // 使用反射访问流
+                val processClass = process::class.java
+                val inputStream = processClass.getMethod("getInputStream")
+                    .invoke(process) as? ParcelFileDescriptor
 
-            val available = process.inputStream.available()
-            if (available > 0) {
-                val bytes = ByteArray(available)
-                process.inputStream.read(bytes)
-                val output = String(bytes, Charsets.UTF_8).trim()
-                // 输出格式: "Physical size: 1080x2400"
-                val regex = Regex("""(\d+)x(\d+)""")
-                val match = regex.find(output)
-                if (match != null) {
-                    val width = match.groupValues[1].toInt()
-                    val height = match.groupValues[2].toInt()
-                    Pair(width, height)
-                } else {
-                    null
+                // 读取输出
+                val output = inputStream?.let {
+                    FileInputStream(it.fileDescriptor).use { stream ->
+                        stream.bufferedReader().use { it.readText() }
+                    }
                 }
-            } else {
-                null
+
+                // 等待进程结束
+                processClass.getMethod("waitFor").invoke(process) as Int
+
+                output?.trim()?.let { parseScreenSize(it) }
             }
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to get screen size", e)
+            null
+        }
+    }
+
+    /**
+     * 从wm size输出中解析屏幕尺寸
+     */
+    private fun parseScreenSize(output: String): Pair<Int, Int>? {
+        // 输出格式: "Physical size: 1080x2400"
+        val regex = Regex("""(\d+)x(\d+)""")
+        val match = regex.find(output)
+        return if (match != null) {
+            val width = match.groupValues[1].toInt()
+            val height = match.groupValues[2].toInt()
+            Pair(width, height)
+        } else {
             null
         }
     }

@@ -2,10 +2,16 @@ package com.ai.assistance.operit.core.input
 
 import android.content.Context
 import android.content.Intent
+import android.os.ParcelFileDescriptor
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
+import moe.shizuku.server.IShizukuService
 import rikka.shizuku.Shizuku
+import java.io.FileInputStream
 import java.nio.charset.StandardCharsets
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * 输入法管理器
@@ -102,31 +108,64 @@ object InputMethodManager {
     }
 
     /**
+     * 获取Shizuku服务
+     */
+    private fun getShizukuService(): IShizukuService? {
+        return try {
+            val binder = Shizuku.getBinder() ?: return null
+            if (!binder.isBinderAlive) return null
+            IShizukuService.Stub.asInterface(binder)
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Error getting Shizuku service", e)
+            null
+        }
+    }
+
+    /**
      * 通过Shizuku执行shell命令
      */
     private suspend fun executeCommand(context: Context, command: String): String? {
+        val service = getShizukuService()
+        if (service == null) {
+            AppLogger.e(TAG, "Shizuku service not available")
+            return null
+        }
+
         return try {
-            val process = Shizuku.exec(arrayOf("sh", "-c", command))
+            withContext(kotlinx.coroutines.Dispatchers.IO) {
+                val commandArgs = arrayOf("sh", "-c", command)
+                val process = service.newProcess(commandArgs, null, null)
+                    ?: return@withContext null
 
-            // 等待命令执行
-            process.waitFor()
+                // 使用反射访问流
+                val processClass = process::class.java
+                val inputStream = processClass.getMethod("getInputStream")
+                    .invoke(process) as? ParcelFileDescriptor
+                val errorStream = processClass.getMethod("getErrorStream")
+                    .invoke(process) as? ParcelFileDescriptor
 
-            // 读取输出
-            val available = process.inputStream.available()
-            if (available > 0) {
-                val bytes = ByteArray(available)
-                process.inputStream.read(bytes)
-                String(bytes, StandardCharsets.UTF_8)
-            } else {
-                // 尝试从errorStream读取
-                val errorAvailable = process.errorStream.available()
-                if (errorAvailable > 0) {
-                    val bytes = ByteArray(errorAvailable)
-                    process.errorStream.read(bytes)
-                    String(bytes, StandardCharsets.UTF_8)
-                } else {
-                    null
+                // 读取输出
+                val stdout = inputStream?.let {
+                    FileInputStream(it.fileDescriptor).use { stream ->
+                        stream.bufferedReader().use { it.readText() }
+                    }
                 }
+
+                // 如果标准输出为空，尝试读取错误输出
+                val output = if (stdout.isNullOrBlank()) {
+                    errorStream?.let {
+                        FileInputStream(it.fileDescriptor).use { stream ->
+                            stream.bufferedReader().use { it.readText() }
+                        }
+                    }
+                } else {
+                    stdout
+                }
+
+                // 等待进程结束
+                processClass.getMethod("waitFor").invoke(process) as Int
+
+                output?.trim()
             }
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to execute command: $command", e)

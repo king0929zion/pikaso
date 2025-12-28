@@ -1,11 +1,14 @@
 package com.ai.assistance.operit.core.vision
 
 import android.content.Context
+import android.os.ParcelFileDescriptor
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import moe.shizuku.server.IShizukuService
 import rikka.shizuku.Shizuku
-import rikka.shizuku.ShizukuRemoteProcess
+import java.io.FileInputStream
+import java.nio.charset.Charset
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -19,6 +22,20 @@ import kotlin.math.sqrt
  */
 object VisionActionExecutor {
     private const val TAG = "VisionActionExecutor"
+
+    /**
+     * 获取Shizuku服务
+     */
+    private fun getShizukuService(): IShizukuService? {
+        return try {
+            val binder = Shizuku.getBinder() ?: return null
+            if (!binder.isBinderAlive) return null
+            IShizukuService.Stub.asInterface(binder)
+        } catch (e: Exception) {
+            AppLogger.e(TAG, "Error getting Shizuku service", e)
+            null
+        }
+    }
 
     /**
      * 点击操作
@@ -159,31 +176,51 @@ object VisionActionExecutor {
      * @return 包名或null
      */
     suspend fun getCurrentPackage(context: Context): String? {
+        val service = getShizukuService()
+        if (service == null) {
+            AppLogger.e(TAG, "Shizuku service not available")
+            return null
+        }
+
         return try {
-            val process = Shizuku.exec(
-                arrayOf("sh", "-c", "dumpsys window | grep mCurrentFocus")
-            )
+            withContext(Dispatchers.IO) {
+                val commandArgs = arrayOf("sh", "-c", "dumpsys window | grep mCurrentFocus")
+                val process = service.newProcess(commandArgs, null, null)
+                    ?: return@withContext null
 
-            process.waitFor()
+                // 使用反射访问流
+                val processClass = process::class.java
+                val inputStream = processClass.getMethod("getInputStream")
+                    .invoke(process) as? ParcelFileDescriptor
 
-            val available = process.inputStream.available()
-            if (available > 0) {
-                val bytes = ByteArray(available)
-                process.inputStream.read(bytes)
-                val output = String(bytes, Charsets.UTF_8).trim()
-                // 输出格式: "mCurrentFocus=Window{... u0 com.example.app/com.example.MainActivity}"
-                val regex = Regex("""[a-z]+\.[a-z]+\.[a-z]+\/""")
-                val match = regex.find(output)
-                if (match != null) {
-                    match.value.dropLast(2) // 去掉 "/\""
-                } else {
-                    null
+                // 读取输出
+                val output = inputStream?.let {
+                    FileInputStream(it.fileDescriptor).use { stream ->
+                        stream.bufferedReader().use { it.readText() }
+                    }
                 }
-            } else {
-                null
+
+                // 等待进程结束
+                processClass.getMethod("waitFor").invoke(process) as Int
+
+                output?.trim()?.let { parsePackageName(it) }
             }
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to get current package", e)
+            null
+        }
+    }
+
+    /**
+     * 从dumpsys输出中解析包名
+     */
+    private fun parsePackageName(output: String): String? {
+        // 输出格式: "mCurrentFocus=Window{... u0 com.example.app/com.example.MainActivity}"
+        val regex = Regex("""[a-z]+\.[a-z]+\.[a-z]+\/""")
+        val match = regex.find(output)
+        return if (match != null) {
+            match.value.dropLast(1) // 去掉最后的 "/"
+        } else {
             null
         }
     }
@@ -196,19 +233,23 @@ object VisionActionExecutor {
      * @return 是否成功
      */
     private suspend fun executeCommand(context: Context, command: String, delayMs: Long = 0): Boolean {
-        if (Shizuku.pingBinder() == null) {
-            AppLogger.e(TAG, "Shizuku is not available")
+        val service = getShizukuService()
+        if (service == null) {
+            AppLogger.e(TAG, "Shizuku service not available")
             return false
         }
 
         return try {
             withContext(Dispatchers.IO) {
-                val process = Shizuku.exec(
-                    arrayOf("sh", "-c", command)
-                )
+                val commandArgs = arrayOf("sh", "-c", command)
+                val process = service.newProcess(commandArgs, null, null)
+                    ?: return@withContext false
+
+                // 使用反射访问流
+                val processClass = process::class.java
 
                 // 等待命令执行
-                process.waitFor()
+                processClass.getMethod("waitFor").invoke(process) as Int
 
                 // 如果有延迟，等待指定时间
                 if (delayMs > 0) {
