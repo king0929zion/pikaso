@@ -430,7 +430,7 @@ class MainActivity : ComponentActivity() {
                     processPendingSharedFiles()
 
                     OperitApp(
-                        initialNavItem = NavItem.AiChat,  // 直接进入聊天界面
+                        initialNavItem = NavItem.Toolbox,  // 默认进入工具箱（仅保留核心工具）
                         toolHandler = toolHandler
                     )
 

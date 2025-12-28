@@ -1208,6 +1208,7 @@ object OperitRouter {
             NavItem.EventCampaign -> Screen.EventCampaign
             NavItem.Packages -> Screen.Packages
             NavItem.Toolbox -> Screen.Toolbox
+            NavItem.ToolPermissions -> Screen.ToolPermission
             NavItem.ShizukuCommands -> Screen.ShizukuCommands
             NavItem.Settings -> Screen.Settings
             NavItem.Help -> Screen.Help
@@ -1218,7 +1219,7 @@ object OperitRouter {
             NavItem.Agreement -> Screen.Agreement
             NavItem.UpdateHistory -> Screen.UpdateHistory
             NavItem.Workflow -> Screen.Workflow
-            else -> Screen.AiChat
+            else -> Screen.Toolbox
         }
     }
 }

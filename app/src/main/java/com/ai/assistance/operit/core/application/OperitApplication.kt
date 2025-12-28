@@ -24,6 +24,7 @@ import com.ai.assistance.operit.api.chat.AIForegroundService
 import com.ai.assistance.operit.core.config.SystemPromptConfig
 import com.ai.assistance.operit.core.tools.AIToolHandler
 import com.ai.assistance.operit.core.tools.system.AndroidShellExecutor
+import com.ai.assistance.operit.core.tools.system.ShizukuAuthorizer
 import com.ai.assistance.operit.core.workflow.WorkflowSchedulerInitializer
 import com.ai.assistance.operit.data.db.AppDatabase
 import com.ai.assistance.operit.data.preferences.CharacterCardManager
@@ -92,6 +93,9 @@ class OperitApplication : Application(), ImageLoaderFactory, WorkConfiguration.P
         // Initialize ActivityLifecycleManager to track the current activity
         ActivityLifecycleManager.initialize(this)
         AppLogger.d(TAG, "【启动计时】ActivityLifecycleManager初始化完成 - ${System.currentTimeMillis() - startTime}ms")
+
+        // 初始化 Shizuku（用于需要 shell 权限的功能，例如 AutoGLM 输入法切换、解除幻象进程限制等）
+        ShizukuAuthorizer.initialize()
 
         // Initialize AIMessageManager
         AIMessageManager.initialize(this)

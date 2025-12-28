@@ -50,7 +50,7 @@ val LocalTopBarActions = compositionLocalOf<(@Composable (RowScope.() -> Unit)) 
 data class NavGroup(val title: String, val items: List<NavItem>)
 
 @Composable
-fun OperitApp(initialNavItem: NavItem = NavItem.AiChat, toolHandler: AIToolHandler? = null) {
+fun OperitApp(initialNavItem: NavItem = NavItem.Toolbox, toolHandler: AIToolHandler? = null) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -62,6 +62,7 @@ fun OperitApp(initialNavItem: NavItem = NavItem.AiChat, toolHandler: AIToolHandl
     var currentScreen by remember {
         mutableStateOf(OperitRouter.getScreenForNavItem(initialNavItem))
     }
+    val homeScreen = remember(initialNavItem) { OperitRouter.getScreenForNavItem(initialNavItem) }
     val backStack = remember { mutableStateListOf<Screen>() }
 
     // 跟踪是否是返回操作
@@ -73,7 +74,7 @@ fun OperitApp(initialNavItem: NavItem = NavItem.AiChat, toolHandler: AIToolHandl
     // 当currentScreen改变时，检查是否需要清空TopBarActions
     // 这是为了解决从有action的屏幕导航到无action的屏幕时，action残留的问题
     LaunchedEffect(currentScreen) {
-        if (currentScreen !is Screen.AiChat && currentScreen !is Screen.TokenConfig) {
+        if (currentScreen !is Screen.TokenConfig) {
             topBarActions = {}
         }
     }
@@ -85,29 +86,12 @@ fun OperitApp(initialNavItem: NavItem = NavItem.AiChat, toolHandler: AIToolHandl
         // 设置为前进导航
         isNavigatingBack = false
 
-        if (fromDrawer) {
-            // 从抽屉导航时，清除整个返回栈
+        if (fromDrawer || !newScreen.isSecondaryScreen) {
+            // 顶级页面切换：清空返回栈，保持“返回=退出应用”的预期
             backStack.clear()
         } else {
-            // 检查新屏幕是否为一级路由
-            if (!newScreen.isSecondaryScreen) {
-                // 如果是一级路由，清除栈中除了AI对话以外的所有内容
-                if (backStack.isNotEmpty()) {
-                    // 保留栈底的AI对话（如果存在）
-                    val aiChatScreen = backStack.find { it is Screen.AiChat }
-                    backStack.clear()
-                    if (aiChatScreen != null && currentScreen !is Screen.AiChat) {
-                        backStack.add(aiChatScreen)
-                    }
-                }
-                // 如果当前是AI对话，并且要导航到其他一级路由，将AI对话加入栈底
-                if (currentScreen is Screen.AiChat) {
-                    backStack.add(currentScreen)
-                }
-            } else {
-                // 二级路由导航，正常将当前屏幕加入栈
-                backStack.add(currentScreen)
-            }
+            // 二级页面：正常将当前页面压栈
+            backStack.add(currentScreen)
         }
         currentScreen = newScreen
         // Update the selected NavItem if the new screen has one.
@@ -132,8 +116,8 @@ fun OperitApp(initialNavItem: NavItem = NavItem.AiChat, toolHandler: AIToolHandl
     }
 
     // Register system back handler to use our custom back stack.
-    // 只在返回栈不为空且当前屏幕不是AI对话时启用返回处理
-    BackHandler(enabled = backStack.isNotEmpty() && currentScreen !is Screen.AiChat, onBack = { goBack() })
+    // 只在返回栈不为空且当前屏幕不是主页时启用返回处理
+    BackHandler(enabled = backStack.isNotEmpty() && currentScreen != homeScreen, onBack = { goBack() })
 
     // 修改canGoBack的判断逻辑，只有当前屏幕是二级屏幕时才显示返回键
     val canGoBack = currentScreen.isSecondaryScreen
@@ -167,20 +151,10 @@ fun OperitApp(initialNavItem: NavItem = NavItem.AiChat, toolHandler: AIToolHandl
     // Navigation items grouped by category (simplified)
     val navGroups = listOf(
         NavGroup(
-            "主要功能",
+            "工具",
             listOf(
-                NavItem.AiChat,
                 NavItem.Toolbox,
-                NavItem.MemoryBase
-            )
-        ),
-        NavGroup(
-            "设置",
-            listOf(
-                NavItem.Settings,
-                NavItem.AssistantConfig,
-                NavItem.Help,
-                NavItem.About
+                NavItem.ToolPermissions
             )
         )
     )

@@ -20,4 +20,4 @@ dependencyResolutionManagement {
 rootProject.name = "Operit"
 include(":app")
 include(":dragonbones")
-include(":miniscrcpy")
+// NOTE: `:miniscrcpy` 模块目前不在仓库中，保留会导致 CI 构建失败。

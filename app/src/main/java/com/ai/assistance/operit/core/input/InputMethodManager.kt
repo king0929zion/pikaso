@@ -2,8 +2,10 @@ package com.ai.assistance.operit.core.input
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.provider.Settings
 import android.view.inputmethod.InputMethodInfo
-import android.view.inputmethod.InputMethodManager
+import android.view.inputmethod.InputMethodManager as AndroidInputMethodManager
 import com.ai.assistance.operit.util.AppLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,7 +48,9 @@ object InputMethodManager {
      */
     fun checkShizukuAvailability(): Boolean {
         return try {
-            val available = Shizuku.pingBinder() != null
+            val serviceRunning = Shizuku.pingBinder()
+            val permissionGranted = Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED
+            val available = serviceRunning && permissionGranted
             _isShizukuAvailable.value = available
             available
         } catch (e: Exception) {
@@ -60,12 +64,8 @@ object InputMethodManager {
      * 检测Operit输入法是否已启用
      */
     suspend fun isOperitIMEEnabled(context: Context): Boolean {
-        if (!checkShizukuAvailability()) {
-            return false
-        }
-
         return try {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as AndroidInputMethodManager
             val inputMethodList = imm.enabledInputMethodList
             inputMethodList.any { it.id == OPERIT_IME_ID }
         } catch (e: Exception) {
@@ -79,8 +79,7 @@ object InputMethodManager {
      */
     suspend fun getCurrentInputMethodId(context: Context): String? {
         return try {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.currentInputMethodInfo?.id
+            Settings.Secure.getString(context.contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to get current input method", e)
             null
@@ -169,11 +168,7 @@ object InputMethodManager {
         }
 
         return try {
-            withContext(Dispatchers.IO) {
-                val command = "ime set $imeId"
-                executeShizukuCommand(command)
-            }
-            true
+            withContext(Dispatchers.IO) { executeShizukuCommand("ime set $imeId") }
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to set input method: $imeId", e)
             false
@@ -237,7 +232,7 @@ object InputMethodManager {
         // 检查是否已在输入会话中
         if (isInInputSession) {
             AppLogger.d(TAG, "Already in input session, sending text directly")
-            return sendTextToInputMethod(text)
+            return sendTextToInputMethod(context, text)
         }
 
         return try {
@@ -251,7 +246,7 @@ object InputMethodManager {
             }
 
             // 发送文本
-            val success = sendTextToInputMethod(text)
+            val success = sendTextToInputMethod(context, text)
 
             // 恢复原输入法
             delay(100)
@@ -269,7 +264,7 @@ object InputMethodManager {
     /**
      * 发送文本到Operit输入法
      */
-    private fun sendTextToInputMethod(text: String): Boolean {
+    private fun sendTextToInputMethod(context: Context, text: String): Boolean {
         return try {
             val intent = Intent(OperitInputMethodService.ACTION_INPUT_TEXT).apply {
                 putExtra(OperitInputMethodService.EXTRA_TEXT, text)
@@ -277,6 +272,7 @@ object InputMethodManager {
             }
             // 使用广播发送（因为输入法服务可能没有活动上下文）
             AppLogger.d(TAG, "Sending text via InputMethodReceiver")
+            context.sendBroadcast(intent)
             true
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to send text to input method", e)
@@ -289,7 +285,7 @@ object InputMethodManager {
      */
     suspend fun clearText(context: Context): Boolean {
         if (isInInputSession) {
-            return sendClearTextCommand()
+            return sendClearTextCommand(context)
         }
 
         return try {
@@ -300,7 +296,7 @@ object InputMethodManager {
                 return false
             }
 
-            val success = sendClearTextCommand()
+            val success = sendClearTextCommand(context)
 
             delay(100)
             restorePreviousInputMethod(context)
@@ -316,12 +312,13 @@ object InputMethodManager {
     /**
      * 发送清空文本命令
      */
-    private fun sendClearTextCommand(): Boolean {
+    private fun sendClearTextCommand(context: Context): Boolean {
         return try {
             val intent = Intent(OperitInputMethodService.ACTION_CLEAR_TEXT).apply {
                 setPackage("com.ai.assistance.operit")
             }
             AppLogger.d(TAG, "Sending clear text command")
+            context.sendBroadcast(intent)
             true
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to send clear text command", e)
@@ -334,7 +331,7 @@ object InputMethodManager {
      */
     suspend fun getEnabledInputMethods(context: Context): List<InputMethodInfo> {
         return try {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as AndroidInputMethodManager
             imm.enabledInputMethodList
         } catch (e: Exception) {
             AppLogger.e(TAG, "Failed to get enabled input methods", e)
@@ -351,7 +348,7 @@ object InputMethodManager {
         }
 
         return try {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as AndroidInputMethodManager
             val inputMethodList = imm.inputMethodList
             val operitIME = inputMethodList.find { it.id == OPERIT_IME_ID }
             operitIME == null || !imm.enabledInputMethodList.contains(operitIME)

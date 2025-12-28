@@ -1,9 +1,12 @@
 package com.ai.assistance.operit.ui.features.toolbox.screens.autoglm
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.Settings
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -25,9 +28,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.ai.assistance.operit.R
+import com.ai.assistance.operit.core.accessibility.OperitAccessibilityService
+import com.ai.assistance.operit.core.input.InputMethodManager
+import com.ai.assistance.operit.core.tools.system.ShizukuAuthorizer
+import com.ai.assistance.operit.core.tools.system.ShizukuInstaller
 import com.ai.assistance.operit.ui.components.CustomScaffold
-import com.ai.assistance.operit.util.ShizukuUtils
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * AutoGLM 权限配置页面
@@ -39,89 +48,125 @@ fun AutoGlmPermissionScreen(
     onNavigateBack: () -> Unit
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
-    // 权限状态
-    val permissions = remember {
-        listOf(
-            PermissionItem(
-                name = context.getString(R.string.permission_accessibility),
-                description = context.getString(R.string.permission_accessibility_desc),
-                icon = Icons.Default.TouchApp,
-                color = Color(0xFF2196F3),
-                isGranted = ShizukuUtils.isAccessibilityServiceEnabled(context),
-                action = {
-                    context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-                }
-            ),
-            PermissionItem(
-                name = context.getString(R.string.permission_shizuku),
-                description = context.getString(R.string.permission_shizuku_desc),
-                icon = Icons.Default.AdminPanelSettings,
-                color = Color(0xFF9C27B0),
-                isGranted = ShizukuUtils.isShizukuAvailable(),
-                action = {
-                    try {
-                        context.startActivity(Intent("dev.rikka.shizuku.actionREQUEST_PERMISSION"))
-                    } catch (e: Exception) {
-                        try {
-                            context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                                data = Uri.parse("package:dev.rikkashizuku")
-                            })
-                        } catch (e2: Exception) {
-                            // Shizuku not installed
+    var permissions by remember { mutableStateOf<List<PermissionItem>>(emptyList()) }
+    var grantedCount by remember { mutableStateOf(0) }
+    var expandedIndex by remember { mutableStateOf(-1) }
+
+    suspend fun refreshPermissions() {
+        val accessibilityEnabled = OperitAccessibilityService.isAccessibilityServiceEnabled()
+        val shizukuInstalled = ShizukuAuthorizer.isShizukuInstalled(context)
+        val shizukuRunning = ShizukuAuthorizer.isShizukuServiceRunning()
+        val shizukuGranted = ShizukuAuthorizer.hasShizukuPermission()
+        val operitImeEnabled = runCatching { InputMethodManager.isOperitIMEEnabled(context) }.getOrDefault(false)
+        val overlayEnabled = Settings.canDrawOverlays(context)
+        val storageEnabled = checkStoragePermission(context)
+        val notificationEnabled = checkNotificationPermission(context)
+
+        permissions =
+            listOf(
+                PermissionItem(
+                    name = context.getString(R.string.permission_accessibility),
+                    description = context.getString(R.string.permission_accessibility_desc),
+                    icon = Icons.Default.TouchApp,
+                    color = Color(0xFF2196F3),
+                    isGranted = accessibilityEnabled,
+                    action = { context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
+                ),
+                PermissionItem(
+                    name = context.getString(R.string.permission_shizuku),
+                    description =
+                        buildString {
+                            appendLine(context.getString(R.string.permission_shizuku_desc))
+                            appendLine()
+                            appendLine("状态：已安装=$shizukuInstalled，服务运行=$shizukuRunning，已授权=$shizukuGranted")
+                            append("用途：仅用于输入时切换到 Operit 输入法并在完成后切回。")
+                        },
+                    icon = Icons.Default.AdminPanelSettings,
+                    color = Color(0xFF9C27B0),
+                    isGranted = shizukuRunning && shizukuGranted,
+                    action = {
+                        when {
+                            !shizukuInstalled -> ShizukuInstaller.installBundledShizuku(context)
+                            !shizukuRunning -> {
+                                context.startActivity(
+                                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                        data = Uri.parse("package:moe.shizuku.privileged.api")
+                                    }
+                                )
+                            }
+                            else -> {
+                                ShizukuAuthorizer.requestShizukuPermission { _ ->
+                                    scope.launch { refreshPermissions() }
+                                }
+                            }
                         }
                     }
-                }
-            ),
-            PermissionItem(
-                name = context.getString(R.string.permission_overlay),
-                description = context.getString(R.string.permission_overlay_desc),
-                icon = Icons.Default.Layers,
-                color = Color(0xFF4CAF50),
-                isGranted = Settings.canDrawOverlays(context),
-                action = {
-                    context.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION).apply {
-                        data = Uri.parse("package:${context.packageName}")
-                    })
-                }
-            ),
-            PermissionItem(
-                name = context.getString(R.string.permission_storage),
-                description = context.getString(R.string.permission_storage_desc),
-                icon = Icons.Default.Storage,
-                color = Color(0xFFFF9800),
-                isGranted = checkStoragePermission(context),
-                action = {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        context.startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
-                            data = Uri.parse("package:${context.packageName}")
-                        })
-                    } else {
-                        context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                ),
+                PermissionItem(
+                    name = "Operit 输入法",
+                    description =
+                        "用于 AutoGLM 的文本输入。需要先在系统设置里启用此输入法；AutoGLM 会在需要输入时通过 Shizuku 临时切换到该输入法，输入完成后自动切回原输入法。",
+                    icon = Icons.Default.Keyboard,
+                    color = Color(0xFF546E7A),
+                    isGranted = operitImeEnabled,
+                    action = { context.startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) }
+                ),
+                PermissionItem(
+                    name = context.getString(R.string.permission_overlay),
+                    description = context.getString(R.string.permission_overlay_desc),
+                    icon = Icons.Default.Layers,
+                    color = Color(0xFF4CAF50),
+                    isGranted = overlayEnabled,
+                    action = {
+                        context.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION).apply {
                             data = Uri.parse("package:${context.packageName}")
                         })
                     }
-                }
-            ),
-            PermissionItem(
-                name = context.getString(R.string.permission_notification),
-                description = context.getString(R.string.permission_notification_desc),
-                icon = Icons.Default.Notifications,
-                color = Color(0xFFE91E63),
-                isGranted = true, // Notification permission on Android 13+
-                action = {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        context.startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                            data = Uri.parse("package:${context.packageName}")
-                        })
+                ),
+                PermissionItem(
+                    name = context.getString(R.string.permission_storage),
+                    description = context.getString(R.string.permission_storage_desc),
+                    icon = Icons.Default.Storage,
+                    color = Color(0xFFFF9800),
+                    isGranted = storageEnabled,
+                    action = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            context.startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                                data = Uri.parse("package:${context.packageName}")
+                            })
+                        } else {
+                            context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:${context.packageName}")
+                            })
+                        }
                     }
-                }
+                ),
+                PermissionItem(
+                    name = context.getString(R.string.permission_notification),
+                    description = context.getString(R.string.permission_notification_desc),
+                    icon = Icons.Default.Notifications,
+                    color = Color(0xFFE91E63),
+                    isGranted = notificationEnabled,
+                    action = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            context.startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                            })
+                        }
+                    }
+                )
             )
-        )
+
+        grantedCount = permissions.count { it.isGranted }
     }
 
-    var grantedCount by remember { mutableStateOf(permissions.count { it.isGranted }) }
-    var expandedIndex by remember { mutableStateOf(-1) }
+    DisposableEffect(Unit) {
+        val listener = { scope.launch { refreshPermissions() } }
+        ShizukuAuthorizer.addStateChangeListener(listener)
+        onDispose { ShizukuAuthorizer.removeStateChangeListener(listener) }
+    }
 
     CustomScaffold { paddingValues ->
         LazyColumn(
@@ -233,10 +278,8 @@ fun AutoGlmPermissionScreen(
                     // Check Shizuku
                     OutlinedButton(
                         onClick = {
-                            try {
-                                context.startActivity(Intent("dev.rikka.shizuku.actionREQUEST_PERMISSION"))
-                            } catch (e: Exception) {
-                                // Shizuku not installed
+                            ShizukuAuthorizer.requestShizukuPermission { _ ->
+                                scope.launch { refreshPermissions() }
                             }
                         },
                         modifier = Modifier.weight(1f)
@@ -255,11 +298,11 @@ fun AutoGlmPermissionScreen(
         }
     }
 
-    // Check permissions periodically
     LaunchedEffect(Unit) {
+        refreshPermissions()
         while (true) {
-            kotlinx.coroutines.delay(2000)
-            grantedCount = permissions.count { it.isGranted }
+            delay(1500)
+            refreshPermissions()
         }
     }
 }
@@ -383,13 +426,21 @@ fun PermissionCard(
 
 private fun checkStoragePermission(context: Context): Boolean {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        context.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                android.content.pm.PackageManager.PERMISSION_GRANTED
+        Environment.isExternalStorageManager()
     } else {
-        context.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                android.content.pm.PackageManager.PERMISSION_GRANTED &&
-                context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                android.content.pm.PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED
+    }
+}
+
+private fun checkNotificationPermission(context: Context): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+    } else {
+        true
     }
 }
 

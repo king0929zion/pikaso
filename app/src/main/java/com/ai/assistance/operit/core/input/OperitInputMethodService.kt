@@ -41,7 +41,7 @@ class OperitInputMethodService : InputMethodService() {
         private var previousInputMethodId: String? = null
 
         fun getCurrentInputConnection(): InputConnection? {
-            return instance?.currentInputConnection
+            return instance?.activeInputConnection
         }
 
         fun getInstance(): OperitInputMethodService? = instance
@@ -122,7 +122,7 @@ class OperitInputMethodService : InputMethodService() {
         }
     }
 
-    private var currentInputConnection: InputConnection? = null
+    private var activeInputConnection: InputConnection? = null
     private var keyboardView: KeyboardView? = null
     private var keyboard: Keyboard? = null
     private var isInputActive = false
@@ -145,14 +145,14 @@ class OperitInputMethodService : InputMethodService() {
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         AppLogger.d(TAG, "onStartInputView: restarting=$restarting, package=${info.packageName}")
-        currentInputConnection = currentInputConnection
+        activeInputConnection = currentInputConnection
         isInputActive = true
     }
 
     override fun onFinishInput() {
         super.onFinishInput()
         AppLogger.d(TAG, "onFinishInput")
-        currentInputConnection = null
+        activeInputConnection = null
         isInputActive = false
     }
 
@@ -171,7 +171,7 @@ class OperitInputMethodService : InputMethodService() {
      * 提交文本到当前输入框
      */
     fun commitText(text: String): Boolean {
-        val ic = currentInputConnection ?: run {
+        val ic = activeInputConnection ?: run {
             AppLogger.w(TAG, "No input connection available")
             return false
         }
@@ -189,7 +189,7 @@ class OperitInputMethodService : InputMethodService() {
      * 提交多行文本
      */
     fun commitMultilineText(text: String): Boolean {
-        val ic = currentInputConnection ?: return false
+        val ic = activeInputConnection ?: return false
         return try {
             // 逐行提交，保留换行
             val lines = text.split("\n")
@@ -211,7 +211,7 @@ class OperitInputMethodService : InputMethodService() {
      * 清空当前输入框
      */
     fun clearText(): Boolean {
-        val ic = currentInputConnection ?: return false
+        val ic = activeInputConnection ?: return false
         return try {
             // 选中文本并删除
             val request = ExtractedTextRequest()
@@ -246,7 +246,7 @@ class OperitInputMethodService : InputMethodService() {
      * 获取当前输入框的文本
      */
     fun getCurrentText(): String? {
-        val ic = currentInputConnection ?: return null
+        val ic = activeInputConnection ?: return null
         return try {
             val request = ExtractedTextRequest()
             getExtractedText(ic, request)?.text?.toString()
@@ -260,7 +260,7 @@ class OperitInputMethodService : InputMethodService() {
      * 删除指定数量的字符
      */
     fun deleteCharacters(count: Int): Boolean {
-        val ic = currentInputConnection ?: return false
+        val ic = activeInputConnection ?: return false
         return try {
             repeat(count) {
                 ic.deleteSurroundingText(1, 0)
