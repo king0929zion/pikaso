@@ -151,7 +151,7 @@ class AutoGLMController(private val context: Context) {
         try {
             // 模拟执行步骤
             repeat(maxSteps) { step ->
-                if (!kotlinx.coroutines.coroutineContext.isActive) {
+                if (!currentCoroutineContext().isActive) {
                     addLog("执行被中断")
                     return ExecutionResult(success = false, error = "执行被中断")
                 }

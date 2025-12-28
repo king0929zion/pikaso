@@ -369,7 +369,7 @@ object InputMethodManager {
             !Shizuku.pingBinder() -> {
                 "Shizuku服务未运行。请先启动Shizuku应用并授予权限。"
             }
-            !Shizuku.isBinderAlive() -> {
+            !Shizuku.isBound() -> {
                 "Shizuku权限未授予。请在Shizuku中授权Operit使用Shizuku。"
             }
             else -> {
