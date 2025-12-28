@@ -55,6 +55,9 @@
     <!-- Voice Interaction Service permissions -->
     <uses-permission android:name="android.permission.BIND_VOICE_INTERACTION" />
 
+    <!-- Input Method permission -->
+    <uses-permission android:name="android.permission.BIND_INPUT_METHOD" />
+
     <!-- Workflow scheduling permissions -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -312,6 +315,30 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config"/>
         </service>
+
+        <!-- Operit Input Method Service -->
+        <service
+            android:name=".core.input.OperitInputMethodService"
+            android:permission="android.permission.BIND_INPUT_METHOD"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.view.InputMethod"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/input_method_config"/>
+        </service>
+
+        <!-- Input Method Receiver -->
+        <receiver
+            android:name=".core.input.InputMethodReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.ai.assistance.operit.INPUT_TEXT"/>
+                <action android:name="com.ai.assistance.operit.CLEAR_TEXT"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 
