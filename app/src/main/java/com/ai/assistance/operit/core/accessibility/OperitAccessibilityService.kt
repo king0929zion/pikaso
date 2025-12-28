@@ -100,25 +100,57 @@ class OperitAccessibilityService : AccessibilityService() {
             sb.append("</node>")
         }
 
-        // 执行点击
+        // 执行点击 - 优先使用手势，更可靠
         fun performClick(x: Int, y: Int): Boolean {
             val service = instance ?: return false
             return try {
-                val path = service.createPathForCoordinates(x, y)
-                if (path != null) {
-                    val result = path.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                    path.recycle()
-                    result
+                // 首先尝试直接点击节点
+                val rootNode = service.rootInActiveWindow
+                if (rootNode != null) {
+                    val node = findNodeAtCoordinates(rootNode, x, y)
+                    if (node != null && node.isClickable) {
+                        val result = node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                        node.recycle()
+                        rootNode.recycle()
+                        if (result) {
+                            AppLogger.d(TAG, "Direct click succeeded at ($x, $y)")
+                            return true
+                        }
+                    }
+                    rootNode.recycle()
+                }
+
+                // 使用手势执行点击
+                val gestureCompleted = service.dispatchGesture(
+                    createClickGesture(x, y),
+                    null,
+                    null
+                )
+                if (gestureCompleted) {
+                    AppLogger.d(TAG, "Gesture click succeeded at ($x, $y)")
+                    true
                 } else {
-                    // 使用手势执行点击
-                    val stroke = GestureDescription.StrokeDescription(
-                        createClickPath(x, y), 0, 100
-                    )
-                    val gesture = GestureDescription.Builder().addStroke(stroke).build()
-                    service.dispatchGesture(gesture, null, null)
+                    AppLogger.e(TAG, "Gesture click failed at ($x, $y)")
+                    false
                 }
             } catch (e: Exception) {
                 AppLogger.e(TAG, "Failed to perform click at ($x, $y)", e)
+                false
+            }
+        }
+
+        // 执行双击
+        fun performDoubleTap(x: Int, y: Int): Boolean {
+            val service = instance ?: return false
+            return try {
+                // 双击间隔 100ms
+                val gesture = createClickGesture(x, y)
+                val result1 = service.dispatchGesture(gesture, null, null)
+                Thread.sleep(100)
+                val result2 = service.dispatchGesture(gesture, null, null)
+                result1 && result2
+            } catch (e: Exception) {
+                AppLogger.e(TAG, "Failed to perform double tap at ($x, $y)", e)
                 false
             }
         }
@@ -127,38 +159,70 @@ class OperitAccessibilityService : AccessibilityService() {
         fun performLongPress(x: Int, y: Int): Boolean {
             val service = instance ?: return false
             return try {
-                val path = service.createPathForCoordinates(x, y)
-                if (path != null) {
-                    val result = path.performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK)
-                    path.recycle()
-                    result
-                } else {
-                    // 使用手势执行长按
-                    val stroke = GestureDescription.StrokeDescription(
-                        createClickPath(x, y), 0, 500
-                    )
-                    val gesture = GestureDescription.Builder().addStroke(stroke).build()
-                    service.dispatchGesture(gesture, null, null)
+                // 首先尝试直接长按节点
+                val rootNode = service.rootInActiveWindow
+                if (rootNode != null) {
+                    val node = findNodeAtCoordinates(rootNode, x, y)
+                    if (node != null && node.isLongClickable) {
+                        val result = node.performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK)
+                        node.recycle()
+                        rootNode.recycle()
+                        if (result) {
+                            AppLogger.d(TAG, "Direct long press succeeded at ($x, $y)")
+                            return true
+                        }
+                    }
+                    rootNode.recycle()
                 }
+
+                // 使用手势执行长按 (500ms)
+                val gesture = createLongPressGesture(x, y)
+                val result = service.dispatchGesture(gesture, null, null)
+                if (result) {
+                    AppLogger.d(TAG, "Gesture long press succeeded at ($x, $y)")
+                }
+                result
             } catch (e: Exception) {
                 AppLogger.e(TAG, "Failed to perform long press at ($x, $y)", e)
                 false
             }
         }
 
-        // 执行滑动
+        // 执行滑动 - 支持多种滑动模式
         fun performSwipe(startX: Int, startY: Int, endX: Int, endY: Int, duration: Long): Boolean {
             val service = instance ?: return false
             return try {
-                val stroke = GestureDescription.StrokeDescription(
-                    createSwipePath(startX, startY, endX, endY),
-                    0,
-                    duration
-                )
-                val gesture = GestureDescription.Builder().addStroke(stroke).build()
-                service.dispatchGesture(gesture, null, null)
+                // 确保坐标在屏幕范围内
+                val displayMetrics = service.resources.displayMetrics
+                val safeStartX = startX.coerceIn(0, displayMetrics.widthPixels)
+                val safeStartY = startY.coerceIn(0, displayMetrics.heightPixels)
+                val safeEndX = endX.coerceIn(0, displayMetrics.widthPixels)
+                val safeEndY = endY.coerceIn(0, displayMetrics.heightPixels)
+
+                val gesture = createSwipeGesture(safeStartX, safeStartY, safeEndX, safeEndY, duration)
+                val result = service.dispatchGesture(gesture, null, null)
+
+                if (result) {
+                    AppLogger.d(TAG, "Swipe succeeded from ($safeStartX, $safeStartY) to ($safeEndX, $safeEndY)")
+                } else {
+                    AppLogger.e(TAG, "Swipe failed from ($startX, $startY) to ($endX, $endY)")
+                }
+                result
             } catch (e: Exception) {
                 AppLogger.e(TAG, "Failed to perform swipe from ($startX, $startY) to ($endX, $endY)", e)
+                false
+            }
+        }
+
+        // 执行滑动手势序列（用于复杂手势）
+        fun performGestureSequence(strokes: List<GestureDescription.StrokeDescription>): Boolean {
+            val service = instance ?: return false
+            return try {
+                val builder = GestureDescription.Builder()
+                strokes.forEach { builder.addStroke(it) }
+                service.dispatchGesture(builder.build(), null, null)
+            } catch (e: Exception) {
+                AppLogger.e(TAG, "Failed to perform gesture sequence", e)
                 false
             }
         }
@@ -339,6 +403,33 @@ class OperitAccessibilityService : AccessibilityService() {
             path.moveTo(x1.toFloat(), y1.toFloat())
             path.lineTo(x2.toFloat(), y2.toFloat())
             return path
+        }
+
+        // 创建点击手势 - 100ms 持续时间
+        private fun createClickGesture(x: Int, y: Int): GestureDescription {
+            val path = android.graphics.Path()
+            path.moveTo(x.toFloat(), y.toFloat())
+            val stroke = GestureDescription.StrokeDescription(path, 0, 100)
+            return GestureDescription.Builder().addStroke(stroke).build()
+        }
+
+        // 创建长按手势 - 500ms 持续时间
+        private fun createLongPressGesture(x: Int, y: Int): GestureDescription {
+            val path = android.graphics.Path()
+            path.moveTo(x.toFloat(), y.toFloat())
+            val stroke = GestureDescription.StrokeDescription(path, 0, 500)
+            return GestureDescription.Builder().addStroke(stroke).build()
+        }
+
+        // 创建滑动手势
+        private fun createSwipeGesture(
+            startX: Int, startY: Int, endX: Int, endY: Int, durationMs: Long
+        ): GestureDescription {
+            val path = android.graphics.Path()
+            path.moveTo(startX.toFloat(), startY.toFloat())
+            path.lineTo(endX.toFloat(), endY.toFloat())
+            val stroke = GestureDescription.StrokeDescription(path, 0, durationMs)
+            return GestureDescription.Builder().addStroke(stroke).build()
         }
     }
 

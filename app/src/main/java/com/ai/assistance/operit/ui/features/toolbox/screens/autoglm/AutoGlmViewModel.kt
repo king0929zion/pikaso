@@ -37,11 +37,24 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
     private val _uiState = MutableStateFlow(AutoGlmUiState())
     val uiState: StateFlow<AutoGlmUiState> = _uiState.asStateFlow()
 
+    fun setTask(task: String) {
+        _uiState.value = _uiState.value.copy(task = task)
+    }
+
+    fun clearTask() {
+        _uiState.value = _uiState.value.copy(task = "")
+    }
+
     fun executeTask(task: String) {
         if (task.isBlank()) return
 
         executionJob = viewModelScope.launch {
-            _uiState.value = AutoGlmUiState(isLoading = true, log = "Initializing agent...")
+            _uiState.value = AutoGlmUiState(
+                isLoading = true,
+                task = task,
+                status = context.getString(R.string.initializing),
+                log = "Initializing agent..."
+            )
 
             try {
                 val uiService = EnhancedAIService.getAIServiceForFunction(context, com.ai.assistance.operit.data.model.FunctionType.UI_CONTROLLER)
@@ -229,5 +242,9 @@ class AutoGlmViewModel(private val context: Context) : ViewModel() {
 
 data class AutoGlmUiState(
     val isLoading: Boolean = false,
-    val log: String = "Ready to execute task."
+    val task: String = "",
+    val status: String? = null,
+    val progress: Int = 0,
+    val log: String = "Ready to execute task.",
+    val isLogExpanded: Boolean = false
 )
