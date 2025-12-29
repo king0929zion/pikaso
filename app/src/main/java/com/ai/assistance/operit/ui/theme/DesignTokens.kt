@@ -75,11 +75,11 @@ object AppSizes {
     val avatarExtraLarge: Dp = 72.dp
 
     // Card/Container sizes
-    val cornerRadiusSmall: Dp = 8.dp
-    val cornerRadiusMedium: Dp = 12.dp
-    val cornerRadiusLarge: Dp = 16.dp
-    val cornerRadiusExtraLarge: Dp = 24.dp
-    val cornerRadiusFull: Dp = 50.dp  // Fully rounded (circular)
+    val cornerRadiusSmall: Dp = 12.dp
+    val cornerRadiusMedium: Dp = 16.dp
+    val cornerRadiusLarge: Dp = 28.dp
+    val cornerRadiusExtraLarge: Dp = 32.dp
+    val cornerRadiusFull: Dp = 999.dp  // Fully rounded (circular)
 
     // Stroke widths
     val strokeThin: Dp = 1.dp

@@ -1,40 +1,31 @@
 package com.ai.assistance.operit.ui.features.toolbox.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ai.assistance.operit.R
-import com.ai.assistance.operit.ui.components.PageContainer
-import com.ai.assistance.operit.ui.theme.AppSizes
-import com.ai.assistance.operit.ui.theme.AppSpacing
 
-data class Tool(
-    val name: String,
-    val icon: ImageVector,
-    val description: String,
-    val onClick: () -> Unit
-)
-
-/**
- * Simplified Toolbox Screen - 只保留核心工具
- */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToolboxScreen(
     navController: NavController,
@@ -42,142 +33,183 @@ fun ToolboxScreen(
     onHtmlPackagerSelected: () -> Unit,
     onAutoGlmOneClickSelected: () -> Unit,
     onAutoGlmToolSelected: () -> Unit,
-    onToolPermissionsSelected: () -> Unit = {}
+    onToolPermissionsSelected: () -> Unit = {},
+    onNavigateToChat: () -> Unit = {}
 ) {
-    val context = LocalContext.current
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+                // Bottom padding to avoid overlap with bottom nav bar
+                .padding(bottom = 100.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            // Header: Operit (h1)
+            Text(
+                text = "Operit",
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Normal,
+                    letterSpacing = (-0.5).sp
+                ),
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 16.dp, bottom = 24.dp)
+            )
 
-    val tools = listOf(
-        Tool(
-            name = context.getString(R.string.tool_process_limit_remover),
-            icon = Icons.Default.LockOpen,
-            description = context.getString(R.string.tool_process_limit_remover_desc),
-            onClick = onProcessLimitRemoverSelected
-        ),
-        Tool(
-            name = context.getString(R.string.tool_html_packager),
-            icon = Icons.Default.Html,
-            description = context.getString(R.string.tool_html_packager_desc),
-            onClick = onHtmlPackagerSelected
-        ),
-        Tool(
-            name = context.getString(R.string.tool_autoglm_one_click),
-            icon = Icons.Default.AutoMode,
-            description = context.getString(R.string.tool_autoglm_one_click_desc),
-            onClick = onAutoGlmOneClickSelected
-        ),
-        Tool(
-            name = context.getString(R.string.tool_autoglm_tool),
-            icon = Icons.Default.Settings,
-            description = context.getString(R.string.tool_autoglm_tool_desc),
-            onClick = onAutoGlmToolSelected
-        )
-    )
-
-    PageContainer {
-        // Header
-        OutlinedCard(shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)) {
-            Row(
+            // Subheader: 工具箱 (h2)
+            Text(
+                text = stringResource(R.string.toolbox),
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
+                ),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(AppSpacing.cardPadding),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = context.getString(R.string.toolbox),
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Spacer(modifier = Modifier.height(AppSpacing.nano))
-                    Text(
-                        text = context.getString(R.string.toolbox_description),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                    .padding(start = 8.dp)
+                    .padding(bottom = 12.dp)
+            )
 
-                Spacer(modifier = Modifier.width(AppSpacing.medium))
+            // 1. AutoGLM 执行器 (Primary)
+            HomeCard(
+                title = stringResource(R.string.tool_autoglm_tool),
+                description = stringResource(R.string.tool_autoglm_tool_desc),
+                icon = Icons.Rounded.SmartToy,
+                onClick = onAutoGlmToolSelected,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                iconBackgroundColor = Color.White.copy(alpha = 0.4f),
+                showArrow = true
+            )
 
-                FilledTonalIconButton(onClick = onToolPermissionsSelected) {
-                    Icon(
-                        imageVector = Icons.Default.Security,
-                        contentDescription = context.getString(R.string.permissions),
-                        modifier = Modifier.size(AppSizes.iconNormal)
-                    )
-                }
-            }
+            // 2. 一键配置 (Accent)
+            HomeCard(
+                title = stringResource(R.string.tool_autoglm_one_click),
+                description = stringResource(R.string.tool_autoglm_one_click_desc),
+                icon = Icons.Rounded.Tune,
+                onClick = onAutoGlmOneClickSelected,
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                iconBackgroundColor = Color.White.copy(alpha = 0.4f)
+            )
+
+            // 3. 解除进程限制 (Default)
+            HomeCard(
+                title = stringResource(R.string.tool_process_limit_remover),
+                description = stringResource(R.string.tool_process_limit_remover_desc),
+                icon = Icons.Rounded.NoEncryption,
+                onClick = onProcessLimitRemoverSelected,
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                iconBackgroundColor = MaterialTheme.colorScheme.background
+            )
+
+            // 4. 网页转 APK (Default)
+            HomeCard(
+                title = stringResource(R.string.tool_html_packager),
+                description = stringResource(R.string.tool_html_packager_desc),
+                icon = Icons.Rounded.Android,
+                onClick = onHtmlPackagerSelected,
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                iconBackgroundColor = MaterialTheme.colorScheme.background
+            )
         }
 
-        Spacer(modifier = Modifier.height(AppSpacing.small))
-
-        // Tools grid
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 150.dp),
-            contentPadding = PaddingValues(top = AppSpacing.medium),
-            horizontalArrangement = Arrangement.spacedBy(AppSpacing.medium),
-            verticalArrangement = Arrangement.spacedBy(AppSpacing.medium),
-            modifier = Modifier.weight(1f)
+        // FAB
+        FloatingActionButton(
+            onClick = onNavigateToChat,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 100.dp, end = 16.dp)
+                .size(56.dp)
         ) {
-            items(tools) { tool ->
-                ToolCard(tool = tool)
-            }
+            Icon(Icons.Rounded.Chat, contentDescription = "Chat")
         }
     }
 }
 
 @Composable
-fun ToolCard(tool: Tool) {
-    OutlinedCard(
-        onClick = tool.onClick,
+fun HomeCard(
+    title: String,
+    description: String,
+    icon: ImageVector,
+    onClick: () -> Unit,
+    containerColor: Color,
+    contentColor: Color,
+    iconBackgroundColor: Color,
+    showArrow: Boolean = false
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(targetValue = if (isPressed) 0.98f else 1f, label = "scale")
+
+    Card(
+        onClick = onClick,
+        colors = CardDefaults.cardColors(
+            containerColor = containerColor,
+            contentColor = contentColor
+        ),
+        shape = RoundedCornerShape(28.dp),
+        interactionSource = interactionSource,
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 112.dp),
-        shape = RoundedCornerShape(AppSizes.cornerRadiusLarge)
+            .padding(bottom = 12.dp)
+            .scale(scale)
     ) {
-        Row(
-            modifier = Modifier
-                .padding(AppSpacing.cardPadding),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier.padding(20.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
             ) {
-                Icon(
-                    imageVector = tool.icon,
-                    contentDescription = tool.name,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(AppSizes.iconNormal)
-                )
+                // Icon Box
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .background(iconBackgroundColor, RoundedCornerShape(16.dp))
+                        .wrapContentSize(Alignment.Center)
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = contentColor
+                    )
+                }
+
+                if (showArrow) {
+                    Icon(
+                        imageVector = Icons.Rounded.ArrowForward,
+                        contentDescription = null,
+                        modifier = Modifier.padding(top = 12.dp)
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.width(AppSpacing.medium))
+            Spacer(modifier = Modifier.height(12.dp))
 
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = tool.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 1
-                )
-                Spacer(modifier = Modifier.height(AppSpacing.nano))
-                Text(
-                    text = tool.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 3
-                )
-            }
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 20.sp
+                ),
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
 
-            Icon(
-                imageVector = Icons.Default.ChevronRight,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(AppSizes.iconMedium)
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp // 1.4 * 14
+                ),
+                color = contentColor.copy(alpha = 0.8f)
             )
         }
     }

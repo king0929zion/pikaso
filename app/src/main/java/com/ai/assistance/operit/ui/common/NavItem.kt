@@ -1,6 +1,8 @@
 package com.ai.assistance.operit.ui.common
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Build
@@ -23,7 +25,7 @@ import com.ai.assistance.operit.R
 
 // 应用导航项
 sealed class NavItem(val route: String, val titleResId: Int, val icon: ImageVector) {
-        object AiChat : NavItem("ai_chat", R.string.nav_ai_chat, Icons.Default.Email)
+        object AiChat : NavItem("ai_chat", R.string.nav_ai_chat, Icons.Default.ChatBubble)
         object ShizukuCommands :
                 NavItem("shizuku_commands", R.string.shizuku_commands, Icons.Default.Build)
         object AssistantConfig :
@@ -54,7 +56,7 @@ sealed class NavItem(val route: String, val titleResId: Int, val icon: ImageVect
                 NavItem("memory_base", R.string.nav_memory_base, Icons.Default.History)
         object EventCampaign :
                 NavItem("event_campaign", R.string.nav_event_campaign, Icons.Default.Description)
-        object Toolbox : NavItem("toolbox", R.string.toolbox, Icons.Default.Apps)
+        object Toolbox : NavItem("toolbox", R.string.nav_home, Icons.Default.Home)
         object About : NavItem("about", R.string.nav_about, Icons.Default.Info)
         object Mcp : NavItem("mcp", R.string.mcp, Icons.Default.Cloud)
         object UpdateHistory : NavItem("update_history", R.string.update_history, Icons.Default.History)

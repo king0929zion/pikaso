@@ -283,7 +283,11 @@ sealed class Screen(
                     onHtmlPackagerSelected = { navigateTo(HtmlPackager) },
                     onAutoGlmOneClickSelected = { navigateTo(AutoGlmOneClick) },
                     onAutoGlmToolSelected = { navigateTo(AutoGlmTool) },
-                    onToolPermissionsSelected = { navigateTo(ToolPermissionsDetail) }
+                    onToolPermissionsSelected = { navigateTo(ToolPermissionsDetail) },
+                    onNavigateToChat = {
+                        navigateTo(AiChat)
+                        updateNavItem(NavItem.AiChat)
+                    }
             )
         }
     }

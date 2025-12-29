@@ -20,6 +20,7 @@
     <string name="nav_assistant_config">助手配置</string>
     <string name="nav_terminal">终端</string>
     <string name="nav_toolbox">工具箱</string>
+    <string name="nav_home">主页</string>
     <string name="nav_item_agreement">用户协议</string>
     <string name="nav_help">使用手册</string>
     <string name="nav_workflow">工作流</string>
