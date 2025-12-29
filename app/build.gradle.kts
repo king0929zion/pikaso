@@ -44,7 +44,7 @@ android {
         applicationId = "com.ai.assistance.pikaso"
         minSdk = 26
         targetSdk = 34
-        versionCode = 74
+        versionCode = 75
         versionName = "1.12.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

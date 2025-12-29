@@ -30,7 +30,7 @@
     <color name="md_sys_color_on_error_container">#410002</color>
 
     <!-- Inverse colors -->
-    <color name="md_sys_color_inverse_surface">#F0EEDS</color>
+    <color name="md_sys_color_inverse_surface">#F0EED8</color>
     <color name="md_sys_color_inverse_on_surface">#1C1B1B</color>
     <color name="md_sys_color_inverse_primary">#E8DCC8</color>
 
