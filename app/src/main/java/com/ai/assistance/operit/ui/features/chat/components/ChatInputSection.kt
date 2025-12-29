@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ai.assistance.operit.R
@@ -198,8 +199,8 @@ fun ChatInputSection(
                     }
 
                     OutlinedTextField(
-                        value = userMessage.text,
-                        onValueChange = { onUserMessageChange(TextFieldValue(it)) },
+                        value = userMessage,
+                        onValueChange = onUserMessageChange,
                         placeholder = {
                             Text(
                                 if (isWorkspaceOpen)
@@ -232,13 +233,6 @@ fun ChatInputSection(
                                 disabledContainerColor = Color.Transparent
                             ),
                         shape = RoundedCornerShape(0.dp),
-                        contentPadding =
-                            PaddingValues(
-                                start = 8.dp,
-                                end = 8.dp,
-                                top = 4.dp,
-                                bottom = 4.dp
-                            ),
                         trailingIcon = {
                             if (userMessage.text.contains("\n")) {
                                 IconButton(onClick = { showFullscreenInput = true }) {
