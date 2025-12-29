@@ -1,15 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Operit" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Customize your theme here. -->
-        
+
+    <!-- Base application theme using Material 3 -->
+    <style name="Theme.Operit" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/md_sys_color_primary</item>
+        <item name="colorOnPrimary">@color/md_sys_color_on_primary</item>
+        <item name="colorPrimaryContainer">@color/md_sys_color_secondary_container</item>
+        <item name="colorOnPrimaryContainer">@color/md_sys_color_on_secondary_container</item>
+
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/md_sys_color_primary</item>
+        <item name="colorOnSecondary">@color/md_sys_color_on_primary</item>
+        <item name="colorSecondaryContainer">@color/md_sys_color_tertiary_container</item>
+        <item name="colorOnSecondaryContainer">@color/md_sys_color_on_tertiary_container</item>
+
+        <!-- Tertiary color -->
+        <item name="colorTertiary">@color/md_sys_color_primary</item>
+        <item name="colorOnTertiary">@color/md_sys_color_on_primary</item>
+        <item name="colorTertiaryContainer">@color/md_sys_color_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/md_sys_color_on_tertiary_container</item>
+
+        <!-- Error color -->
+        <item name="colorError">@color/md_sys_color_error</item>
+        <item name="colorOnError">@color/md_sys_color_on_error</item>
+        <item name="colorErrorContainer">@color/md_sys_color_error_container</item>
+        <item name="colorOnErrorContainer">@color/md_sys_color_on_error_container</item>
+
+        <!-- Background color -->
+        <item name="android:colorBackground">@color/md_sys_color_background</item>
+        <item name="colorOnBackground">@color/md_sys_color_on_background</item>
+
+        <!-- Surface color -->
+        <item name="colorSurface">@color/md_sys_color_surface</item>
+        <item name="colorOnSurface">@color/md_sys_color_on_background</item>
+        <item name="colorSurfaceVariant">@color/md_sys_color_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/md_sys_color_on_surface_variant</item>
+
+        <!-- Outline color -->
+        <item name="colorOutline">@color/md_sys_color_outline</item>
+        <item name="colorOutlineVariant">@color/md_sys_color_outline_variant</item>
+
+        <!-- Inverse colors -->
+        <item name="colorSurfaceInverse">@color/md_sys_color_inverse_surface</item>
+        <item name="colorOnSurfaceInverse">@color/md_sys_color_inverse_on_surface</item>
+        <item name="colorPrimaryInverse">@color/md_sys_color_inverse_primary</item>
+
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">@color/md_sys_color_background</item>
+        <item name="android:navigationBarColor">@color/md_sys_color_background</item>
+
+        <!-- Window settings -->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
+
+    <!-- Splash screen theme -->
+    <style name="Theme.Operit.Splash" parent="Theme.Operit">
+        <item name="android:windowBackground">@color/md_sys_color_background</item>
+    </style>
+
 </resources>

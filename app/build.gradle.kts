@@ -26,7 +26,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.ai.assistance.operit"
+    namespace = "com.ai.assistance.pikaso"
     compileSdk = 34
 
     signingConfigs {
@@ -41,11 +41,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.ai.assistance.operit"
+        applicationId = "com.ai.assistance.pikaso"
         minSdk = 26
         targetSdk = 34
-        versionCode = 72
-        versionName = "1.11.9"
+        versionCode = 73
+        versionName = "1.12.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

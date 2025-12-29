@@ -60,87 +60,99 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
 /**
- * Anthropic-inspired Dark Color Scheme
+ * Material You-inspired Color Palette - Light Theme
  *
- * Uses warm, muted tones with the primary orange accent
- * for a human-centric, approachable feel
+ * Uses warm, light backgrounds (#F4F3EF) with muted accents
+ * for a clean, minimalist aesthetic inspired by Anthropic's design
  */
-private val DarkColorScheme = darkColorScheme(
-        primary = AnthropicOrange,
-        onPrimary = Color.White,
-        primaryContainer = Color(0xFF8c4a35),
-        onPrimaryContainer = Color(0xFFffe8e0),
+private val LightColorScheme = lightColorScheme(
+    primary = Color(0xFF2D2D2D),
+    onPrimary = Color(0xFFFFFFFF),
+    primaryContainer = Color(0xFFDCC8C0),
+    onPrimaryContainer = Color(0xFF3E2620),
 
-        secondary = AnthropicBlue,
-        onSecondary = Color.White,
-        secondaryContainer = Color(0xFF4a6a8c),
-        onSecondaryContainer = Color(0xFFdce8f5),
+    secondary = Color(0xFF2D2D2D),
+    onSecondary = Color(0xFFFFFFFF),
+    secondaryContainer = Color(0xFFC4D0C5),
+    onSecondaryContainer = Color(0xFF2A352B),
 
-        tertiary = AnthropicGreen,
-        onTertiary = Color.White,
-        tertiaryContainer = Color(0xFF4a5c35),
-        onTertiaryContainer = Color(0xFFe8ecd9),
+    tertiary = Color(0xFF2D2D2D),
+    onTertiary = Color(0xFFFFFFFF),
+    tertiaryContainer = Color(0xFFDCC8C0),
+    onTertiaryContainer = Color(0xFF3E2620),
 
-        error = Color(0xFFe68c8c),
-        onError = Color.White,
-        errorContainer = Color(0xFF8c3535),
-        onErrorContainer = Color(0xFFfadddd),
+    error = Color(0xFFBA1A1A),
+    onError = Color(0xFFFFFFFF),
+    errorContainer = Color(0xFFFFDAD6),
+    onErrorContainer = Color(0xFF410002),
 
-        background = AnthropicDark,
-        onBackground = AnthropicLightGray,
+    background = Color(0xFFF4F3EF),
+    onBackground = Color(0xFF1C1C1C),
 
-        surface = AnthropicElevatedDark,
-        onSurface = AnthropicLightGray,
+    surface = Color(0xFFF4F3EF),
+    onSurface = Color(0xFF1C1C1C),
 
-        surfaceVariant = Color(0xFF3a3a36),
-        onSurfaceVariant = AnthropicMidGray,
+    surfaceVariant = Color(0xFFE8E6DF),
+    onSurfaceVariant = Color(0xFF484644),
 
-        outline = AnthropicMidGray,
-        outlineVariant = Color(0xFF3a3a36),
+    outline = Color(0xFF787674),
+    outlineVariant = Color(0xFFCAC5C0),
 
-        scrim = AppColors.Scrim
+    inverseSurface = Color(0xFFF0EEDS),
+    inverseOnSurface = Color(0xFF1C1B1B),
+    inversePrimary = Color(0xFFE8DCC8),
+
+    surfaceTint = Color(0xFF2D2D2D),
+
+    scrim = Color(0xFF000000)
 )
 
 /**
- * Anthropic-inspired Light Color Scheme
+ * Material You-inspired Color Palette - Dark Theme
  *
- * Uses warm, light backgrounds with muted accents
- * for a clean, minimalist aesthetic
+ * Uses warm, dark backgrounds (#1C1C1C) with muted accents
+ * for a human-centric, approachable feel
  */
-private val LightColorScheme = lightColorScheme(
-        primary = AnthropicOrange,
-        onPrimary = Color.White,
-        primaryContainer = Color(0xFFffe8e0),
-        onPrimaryContainer = Color(0xFF8c4a35),
+private val DarkColorScheme = darkColorScheme(
+    primary = Color(0xFFE8DCC8),
+    onPrimary = Color(0xFF1C1C1C),
+    primaryContainer = Color(0xFF5C4033),
+    onPrimaryContainer = Color(0xFFFFDCC8),
 
-        secondary = AnthropicBlue,
-        onSecondary = Color.White,
-        secondaryContainer = Color(0xFFdce8f5),
-        onSecondaryContainer = Color(0xFF4a6a8c),
+    secondary = Color(0xFFE8DCC8),
+    onSecondary = Color(0xFF1C1C1C),
+    secondaryContainer = Color(0xFF3D4A3A),
+    onSecondaryContainer = Color(0xFFD0E8C8),
 
-        tertiary = AnthropicGreen,
-        onTertiary = Color.White,
-        tertiaryContainer = Color(0xFFe8ecd9),
-        onTertiaryContainer = Color(0xFF4a5c35),
+    tertiary = Color(0xFFE8DCC8),
+    onTertiary = Color(0xFF1C1C1C),
+    tertiaryContainer = Color(0xFF4A5048),
+    onTertiaryContainer = Color(0xFFC4D0C5),
 
-        error = Color(0xFFcc5c5c),
-        onError = Color.White,
-        errorContainer = Color(0xFFfadddd),
-        onErrorContainer = Color(0xFF8c3535),
+    error = Color(0xFFFFB4AB),
+    onError = Color(0xFF690005),
+    errorContainer = Color(0xFF93000A),
+    onErrorContainer = Color(0xFFFFDAD6),
 
-        background = AnthropicLight,
-        onBackground = AnthropicDark,
+    background = Color(0xFF1C1C1C),
+    onBackground = Color(0xFFE6E3DB),
 
-        surface = AnthropicSurfaceLight,
-        onSurface = AnthropicDark,
+    surface = Color(0xFF1C1C1C),
+    onSurface = Color(0xFFE6E3DB),
 
-        surfaceVariant = Color(0xFFe8e6dc),
-        onSurfaceVariant = AnthropicMidGray,
+    surfaceVariant = Color(0xFF3A3A36),
+    onSurfaceVariant = Color(0xFFCAC5C0),
 
-        outline = AnthropicMidGray,
-        outlineVariant = Color(0xFFe0ded5),
+    outline = Color(0xFF948F84),
+    outlineVariant = Color(0xFF3A3A36),
 
-        scrim = AppColors.Scrim
+    inverseSurface = Color(0xFFE6E3DB),
+    inverseOnSurface = Color(0xFF1C1C1C),
+    inversePrimary = Color(0xFF5C4033),
+
+    surfaceTint = Color(0xFFE8DCC8),
+
+    scrim = Color(0xFF000000)
 )
 
 
@@ -221,7 +233,7 @@ fun OperitTheme(content: @Composable () -> Unit) {
             }
 
     // Dynamic color is available on Android 12+
-    val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !useCustomColors
 
     // 基础主题色调
     var colorScheme =
@@ -234,7 +246,7 @@ fun OperitTheme(content: @Composable () -> Unit) {
                 else -> LightColorScheme
             }
 
-    // 应用自定义颜色和文本颜色
+    // 应用自定义颜色
     if (useCustomColors) {
         customPrimaryColor?.let { primaryArgb ->
             val primary = Color(primaryArgb)
@@ -255,7 +267,7 @@ fun OperitTheme(content: @Composable () -> Unit) {
             val insetsController = window.decorView.let { decorView ->
                 androidx.core.view.WindowCompat.getInsetsController(window, decorView)
             }
-            
+
             // 始终保持沉浸式模式，让Compose处理状态栏背景
             WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -263,12 +275,12 @@ fun OperitTheme(content: @Composable () -> Unit) {
             if (statusBarHidden) {
                 // 隐藏状态栏
                 insetsController?.hide(WindowInsetsCompat.Type.statusBars())
-                insetsController?.systemBarsBehavior = 
+                insetsController?.systemBarsBehavior =
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             } else {
                 // 显示状态栏
                 insetsController?.show(WindowInsetsCompat.Type.statusBars())
-                
+
                 // 状态栏颜色和图标颜色控制
                 val statusBarColor = when {
                     statusBarTransparent -> Color.Transparent.toArgb()
@@ -283,7 +295,7 @@ fun OperitTheme(content: @Composable () -> Unit) {
                 // isAppearanceLightStatusBars = false 表示图标为浅色（适用于深色背景）
                 insetsController?.isAppearanceLightStatusBars = !isColorLight(Color(statusBarColor))
             }
-            
+
             // 设置导航栏颜色（底部小白条所在的区域）
             // 在有背景图片时，让导航栏透明
             if (useBackgroundImage && backgroundImageUri != null) {
@@ -302,8 +314,6 @@ fun OperitTheme(content: @Composable () -> Unit) {
                 }
                 window.navigationBarColor = colorScheme.background.toArgb()
                 // 根据导航栏背景色动态设置导航栏图标颜色
-                // isAppearanceLightNavigationBars = true 表示图标为深色（适用于浅色背景）
-                // isAppearanceLightNavigationBars = false 表示图标为浅色（适用于深色背景）
                 insetsController?.isAppearanceLightNavigationBars = !isColorLight(colorScheme.background)
             }
         }
@@ -373,16 +383,16 @@ fun OperitTheme(content: @Composable () -> Unit) {
             }
 
     // 释放ExoPlayer资源
-    DisposableEffect(key1 = Unit) { 
-        onDispose { 
+    DisposableEffect(key1 = Unit) {
+        onDispose {
             try {
                 exoPlayer?.stop()
                 exoPlayer?.clearMediaItems()
-                exoPlayer?.release() 
+                exoPlayer?.release()
             } catch (e: Exception) {
                 AppLogger.e("OperitTheme", "ExoPlayer释放错误", e)
             }
-        } 
+        }
     }
 
     // 监听应用生命周期，控制视频播放
@@ -414,7 +424,7 @@ fun OperitTheme(content: @Composable () -> Unit) {
                 modifier =
                         Modifier.fillMaxSize()
                                 .background(
-                                        if (darkTheme) Color.Black else Color.White
+                                        if (darkTheme) Color(0xFF1C1C1C) else Color(0xFFF4F3EF)
                                 ) // Solid barrier background
         )
 
@@ -432,8 +442,8 @@ fun OperitTheme(content: @Composable () -> Unit) {
                                     model = uri,
                                     error =
                                             rememberAsyncImagePainter(
-                                                    if (darkTheme) Color.Black
-                                                    else Color.White // Use solid colors for
+                                                    if (darkTheme) Color(0xFF1C1C1C)
+                                                    else Color(0xFFF4F3EF) // Use solid colors for
                                                     // error fallback
                                                     )
                             )
@@ -602,9 +612,9 @@ private fun generateLightColorScheme(
             secondaryContainer = secondaryContainer,
             onSecondaryContainer = onSecondaryContainer,
         // Ensure other colors are consistent with a light theme
-        onSurface = Color.Black,
-        onSurfaceVariant = Color.Black.copy(alpha = 0.7f),
-        onBackground = Color.Black
+        onSurface = Color(0xFF1C1C1C),
+        onSurfaceVariant = Color(0xFF484644),
+        onBackground = Color(0xFF1C1C1C)
     )
 }
 
@@ -644,9 +654,9 @@ private fun generateDarkColorScheme(
             secondaryContainer = secondaryContainer,
             onSecondaryContainer = onSecondaryContainer,
         // Ensure other colors are consistent with a dark theme
-        onSurface = Color.White,
-        onSurfaceVariant = Color.White.copy(alpha = 0.7f),
-        onBackground = Color.White
+        onSurface = Color(0xFFE6E3DB),
+        onSurfaceVariant = Color(0xFFCAC5C0),
+        onBackground = Color(0xFFE6E3DB)
     )
 }
 

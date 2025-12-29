@@ -1,5 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Material You-inspired Color Palette - Anthropic Design -->
+
+    <!-- Primary colors -->
+    <color name="md_sys_color_background">#F4F3EF</color>
+    <color name="md_sys_color_on_background">#1C1C1C</color>
+    <color name="md_sys_color_surface">#F4F3EF</color>
+    <color name="md_sys_color_surface_variant">#E8E6DF</color>
+    <color name="md_sys_color_on_surface_variant">#484644</color>
+    <color name="md_sys_color_primary">#2D2D2D</color>
+    <color name="md_sys_color_on_primary">#FFFFFF</color>
+
+    <!-- Secondary container (Muted Terracotta Tint) -->
+    <color name="md_sys_color_secondary_container">#DCC8C0</color>
+    <color name="md_sys_color_on_secondary_container">#3E2620</color>
+
+    <!-- Tertiary container (Sage Green Tint) -->
+    <color name="md_sys_color_tertiary_container">#C4D0C5</color>
+    <color name="md_sys_color_on_tertiary_container">#2A352B</color>
+
+    <!-- Outline colors -->
+    <color name="md_sys_color_outline">#787674</color>
+    <color name="md_sys_color_outline_variant">#C4C7C5</color>
+
+    <!-- Error colors -->
+    <color name="md_sys_color_error">#BA1A1A</color>
+    <color name="md_sys_color_on_error">#FFFFFF</color>
+    <color name="md_sys_color_error_container">#FFDAD6</color>
+    <color name="md_sys_color_on_error_container">#410002</color>
+
+    <!-- Inverse colors -->
+    <color name="md_sys_color_inverse_surface">#F0EEDS</color>
+    <color name="md_sys_color_inverse_on_surface">#1C1B1B</color>
+    <color name="md_sys_color_inverse_primary">#E8DCC8</color>
+
+    <!-- Surface tint -->
+    <color name="md_sys_color_surface_tint">#2D2D2D</color>
+
+    <!-- Outline variant -->
+    <color name="md_sys_color_outline_variant">#CAC5C0</color>
+
+    <!-- Scrim -->
+    <color name="md_sys_color_scrim">#000000</color>
+
+    <!-- Seed color -->
+    <color name="seed">#2D2D2D</color>
+
+    <!-- Legacy colors (for backward compatibility) -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -7,4 +54,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Common UI colors -->
+    <color name="card_background">#E8E6DF</color>
+    <color name="card_background_primary">#DCC8C0</color>
+    <color name="card_background_accent">#C4D0C5</color>
+    <color name="divider">#CAC5C0</color>
+
+    <!-- Status colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="info">#2196F3</color>
 </resources>

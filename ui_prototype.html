@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operit UI Prototype</title>
+    <style>
+        /* Anthropic-inspired Color Palette & Material You Variables */
+        :root {
+            --md-sys-color-background: #F4F3EF;
+            --md-sys-color-on-background: #1C1C1C;
+            --md-sys-color-surface: #F4F3EF;
+            --md-sys-color-surface-variant: #E8E6DF;
+            --md-sys-color-on-surface-variant: #484644;
+            --md-sys-color-primary: #2D2D2D;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-secondary-container: #DCC8C0; /* Muted Terracotta Tint */
+            --md-sys-color-on-secondary-container: #3E2620;
+            --md-sys-color-tertiary-container: #C4D0C5; /* Sage Green Tint */
+            --md-sys-color-on-tertiary-container: #2A352B;
+            --md-sys-color-outline: #787674;
+            
+            --font-serif: "Merriweather", "Georgia", serif;
+            --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+            --radius-l: 28px;
+            --radius-m: 16px;
+            --radius-s: 12px;
+            --radius-pill: 999px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--md-sys-color-on-background);
+        }
+
+        /* Mobile Frame */
+        .device-frame {
+            width: 375px;
+            height: 812px;
+            background-color: var(--md-sys-color-background);
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 0 0 12px #1a1a1a;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        /* Main Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 16px 100px 16px; /* Bottom padding for nav bar */
+            position: relative;
+        }
+
+        /* Typography */
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 32px;
+            font-weight: 400;
+            margin: 16px 8px 24px 8px;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-family: var(--font-sans);
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            padding-left: 8px;
+        }
+
+        /* Cards (Stacked Material Style) */
+        .card {
+            background-color: var(--md-sys-color-surface-variant);
+            border-radius: var(--radius-l);
+            padding: 20px;
+            margin-bottom: 12px;
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-m);
+            background-color: var(--md-sys-color-background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .card-title {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--md-sys-color-on-surface-variant);
+            line-height: 1.4;
+        }
+
+        /* Specific Card Styles */
+        .card.primary {
+            background-color: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+        }
+        
+        .card.primary .card-icon {
+            background-color: rgba(255,255,255,0.4);
+        }
+
+        .card.accent {
+            background-color: var(--md-sys-color-tertiary-container);
+            color: var(--md-sys-color-on-tertiary-container);
+        }
+
+        .card.accent .card-icon {
+            background-color: rgba(255,255,255,0.4);
+        }
+
+        /* Navigation Bar (Material You) */
+        .nav-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: var(--md-sys-color-surface-variant);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 16px; /* Home indicator space */
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 100%;
+            cursor: pointer;
+            color: var(--md-sys-color-on-surface-variant);
+            transition: all 0.3s ease;
+        }
+
+        .nav-icon-container {
+            width: 64px;
+            height: 32px;
+            border-radius: var(--radius-pill);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-item.active .nav-icon-container {
+            background-color: var(--md-sys-color-secondary-container);
+        }
+
+        .nav-item.active {
+            color: var(--md-sys-color-on-secondary-container);
+            font-weight: 600;
+        }
+
+        .nav-label {
+            font-size: 12px;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Settings List */
+        .settings-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 8px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .settings-info {
+            flex: 1;
+        }
+
+        .settings-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .settings-subtitle {
+            font-size: 13px;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        /* Switch */
+        .switch {
+            width: 52px;
+            height: 32px;
+            background-color: var(--md-sys-color-outline);
+            border-radius: var(--radius-pill);
+            position: relative;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .switch::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 24px;
+            height: 24px;
+            background-color: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .switch.on {
+            background-color: var(--md-sys-color-primary);
+        }
+
+        .switch.on::after {
+            transform: translateX(20px);
+        }
+
+        /* Chat Interface */
+        .chat-bubble {
+            padding: 16px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            max-width: 85%;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .chat-bubble.user {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.ai {
+            background-color: var(--md-sys-color-surface-variant);
+            color: var(--md-sys-color-on-background);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-input-area {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px;
+            background-color: var(--md-sys-color-background);
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            height: 56px;
+            border-radius: var(--radius-pill);
+            border: none;
+            background-color: var(--md-sys-color-surface-variant);
+            padding: 0 24px;
+            font-family: var(--font-sans);
+            font-size: 16px;
+            outline: none;
+        }
+
+        .send-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-primary);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: absolute;
+            bottom: 100px;
+            right: 16px;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background-color: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+    </style>
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="device-frame">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div style="display: flex; gap: 6px;">
+                <span class="material-icons-round" style="font-size: 16px;">signal_cellular_4_bar</span>
+                <span class="material-icons-round" style="font-size: 16px;">wifi</span>
+                <span class="material-icons-round" style="font-size: 16px;">battery_full</span>
+            </div>
+        </div>
+
+        <!-- Screen: Home -->
+        <div id="screen-home" class="content screen active">
+            <h1>Operit</h1>
+            
+            <h2>工具箱</h2>
+            
+            <div class="card primary" onclick="showToast('AutoGLM 执行器已启动')">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <span class="material-icons-round">smart_toy</span>
+                    </div>
+                    <span class="material-icons-round">arrow_forward</span>
+                </div>
+                <div class="card-title">AutoGLM 执行器</div>
+                <div class="card-desc">自动化执行复杂任务，支持多模态交互。</div>
+            </div>
+
+            <div class="card accent" onclick="showToast('配置向导已打开')">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <span class="material-icons-round">tune</span>
+                    </div>
+                </div>
+                <div class="card-title">一键配置</div>
+                <div class="card-desc">快速设置 AutoGLM 环境参数。</div>
+            </div>
+
+            <div class="card" onclick="showToast('幻象进程限制已解除')">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <span class="material-icons-round">no_encryption</span>
+                    </div>
+                </div>
+                <div class="card-title">解除进程限制</div>
+                <div class="card-desc">移除 Android 12+ 幻象进程杀手。</div>
+            </div>
+
+            <div class="card" onclick="showToast('打包器准备就绪')">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <span class="material-icons-round">android</span>
+                    </div>
+                </div>
+                <div class="card-title">网页转 APK</div>
+                <div class="card-desc">将任意网页封装为独立应用。</div>
+            </div>
+            
+            <div class="fab" onclick="switchScreen('chat')">
+                <span class="material-icons-round">chat</span>
+            </div>
+        </div>
+
+        <!-- Screen: Chat -->
+        <div id="screen-chat" class="content screen" style="display: none; padding-bottom: 90px;">
+            <h1>助手</h1>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div class="chat-bubble ai">
+                    你好！我是 Operit 助手。我可以帮你执行自动化任务或回答问题。
+                </div>
+                <div class="chat-bubble user">
+                    帮我打开 Bilibili 并搜索最新的科技视频。
+                </div>
+                <div class="chat-bubble ai">
+                    好的，正在启动 Bilibili...<br>
+                    <span style="font-size: 12px; opacity: 0.7; margin-top: 8px; display: block;">
+                        <span class="material-icons-round" style="font-size: 12px; vertical-align: middle;">check_circle</span> 
+                        已获取无障碍权限
+                    </span>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="输入指令...">
+                <button class="send-btn">
+                    <span class="material-icons-round">arrow_upward</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen: Settings -->
+        <div id="screen-settings" class="content screen" style="display: none;">
+            <h1>设置</h1>
+            
+            <h2>核心权限</h2>
+            <div class="card" style="padding: 0; background: transparent; box-shadow: none;">
+                <div style="background: var(--md-sys-color-surface-variant); border-radius: var(--radius-l); overflow: hidden;">
+                    
+                    <div class="settings-item">
+                        <div class="settings-info">
+                            <div class="settings-title">无障碍服务</div>
+                            <div class="settings-subtitle">用于模拟点击和滑动</div>
+                        </div>
+                        <div class="switch on" onclick="toggleSwitch(this)"></div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-info">
+                            <div class="settings-title">Shizuku</div>
+                            <div class="settings-subtitle">用于高级系统操作</div>
+                        </div>
+                        <div class="switch on" onclick="toggleSwitch(this)"></div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-info">
+                            <div class="settings-title">Operit 输入法</div>
+                            <div class="settings-subtitle">用于自动文本输入</div>
+                        </div>
+                        <div class="switch" onclick="toggleSwitch(this)"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <h2 style="margin-top: 24px;">显示</h2>
+            <div class="card" style="padding: 0; background: transparent; box-shadow: none;">
+                <div style="background: var(--md-sys-color-surface-variant); border-radius: var(--radius-l); overflow: hidden;">
+                    <div class="settings-item">
+                        <div class="settings-info">
+                            <div class="settings-title">虚拟屏幕 Overlay</div>
+                            <div class="settings-subtitle">在后台运行时保持活跃</div>
+                        </div>
+                        <div class="switch on" onclick="toggleSwitch(this)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="nav-bar">
+            <div class="nav-item active" onclick="switchScreen('home')">
+                <div class="nav-icon-container">
+                    <span class="material-icons-round">home</span>
+                </div>
+                <span class="nav-label">主页</span>
+            </div>
+            <div class="nav-item" onclick="switchScreen('chat')">
+                <div class="nav-icon-container">
+                    <span class="material-icons-round">chat_bubble</span>
+                </div>
+                <span class="nav-label">对话</span>
+            </div>
+            <div class="nav-item" onclick="switchScreen('settings')">
+                <div class="nav-icon-container">
+                    <span class="material-icons-round">settings</span>
+                </div>
+                <span class="nav-label">设置</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchScreen(screenName) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(el => {
+                el.style.display = 'none';
+                el.classList.remove('active');
+            });
+            
+            // Show target screen
+            const target = document.getElementById('screen-' + screenName);
+            target.style.display = screenName === 'chat' ? 'flex' : 'block';
+            if(screenName === 'chat') target.style.flexDirection = 'column';
+            
+            // Trigger reflow for animation
+            void target.offsetWidth;
+            target.classList.add('active');
+
+            // Update Nav
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            // Find index based on name to highlight correct nav item
+            const index = ['home', 'chat', 'settings'].indexOf(screenName);
+            if (index !== -1) {
+                document.querySelectorAll('.nav-item')[index].classList.add('active');
+            }
+        }
+
+        function toggleSwitch(el) {
+            el.classList.toggle('on');
+        }
+
+        function showToast(message) {
+            // Simple toast simulation
+            const toast = document.createElement('div');
+            toast.style.position = 'absolute';
+            toast.style.bottom = '100px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = '#323232';
+            toast.style.color = 'white';
+            toast.style.padding = '12px 24px';
+            toast.style.borderRadius = '99px';
+            toast.style.fontSize = '14px';
+            toast.style.zIndex = '100';
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s';
+            toast.innerText = message;
+            
+            document.querySelector('.device-frame').appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.style.opacity = '1', 10);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

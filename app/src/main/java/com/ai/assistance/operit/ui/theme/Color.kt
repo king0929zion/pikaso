@@ -3,77 +3,181 @@ package com.ai.assistance.operit.ui.theme
 import androidx.compose.ui.graphics.Color
 
 /**
- * Anthropic-inspired Color Palette for Operit AI
+ * Material You-inspired Color Palette for Operit AI
  *
- * Based on Anthropic's brand colors:
- * - Clean, warm, muted tones for natural harmony
- * - Human-centric, approachable feel
- * - Minimalist design philosophy
+ * Based on the UI prototype design:
+ * - Background: #F4F3EF (warm off-white)
+ * - Surface: #E8E6DF (warm light gray)
+ * - Primary: #2D2D2D (near black)
+ * - Secondary Container: #DCC8C0 (muted terracotta)
+ * - Tertiary Container: #C4D0C5 (sage green)
  *
- * Reference: https://www.anthropic.com
+ * Reference: UI Prototype G:\Open-AutoGLM\Operit\ui_prototype
  */
 
 // ============================================================================
-// Main Brand Colors (Anthropic)
+// Main Brand Colors (Material You - Anthropic Design)
 // ============================================================================
 
 /**
- * Primary dark color - used for text and dark backgrounds
- * #141413 - Nearly black with warm undertone
+ * Background color - warm off-white
+ * #F4F3EF - Main app background
  */
-val AnthropicDark = Color(0xFF141413)
+val MdSysBackground = Color(0xFFF4F3EF)
 
 /**
- * Primary light color - used for light backgrounds and text on dark
- * #faf9f5 - Warm off-white, cream tone
+ * On background color - nearly black
+ * #1C1C1C - Main text color
  */
-val AnthropicLight = Color(0xFFfaf9f5)
+val MdSysOnBackground = Color(0xFF1C1C1C)
 
 /**
- * Mid gray - secondary elements, subtle text
- * #b0aea5 - Warm medium gray
+ * Surface color - same as background for unified look
+ * #F4F3EF - Surface color
  */
-val AnthropicMidGray = Color(0xFFb0aea5)
+val MdSysSurface = Color(0xFFF4F3EF)
 
 /**
- * Light gray - subtle backgrounds, dividers
- * #e8e6dc - Warm light gray
+ * Surface variant - warm light gray
+ * #E8E6DF - Card backgrounds, elevated surfaces
  */
-val AnthropicLightGray = Color(0xFFe8e6dc)
+val MdSysSurfaceVariant = Color(0xFFE8E6DF)
 
 /**
- * Warm gray for elevated surfaces in dark theme
- * #2a2a27 - Elevated dark surface
+ * On surface variant - medium gray
+ * #484644 - Secondary text, icons
  */
-val AnthropicElevatedDark = Color(0xFF2a2a27)
+val MdSysOnSurfaceVariant = Color(0xFF484644)
 
 /**
- * Surface color for light theme
- * #f5f3eb - Warm surface tone
+ * Primary color - near black
+ * #2D2D2D - Main interactive elements
  */
-val AnthropicSurfaceLight = Color(0xFFf5f3eb)
+val MdSysPrimary = Color(0xFF2D2D2D)
+
+/**
+ * On primary color - white
+ * #FFFFFF - Text on primary
+ */
+val MdSysOnPrimary = Color(0xFFFFFFFF)
 
 // ============================================================================
-// Accent Colors (Anthropic)
+// Container Colors
 // ============================================================================
 
 /**
- * Primary accent - orange tone
- * #d97757 - Warm terracotta/coral orange
+ * Secondary container - muted terracotta tint
+ * #DCC8C0 - Primary accent containers
  */
-val AnthropicOrange = Color(0xFFd97757)
+val MdSysSecondaryContainer = Color(0xFFDCC8C0)
 
 /**
- * Secondary accent - blue tone
- * #6a9bcc - Soft, muted blue
+ * On secondary container - dark brown
+ * #3E2620 - Text on secondary container
  */
-val AnthropicBlue = Color(0xFF6a9bcc)
+val MdSysOnSecondaryContainer = Color(0xFF3E2620)
 
 /**
- * Tertiary accent - green tone
- * #788c5d - Muted olive/sage green
+ * Tertiary container - sage green tint
+ * #C4D0C5 - Success/accent containers
  */
-val AnthropicGreen = Color(0xFF788c5d)
+val MdSysTertiaryContainer = Color(0xFFC4D0C5)
+
+/**
+ * On tertiary container - dark green
+ * #2A352B - Text on tertiary container
+ */
+val MdSysOnTertiaryContainer = Color(0xFF2A352B)
+
+// ============================================================================
+// Outline Colors
+// ============================================================================
+
+/**
+ * Outline color - medium gray
+ * #787674 - Dividers, borders
+ */
+val MdSysOutline = Color(0xFF787674)
+
+/**
+ * Outline variant - light gray
+ * #CAC5C0 - Subtle borders
+ */
+val MdSysOutlineVariant = Color(0xFFCAC5C0)
+
+// ============================================================================
+// Error Colors
+// ============================================================================
+
+/**
+ * Error color
+ * #BA1A1A - Error states
+ */
+val MdSysError = Color(0xFFBA1A1A)
+
+/**
+ * On error color
+ * #FFFFFF - Text on error
+ */
+val MdSysOnError = Color(0xFFFFFFFF)
+
+/**
+ * Error container
+ * #FFDAD6 - Error background
+ */
+val MdSysErrorContainer = Color(0xFFFFDAD6)
+
+/**
+ * On error container
+ * #410002 - Text on error container
+ */
+val MdSysOnErrorContainer = Color(0xFF410002)
+
+// ============================================================================
+// Dark Theme Colors
+// ============================================================================
+
+/**
+ * Dark background - near black
+ * #1C1C1C - Main app background (dark)
+ */
+val MdSysBackgroundDark = Color(0xFF1C1C1C)
+
+/**
+ * Dark on background - warm light gray
+ * #E6E3DB - Main text (dark)
+ */
+val MdSysOnBackgroundDark = Color(0xFFE6E3DB)
+
+/**
+ * Dark surface - near black
+ * #1C1C1C - Surface (dark)
+ */
+val MdSysSurfaceDark = Color(0xFF1C1C1C)
+
+/**
+ * Dark surface variant - dark gray
+ * #3A3A36 - Elevated surfaces (dark)
+ */
+val MdSysSurfaceVariantDark = Color(0xFF3A3A36)
+
+/**
+ * Dark on surface variant - light gray
+ * #CAC5C0 - Secondary text (dark)
+ */
+val MdSysOnSurfaceVariantDark = Color(0xFFCAC5C0)
+
+/**
+ * Dark primary - warm cream
+ * #E8DCC8 - Primary (dark)
+ */
+val MdSysPrimaryDark = Color(0xFFE8DCC8)
+
+/**
+ * Dark on primary - near black
+ * #1C1C1C - Text on primary (dark)
+ */
+val MdSysOnPrimaryDark = Color(0xFF1C1C1C)
 
 // ============================================================================
 // Legacy Colors (for backward compatibility)
@@ -97,46 +201,46 @@ val Pink40 = Color(0xFF7D5260)
  */
 object AppColors {
     // Chat Message Colors
-    val UserMessage = AnthropicOrange
+    val UserMessage = MdSysPrimary
     val UserMessageLight = Color(0xFFffe8e0)
-    val AiMessage = AnthropicLightGray
+    val AiMessage = MdSysSurfaceVariant
     val AiMessageDark = Color(0xFF3a3a36)
-    val SystemMessage = AnthropicMidGray
+    val SystemMessage = MdSysOnSurfaceVariant
     val ThinkingBackground = Color(0xFFf0efe9)
-    val ThinkingBorder = AnthropicBlue
+    val ThinkingBorder = Color(0xFF6a9bcc)
 
     // Status Colors
-    val Success = AnthropicGreen
+    val Success = Color(0xFF4CAF50)
     val SuccessLight = Color(0xFFe8ecd9)
-    val Warning = Color(0xFFc9a855)
+    val Warning = Color(0xFFFF9800)
     val WarningLight = Color(0xFFfdf4dc)
-    val Error = Color(0xFFcc5c5c)
+    val Error = MdSysError
     val ErrorLight = Color(0xFFfadddd)
-    val Info = AnthropicBlue
+    val Info = Color(0xFF2196F3)
     val InfoLight = Color(0xFFdce8f5)
 
     // Action Colors
-    val PrimaryAction = AnthropicOrange
-    val SecondaryAction = AnthropicBlue
-    val TertiaryAction = AnthropicGreen
+    val PrimaryAction = MdSysPrimary
+    val SecondaryAction = MdSysSecondaryContainer
+    val TertiaryAction = MdSysTertiaryContainer
 
     // Overlay Colors
     val OverlayDark = Color(0xDD000000)  // 87% opacity
     val OverlayLight = Color(0x44000000) // 26% opacity
-    val Scrim = Color(0x60000000)        // 38% opacity (M3 standard)
+    val Scrim = Color(0x600000000)        // 38% opacity (M3 standard)
 
     // Surface Colors (variants)
-    val SurfaceVariant = Color(0xFFf5f3eb)
-    val SurfaceInverse = Color(0xFF3a3a36)
-    val OnSurfaceVariant = AnthropicMidGray
+    val SurfaceVariant = MdSysSurfaceVariant
+    val SurfaceInverse = MdSysSurfaceVariantDark
+    val OnSurfaceVariant = MdSysOnSurfaceVariant
 
     // Container Colors
-    val PrimaryContainer = UserMessageLight
-    val OnPrimaryContainer = AnthropicOrange
-    val SecondaryContainer = AiMessage
-    val OnSecondaryContainer = AnthropicDark
-    val TertiaryContainer = SuccessLight
-    val OnTertiaryContainer = AnthropicGreen
+    val PrimaryContainer = MdSysSecondaryContainer
+    val OnPrimaryContainer = MdSysOnSecondaryContainer
+    val SecondaryContainer = MdSysTertiaryContainer
+    val OnSecondaryContainer = MdSysOnTertiaryContainer
+    val TertiaryContainer = MdSysSecondaryContainer
+    val OnTertiaryContainer = MdSysOnSecondaryContainer
 }
 
 // ============================================================================
@@ -145,11 +249,11 @@ object AppColors {
 
 object AppColorsDark {
     // Chat Message Colors (Dark)
-    val UserMessage = AnthropicOrange
-    val UserMessageDark = Color(0xFF8c4a35)
+    val UserMessage = MdSysPrimaryDark
+    val UserMessageDark = Color(0xFF5C4033)
     val AiMessage = Color(0xFF2a2a27)
-    val AiMessageDark = AnthropicLight
-    val SystemMessage = AnthropicLightGray
+    val AiMessageDark = MdSysOnBackgroundDark
+    val SystemMessage = MdSysOnSurfaceVariantDark
     val ThinkingBackground = Color(0xFF1f1f1e)
     val ThinkingBorder = Color(0xFF4a6a8c)
 
@@ -158,23 +262,23 @@ object AppColorsDark {
     val SuccessDark = Color(0xFF4a5c35)
     val Warning = Color(0xFFe6c77a)
     val WarningDark = Color(0xFF8c7235)
-    val Error = Color(0xFFe68c8c)
-    val ErrorDark = Color(0xFF8c3535)
+    val Error = Color(0xFFFFB4AB)
+    val ErrorDark = Color(0xFF93000A)
     val Info = Color(0xFF8ca8c9)
     val InfoDark = Color(0xFF355a7a)
 
     // Surface Colors (Dark)
-    val SurfaceVariant = Color(0xFF1a1a19)
-    val SurfaceInverse = AnthropicLight
-    val OnSurfaceVariant = AnthropicLightGray
+    val SurfaceVariant = MdSysSurfaceVariantDark
+    val SurfaceInverse = MdSysOnBackgroundDark
+    val OnSurfaceVariant = MdSysOnSurfaceVariantDark
 
     // Container Colors (Dark)
-    val PrimaryContainer = UserMessageDark
-    val OnPrimaryContainer = AnthropicOrange
-    val SecondaryContainer = AiMessage
-    val OnSecondaryContainer = AnthropicLight
-    val TertiaryContainer = SuccessDark
-    val OnTertiaryContainer = Color(0xFF9cb882)
+    val PrimaryContainer = Color(0xFF5C4033)
+    val OnPrimaryContainer = MdSysPrimaryDark
+    val SecondaryContainer = Color(0xFF3D4A3A)
+    val OnSecondaryContainer = MdSysPrimaryDark
+    val TertiaryContainer = Color(0xFF4A5048)
+    val OnTertiaryContainer = MdSysPrimaryDark
 }
 
 // ============================================================================
