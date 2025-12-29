@@ -135,7 +135,7 @@
         <!-- Workspace Documents Provider for SAF -->
         <provider
             android:name=".provider.WorkspaceDocumentsProvider"
-            android:authorities="com.ai.assistance.pikaso.documents.workspace"
+            android:authorities="${applicationId}.documents.workspace"
             android:exported="true"
             android:grantUriPermissions="true"
             android:permission="android.permission.MANAGE_DOCUMENTS">
@@ -174,7 +174,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="pikaso"
+                    android:scheme="operit"
                     android:host="github-oauth-callback" />
             </intent-filter>
             <!-- File open and share support -->
@@ -228,7 +228,7 @@
             android:name=".core.tools.javascript.ScriptExecutionReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.ai.assistance.pikaso.EXECUTE_JS" />
+                <action android:name="com.ai.assistance.operit.EXECUTE_JS" />
             </intent-filter>
         </receiver>
         
@@ -268,7 +268,7 @@
             android:exported="true"
             android:enabled="true">
             <intent-filter>
-                <action android:name="com.ai.assistance.pikaso.TRIGGER_WORKFLOW" />
+                <action android:name="com.ai.assistance.operit.TRIGGER_WORKFLOW" />
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
             </intent-filter>
         </receiver>
@@ -335,8 +335,8 @@
             android:name=".core.input.InputMethodReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.ai.assistance.pikaso.INPUT_TEXT"/>
-                <action android:name="com.ai.assistance.pikaso.CLEAR_TEXT"/>
+                <action android:name="com.ai.assistance.operit.INPUT_TEXT"/>
+                <action android:name="com.ai.assistance.operit.CLEAR_TEXT"/>
             </intent-filter>
         </receiver>
 
