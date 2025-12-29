@@ -98,7 +98,7 @@ private val LightColorScheme = lightColorScheme(
     outline = Color(0xFF787674),
     outlineVariant = Color(0xFFCAC5C0),
 
-    inverseSurface = Color(0xFFF0EEDS),
+    inverseSurface = Color(0xFFF0EED8),
     inverseOnSurface = Color(0xFF1C1B1B),
     inversePrimary = Color(0xFFE8DCC8),
 
