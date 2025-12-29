@@ -3379,6 +3379,7 @@
     <string name="executing_tool">正在执行工具: %1$s</string>
     <string name="processing_tool_result">正在处理工具结果: %1$s</string>
     <string name="input_question_hint">请输入您的问题...</string>
+    <string name="chat_empty_state_title">有什么可以帮你的？</string>
     <string name="input_question_with_workspace">输入问题，使用@来引用文件</string>
     <string name="add_attachment">添加附件</string>
     <string name="user_uploaded_image">用户上传的图片</string>

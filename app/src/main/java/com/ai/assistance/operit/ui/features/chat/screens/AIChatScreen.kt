@@ -633,7 +633,8 @@ val actualViewModel: ChatViewModel = viewModel ?: viewModel { ChatViewModel(cont
                                         characterCardManager.setActiveCharacterCard(characterId)
                                     }
                                 },
-                                chatAreaHorizontalPadding = chatAreaHorizontalPadding
+                                chatAreaHorizontalPadding = chatAreaHorizontalPadding,
+                                onModelSelectorClick = onNavigateToModelConfig
                         )
 
                         ChatSettingsBar(

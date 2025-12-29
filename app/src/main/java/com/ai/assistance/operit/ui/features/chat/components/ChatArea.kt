@@ -68,8 +68,10 @@ import androidx.compose.material.icons.filled.Reply
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.Summarize
+import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.font.FontWeight
 import com.ai.assistance.operit.ui.features.chat.components.style.cursor.CursorStyleChatMessage
 import com.ai.assistance.operit.ui.features.chat.components.style.bubble.BubbleStyleChatMessage
 import com.ai.assistance.operit.util.WaifuMessageProcessor
@@ -142,6 +144,45 @@ fun ChatArea(
     horizontalPadding: Dp = AppSpacing.medium // 水平内边距，可自定义
 ) {
     // 记住当前深度状态，但当chatHistory发生变化时重置为1
+    if (chatHistory.isEmpty() && !isLoading) {
+        Box(
+            modifier = modifier.fillMaxSize().padding(top = topPadding),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = horizontalPadding),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier =
+                        Modifier.size(64.dp).background(
+                            color = MaterialTheme.colorScheme.tertiaryContainer,
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.SmartToy,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(AppSpacing.medium))
+                Text(
+                    text = stringResource(R.string.chat_empty_state_title),
+                    style =
+                        MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.Normal
+                        ),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        }
+        return
+    }
+
     var currentDepth = remember(chatHistory) { mutableStateOf(1) }
 
     Column(modifier = modifier) {

@@ -6,9 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -38,7 +37,7 @@ fun SendButton(
         isProcessing -> MaterialTheme.colorScheme.error
         canSend && isOverTokenLimit -> MaterialTheme.colorScheme.secondary
         canSend -> MaterialTheme.colorScheme.primary
-        else -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
     }
 
     val iconTint = when {
@@ -49,13 +48,12 @@ fun SendButton(
 
     val icon = when {
         isProcessing -> Icons.Default.Close
-        canSend -> Icons.AutoMirrored.Filled.Send
-        else -> Icons.Default.Mic
+        else -> Icons.Default.ArrowUpward
     }
 
     Box(
         modifier = Modifier
-            .size(56.dp)
+            .size(36.dp)
             .clip(CircleShape)
             .background(backgroundColor)
             .clickable(
@@ -68,11 +66,10 @@ fun SendButton(
             imageVector = icon,
             contentDescription = when {
                 isProcessing -> "Cancel"
-                canSend -> "Send"
-                else -> "Voice input"
+                else -> "Send"
             },
             tint = iconTint,
-            modifier = Modifier.size(AppSizes.iconNormal)
+            modifier = Modifier.size(AppSizes.iconMedium)
         )
     }
 }

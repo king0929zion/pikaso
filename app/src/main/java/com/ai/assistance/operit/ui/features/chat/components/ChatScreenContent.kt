@@ -49,6 +49,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Share
@@ -123,7 +124,8 @@ fun ChatScreenContent(
         chatStyle: ChatStyle, // Add chatStyle parameter
         historyListState: LazyListState,
         onSwitchCharacter: (String) -> Unit,
-        chatAreaHorizontalPadding: Float = 16f // 聊天区域水平内边距
+        chatAreaHorizontalPadding: Float = 16f, // 聊天区域水平内边距
+        onModelSelectorClick: () -> Unit = {}
 ) {
     val density = LocalDensity.current
     var headerHeight by remember { mutableStateOf(0.dp) }
@@ -303,7 +305,8 @@ fun ChatScreenContent(
                         chatHeaderTransparent = chatHeaderTransparent,
                         chatHeaderHistoryIconColor = chatHeaderHistoryIconColor,
                         chatHeaderPipIconColor = chatHeaderPipIconColor,
-                        onCharacterSwitcherClick = { showCharacterSelector = true }
+                        onCharacterSwitcherClick = { showCharacterSelector = true },
+                        onModelSelectorClick = onModelSelectorClick
                 )
             }
         } else {
@@ -317,7 +320,8 @@ fun ChatScreenContent(
                         chatHeaderTransparent = chatHeaderTransparent,
                         chatHeaderHistoryIconColor = chatHeaderHistoryIconColor,
                         chatHeaderPipIconColor = chatHeaderPipIconColor,
-                        onCharacterSwitcherClick = { showCharacterSelector = true }
+                        onCharacterSwitcherClick = { showCharacterSelector = true },
+                        onModelSelectorClick = onModelSelectorClick
                 )
                 ChatArea(
                         chatHistory = chatHistory,
@@ -615,7 +619,7 @@ fun ChatScreenContent(
                 modifier = Modifier.align(Alignment.TopStart)
         ) {
             val chatHistorySearchQuery by actualViewModel.chatHistorySearchQuery.collectAsState()
-            ChatHistorySelectorPanel(
+            PrototypeChatHistorySidebarPanel(
                     actualViewModel = actualViewModel,
                     chatHistories = displayedChatHistories,
                     currentChatId = currentChatId,
@@ -934,5 +938,161 @@ fun ChatHistorySelectorPanel(
                     activeCharacterCard = activeCharacterCard
             )
         }
+    }
+}
+
+@Suppress("UNUSED_PARAMETER")
+@Composable
+fun PrototypeChatHistorySidebarPanel(
+    actualViewModel: ChatViewModel,
+    chatHistories: List<ChatHistory>,
+    currentChatId: String,
+    showChatHistorySelector: Boolean,
+    historyListState: LazyListState,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    activeCharacterCard: CharacterCard?,
+    historyDisplayMode: ChatHistoryDisplayMode,
+    onDisplayModeChange: (ChatHistoryDisplayMode) -> Unit,
+    autoSwitchCharacterCard: Boolean,
+    onAutoSwitchCharacterCardChange: (Boolean) -> Unit
+) {
+    val sidebarWidth = 280.dp
+    val colorScheme = MaterialTheme.colorScheme
+
+    Surface(
+        modifier = Modifier.width(sidebarWidth).fillMaxHeight(),
+        color = colorScheme.surfaceVariant,
+        tonalElevation = 0.dp,
+        shadowElevation = 2.dp
+    ) {
+        Column(modifier = Modifier.fillMaxSize().padding(AppSpacing.medium)) {
+            Text(
+                text = "Operit",
+                style = MaterialTheme.typography.titleLarge,
+                color = colorScheme.onBackground
+            )
+
+            Spacer(modifier = Modifier.height(AppSpacing.medium))
+
+            Button(
+                onClick = {
+                    actualViewModel.createNewChat(activeCharacterCard?.name)
+                    actualViewModel.showChatHistorySelector(false)
+                },
+                modifier = Modifier.fillMaxWidth().height(48.dp),
+                shape = RoundedCornerShape(999.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = colorScheme.primary,
+                        contentColor = colorScheme.onPrimary
+                    )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.new_chat),
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
+
+            Spacer(modifier = Modifier.height(AppSpacing.large))
+
+            Text(
+                text = stringResource(R.string.chat_history),
+                style = MaterialTheme.typography.labelMedium,
+                color = colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+            )
+
+            Spacer(modifier = Modifier.height(AppSpacing.small))
+
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                state = historyListState,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(chatHistories, key = { it.id }) { history ->
+                    val isActive = history.id == currentChatId
+                    val preview = remember(history) { prototypePreviewText(history) }
+                    val timeText =
+                        remember(history.updatedAt) { prototypeTimeText(history.updatedAt) }
+
+                    Surface(
+                        modifier =
+                            Modifier.fillMaxWidth()
+                                .clickable {
+                                    actualViewModel.switchChat(history.id)
+                                    actualViewModel.showChatHistorySelector(false)
+                                },
+                        color =
+                            if (isActive) colorScheme.primaryContainer else colorScheme.surface,
+                        contentColor =
+                            if (isActive) colorScheme.onPrimaryContainer
+                            else colorScheme.onSurface,
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Text(
+                                text = timeText,
+                                style = MaterialTheme.typography.labelSmall,
+                                color =
+                                    (if (isActive) colorScheme.onPrimaryContainer
+                                        else colorScheme.onSurfaceVariant)
+                                        .copy(alpha = 0.75f)
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = preview.ifBlank { history.title },
+                                style = MaterialTheme.typography.bodyMedium,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = AppSpacing.small),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier =
+                        Modifier.size(32.dp).background(
+                            color = colorScheme.outline.copy(alpha = 0.2f),
+                            shape = RoundedCornerShape(999.dp)
+                        )
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = "User",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = colorScheme.onBackground
+                )
+            }
+        }
+    }
+}
+
+private fun prototypePreviewText(history: ChatHistory): String {
+    val lastUserOrAi =
+        history.messages.lastOrNull { it.sender == "user" || it.sender == "ai" }?.content.orEmpty()
+    return lastUserOrAi.replace('\n', ' ').trim()
+}
+
+private fun prototypeTimeText(updatedAt: java.time.LocalDateTime): String {
+    val today = java.time.LocalDate.now()
+    val date = updatedAt.toLocalDate()
+    val timeFmt = java.time.format.DateTimeFormatter.ofPattern("HH:mm")
+    val dateFmt = java.time.format.DateTimeFormatter.ofPattern("MM月dd日")
+
+    return when (date) {
+        today -> "今天 ${updatedAt.format(timeFmt)}"
+        today.minusDays(1) -> "昨天 ${updatedAt.format(timeFmt)}"
+        else -> "${updatedAt.format(dateFmt)}"
     }
 }
