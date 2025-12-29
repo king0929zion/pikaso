@@ -37,9 +37,6 @@
     <!-- Surface tint -->
     <color name="md_sys_color_surface_tint">#2D2D2D</color>
 
-    <!-- Outline variant -->
-    <color name="md_sys_color_outline_variant">#CAC5C0</color>
-
     <!-- Scrim -->
     <color name="md_sys_color_scrim">#000000</color>
 
