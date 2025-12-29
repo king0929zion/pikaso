@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddComment
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,7 +35,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -191,96 +192,85 @@ fun AppContent(
         Scaffold(
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
             topBar = {
-                // 单一工具栏 - 使用小型化的设计
-                // 使用 windowInsets 参数让 TopAppBar 自己处理状态栏的 insets
-                SmallTopAppBar(
-                    windowInsets = WindowInsets.statusBars,
-                    title = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            // 使用Screen的标题或导航项的标题
-                            Text(
-                                text =
-                                when {
-                                    // 如果是AI对话界面且有自定义标题，则优先显示
-                                    currentScreen is Screen.AiChat && !customChatTitle.isNullOrEmpty() ->
-                                        customChatTitle!!
-                                    // 优先使用Screen的标题
-                                    currentScreen.getTitle().isNotBlank() ->
-                                        currentScreen.getTitle()
-                                    // 回退到导航项的标题资源
-                                    selectedItem.titleResId != 0 ->
-                                        stringResource(id = selectedItem.titleResId)
-                                    // 最后的默认值
-                                    else -> ""
-                                },
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 14.sp,
-                                color = appBarContentColor
-                            )
-
-                            // 显示当前聊天标题（仅在AI对话页面)
-                            if (currentScreen is Screen.AiChat && currentChatTitle.isNotBlank()) {
-                                Text(
-                                    text = "- $currentChatTitle",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = appBarContentColor.copy(alpha = 0.8f),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
-                    },
-                    navigationIcon = {
-                        // 导航按钮逻辑
-                        IconButton(
-                            onClick = {
-                                if (canGoBack) {
-                                    onGoBack()
-                                } else {
-                                    // 平板模式下切换侧边栏展开/收起状态
-                                    if (useTabletLayout) {
-                                        onToggleSidebar()
-                                    } else {
-                                        // 手机模式下打开抽屉
-                                        scope.launch { drawerState.open() }
+                if (!useTabletLayout) {
+                    // 单一工具栏 - 使用小型化的设计
+                    // 使用 windowInsets 参数让 TopAppBar 自己处理状态栏的 insets
+                    SmallTopAppBar(
+                        windowInsets = WindowInsets.statusBars,
+                        title = {
+                            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                                Surface(
+                                    onClick = {},
+                                    shape = RoundedCornerShape(8.dp),
+                                    color = Color.Transparent
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = "GPT-4o",
+                                            fontSize = 15.sp,
+                                            fontWeight = FontWeight.Medium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        Icon(
+                                            imageVector = Icons.Default.ExpandMore,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.outline,
+                                            modifier = Modifier.size(18.dp)
+                                        )
                                     }
                                 }
                             }
-                        ) {
-                            Icon(
-                                if (canGoBack) Icons.Default.ArrowBack
-                                else if (useTabletLayout)
-                                // 平板模式下使用开关图标表示收起/展开
-                                    if (isTabletSidebarExpanded) Icons.Filled.ChevronLeft
-                                    else Icons.Default.Menu
-                                else Icons.Default.Menu,
-                                contentDescription =
-                                when {
-                                    canGoBack -> "返回"
-                                    useTabletLayout ->
-                                        if (isTabletSidebarExpanded) "收起侧边栏"
-                                        else "展开侧边栏"
-                                    else -> stringResource(id = R.string.menu)
-                                },
-                                tint = appBarContentColor
-                            )
-                        }
-                    },
-                    actions = actions,
-                    colors =
-                    TopAppBarDefaults.smallTopAppBarColors(
-                        containerColor =
-                        when {
-                            toolbarTransparent -> Color.Transparent
-                            useCustomAppBarColor && customAppBarColor != null -> Color(customAppBarColor)
-                            else -> MaterialTheme.colorScheme.primary
                         },
-                        titleContentColor = appBarContentColor,
-                        navigationIconContentColor = appBarContentColor,
-                        actionIconContentColor = appBarContentColor
-                    ),
-                    // Scaffold会处理 insets, 这里不再需要手动添加 modifier
-                )
+                        navigationIcon = {
+                            IconButton(
+                                onClick = {
+                                    if (canGoBack) onGoBack() else scope.launch { drawerState.open() }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector =
+                                        if (canGoBack) Icons.Default.ArrowBack else Icons.Default.Menu,
+                                    contentDescription = if (canGoBack) "返回" else stringResource(id = R.string.menu),
+                                    tint = appBarContentColor
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(
+                                onClick = {
+                                    scope.launch {
+                                        chatHistoryManager.createNewChat()
+                                        onScreenChange(Screen.AiChat)
+                                        onNavItemChange(NavItem.AiChat)
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.AddComment,
+                                    contentDescription = "新对话",
+                                    tint = appBarContentColor
+                                )
+                            }
+                            actions()
+                        },
+                        colors =
+                            TopAppBarDefaults.smallTopAppBarColors(
+                                containerColor =
+                                    when {
+                                        toolbarTransparent -> Color.Transparent
+                                        useCustomAppBarColor && customAppBarColor != null ->
+                                            Color(customAppBarColor)
+                                        else -> MaterialTheme.colorScheme.background
+                                    },
+                                titleContentColor = appBarContentColor,
+                                navigationIconContentColor = appBarContentColor,
+                                actionIconContentColor = appBarContentColor
+                            ),
+                    )
+                }
             },
             containerColor = Color.Transparent
         ) { innerPadding ->
@@ -420,4 +410,3 @@ fun AppContent(
         }
     }
 }
-
