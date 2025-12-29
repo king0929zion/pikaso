@@ -270,15 +270,16 @@ fun BubbleUserMessageComposable(
                 // Message bubble
                 Surface(
                     modifier = Modifier.defaultMinSize(minHeight = AppSizes.buttonMinHeight - 4.dp),
-                    shape = RoundedCornerShape(AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusSmall, AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusExtraLarge),
-                    color = backgroundColor,
-                    tonalElevation = AppSizes.elevationSmall
+                    shape = RoundedCornerShape(20.dp, 20.dp, 4.dp, 20.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    tonalElevation = 0.dp
                 ) {
                     Text(
                         text = textContent,
-                        modifier = Modifier.padding(AppSpacing.small),
-                        color = textColor,
-                        style = MaterialTheme.typography.bodyMedium
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp, lineHeight = 22.5.sp)
                     )
                 }
             }

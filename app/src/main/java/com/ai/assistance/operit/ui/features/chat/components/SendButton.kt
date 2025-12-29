@@ -55,7 +55,7 @@ fun SendButton(
 
     Box(
         modifier = Modifier
-            .size(AppSizes.buttonMinHeightSmall + 2.dp)
+            .size(56.dp)
             .clip(CircleShape)
             .background(backgroundColor)
             .clickable(

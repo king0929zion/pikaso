@@ -219,9 +219,10 @@ fun BubbleAiMessageComposable(
                 Surface(
                     modifier = Modifier
                         .defaultMinSize(minHeight = AppSizes.buttonMinHeight - AppSpacing.nano),
-                    shape = RoundedCornerShape(AppSizes.cornerRadiusSmall, AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusExtraLarge, AppSizes.cornerRadiusExtraLarge),
-                    color = backgroundColor,
-                    tonalElevation = AppSizes.elevationSmall
+                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 4.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tonalElevation = 0.dp
                 ) {
                 // 使用 message.timestamp 作为 key，确保在重组期间，
                 // 只要是同一条消息，StreamMarkdownRenderer就不会被销毁和重建。
@@ -231,11 +232,11 @@ fun BubbleAiMessageComposable(
                         val charStream = remember(stream) { stream.toCharStream() }
                         StreamMarkdownRenderer(
                             markdownStream = charStream,
-                            textColor = textColor,
-                            backgroundColor = backgroundColor,
+                            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                             onLinkClick = rememberedOnLinkClick,
                             xmlRenderer = xmlRenderer,
-                            modifier = Modifier.padding(AppSpacing.small),
+                            modifier = Modifier.padding(16.dp),
                             state = rendererState,
                             fillMaxWidth = false  // bubble模式：横向缩紧
                         )
@@ -244,11 +245,11 @@ fun BubbleAiMessageComposable(
                         // 共享相同的state，避免重新计算nodes等状态
                         StreamMarkdownRenderer(
                             content = message.content,
-                            textColor = textColor,
-                            backgroundColor = backgroundColor,
+                            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                             onLinkClick = rememberedOnLinkClick,
                             xmlRenderer = xmlRenderer,
-                            modifier = Modifier.padding(AppSpacing.small),
+                            modifier = Modifier.padding(16.dp),
                             state = rendererState,
                             fillMaxWidth = false  // bubble模式：横向缩紧
                         )

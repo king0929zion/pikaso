@@ -25,6 +25,10 @@ import com.ai.assistance.operit.ui.theme.AppSpacing
  * Consolidated from 5 groups with 17 items to 4 groups with 12 items.
  * Cleaner organization and fewer navigation levels.
  */
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.sp
+
 @Composable
 fun SettingsScreen(
         onNavigateToUserPreferences: () -> Unit,
@@ -61,38 +65,47 @@ fun SettingsScreen(
         Column(
                 modifier = Modifier
                         .fillMaxSize()
-                        .padding(AppSpacing.medium)
+                        .padding(horizontal = 16.dp)
+                        // Bottom padding to avoid overlap with bottom nav bar
+                        .padding(bottom = 100.dp)
                         .verticalScroll(scrollState),
-                verticalArrangement = Arrangement.spacedBy(AppSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
+                // Header: Settings (h1)
+                Text(
+                        text = stringResource(R.string.settings),
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                                fontFamily = FontFamily.Serif,
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.Normal,
+                                letterSpacing = (-0.5).sp
+                        ),
+                        modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 16.dp)
+                )
+
                 // 个性化与显示
                 SettingsGroup(
                         title = "界面设置",
-                        icon = Icons.Default.Palette,
                         cardColor = cardColor
                 ) {
                         SettingsItem(
                                 title = stringResource(R.string.settings_user_preferences),
                                 subtitle = "用户配置文件",
-                                icon = Icons.Default.Face,
                                 onClick = onNavigateToUserPreferences
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_theme_appearance),
                                 subtitle = "主题和外观",
-                                icon = Icons.Default.DarkMode,
                                 onClick = navigateToThemeSettings
                         )
                         SettingsItem(
                                 title = stringResource(R.string.language_settings),
                                 subtitle = "语言和地区",
-                                icon = Icons.Default.Language,
                                 onClick = navigateToLanguageSettings
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_global_display),
                                 subtitle = "显示设置",
-                                icon = Icons.Default.Visibility,
                                 onClick = navigateToGlobalDisplaySettings
                         )
                 }
@@ -100,31 +113,26 @@ fun SettingsScreen(
                 // AI模型配置
                 SettingsGroup(
                         title = "AI设置",
-                        icon = Icons.Default.Psychology,
                         cardColor = cardColor
                 ) {
                         SettingsItem(
                                 title = stringResource(R.string.settings_model_parameters),
                                 subtitle = "模型参数配置",
-                                icon = Icons.Default.Tune,
                                 onClick = navigateToModelConfig
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_functional_model),
                                 subtitle = "功能模型设置",
-                                icon = Icons.Default.Settings,
                                 onClick = navigateToFunctionalConfig
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_speech_services),
                                 subtitle = "语音服务",
-                                icon = Icons.Default.RecordVoiceOver,
                                 onClick = navigateToSpeechServicesSettings
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_prompt_title),
                                 subtitle = "系统提示词",
-                                icon = Icons.Default.ChatBubble,
                                 onClick = navigateToModelPrompts
                         )
                 }
@@ -132,25 +140,21 @@ fun SettingsScreen(
                 // 高级功能
                 SettingsGroup(
                         title = "高级功能",
-                        icon = Icons.Default.Extension,
                         cardColor = cardColor
                 ) {
                         SettingsItem(
                                 title = stringResource(R.string.settings_custom_headers),
                                 subtitle = "自定义请求头",
-                                icon = Icons.Default.AddModerator,
                                 onClick = navigateToCustomHeadersSettings
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_section_context_summary),
                                 subtitle = "上下文总结",
-                                icon = Icons.Default.Summarize,
                                 onClick = navigateToContextSummarySettings
                         )
                         SettingsItem(
                                 title = stringResource(R.string.persona_card_generation),
                                 subtitle = "人设卡生成",
-                                icon = Icons.Default.Badge,
                                 onClick = navigateToPersonaCardGeneration
                         )
                 }
@@ -158,37 +162,31 @@ fun SettingsScreen(
                 // 数据与安全
                 SettingsGroup(
                         title = "数据与安全",
-                        icon = Icons.Default.Security,
                         cardColor = cardColor
                 ) {
                         SettingsItem(
                                 title = stringResource(R.string.settings_tool_permissions),
                                 subtitle = "工具权限管理",
-                                icon = Icons.Default.AdminPanelSettings,
                                 onClick = navigateToToolPermissions
                         )
                         SettingsItem(
                                 title = "权限配置",
                                 subtitle = "应用权限级别设置",
-                                icon = Icons.Default.Security,
                                 onClick = navigateToPermissionGuide
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_chat_history_management),
                                 subtitle = "聊天历史管理",
-                                icon = Icons.Default.History,
                                 onClick = navigateToChatHistorySettings
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_data_backup),
                                 subtitle = "数据备份",
-                                icon = Icons.Default.CloudUpload,
                                 onClick = navigateToChatBackupSettings
                         )
                         SettingsItem(
                                 title = stringResource(R.string.settings_token_usage_stats),
                                 subtitle = "Token使用统计",
-                                icon = Icons.Default.Analytics,
                                 onClick = navigateToTokenUsageStatistics
                         )
                 }
@@ -198,40 +196,30 @@ fun SettingsScreen(
 @Composable
 private fun SettingsGroup(
         title: String,
-        icon: ImageVector,
         cardColor: androidx.compose.ui.graphics.Color,
         content: @Composable ColumnScope.() -> Unit
 ) {
-        Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.nano)) {
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 // Group header
-                Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = AppSpacing.extraSmall)
-                ) {
-                        Icon(
-                                imageVector = icon,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(AppSizes.iconNormal)
-                        )
-                        Spacer(Modifier.width(AppSpacing.nano))
-                        Text(
-                                text = title,
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.primary
-                        )
-                }
+                Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium
+                        ),
+                        modifier = Modifier.padding(start = 8.dp)
+                )
 
                 // Settings card
                 Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(containerColor = cardColor),
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(AppSizes.cornerRadiusMedium)
+                        shape = RoundedCornerShape(28.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
                 ) {
                         Column(
-                                modifier = Modifier.padding(AppSpacing.extraSmall),
-                                verticalArrangement = Arrangement.spacedBy(AppSpacing.nano),
+                                modifier = Modifier.padding(vertical = 8.dp),
                                 content = content
                         )
                 }
@@ -242,40 +230,34 @@ private fun SettingsGroup(
 private fun SettingsItem(
         title: String,
         subtitle: String,
-        icon: ImageVector,
         onClick: () -> Unit
 ) {
         Surface(
                 onClick = onClick,
                 modifier = Modifier.fillMaxWidth(),
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(AppSizes.cornerRadiusSmall),
                 color = androidx.compose.ui.graphics.Color.Transparent
         ) {
                 Row(
                         modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(AppSpacing.small),
+                                .padding(horizontal = 24.dp, vertical = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                 ) {
-                        Icon(
-                                imageVector = icon,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(AppSizes.iconNormal)
-                        )
-
-                        Spacer(Modifier.width(AppSpacing.small))
-
                         Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                         text = title,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        fontWeight = FontWeight.Medium
+                                        style = MaterialTheme.typography.bodyLarge.copy(
+                                                fontSize = 16.sp,
+                                                fontWeight = FontWeight.Medium
+                                        ),
+                                        modifier = Modifier.padding(bottom = 2.dp)
                                 )
                                 Text(
                                         text = subtitle,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                                fontSize = 13.sp,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
                                 )
                         }
 
@@ -283,8 +265,15 @@ private fun SettingsItem(
                                 imageVector = Icons.Default.ChevronRight,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                                modifier = Modifier.size(AppSizes.iconSmall)
+                                modifier = Modifier.size(24.dp)
                         )
                 }
+                
+                // Add divider except for last item? 
+                // Prototype has dividers: border-bottom: 1px solid rgba(0,0,0,0.05);
+                HorizontalDivider(
+                    modifier = Modifier.padding(start = 24.dp), 
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.05f)
+                )
         }
 }

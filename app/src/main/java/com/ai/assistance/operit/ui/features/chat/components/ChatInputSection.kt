@@ -27,6 +27,7 @@ import com.ai.assistance.operit.ui.theme.AppSizes
 import com.ai.assistance.operit.ui.theme.AppSpacing
 import com.ai.assistance.operit.util.ChatUtils
 import android.net.Uri
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
@@ -280,8 +281,8 @@ private fun MainInputRow(
             },
             modifier = Modifier
                 .weight(1f)
-                .heightIn(min = AppSizes.inputMinHeightSmall),
-            textStyle = modernTextStyle,
+                .heightIn(min = 56.dp),
+            textStyle = modernTextStyle.copy(fontSize = 16.sp),
             maxLines = 5,
             minLines = 1,
             singleLine = false,
@@ -289,10 +290,13 @@ private fun MainInputRow(
                 imeAction = androidx.compose.ui.text.input.ImeAction.Default
             ),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
             ),
-            shape = RoundedCornerShape(AppSizes.cornerRadiusLarge),
+            shape = RoundedCornerShape(999.dp),
             trailingIcon = {
                 if (userMessage.contains("\n")) {
                     IconButton(onClick = onFullscreenRequest) {
