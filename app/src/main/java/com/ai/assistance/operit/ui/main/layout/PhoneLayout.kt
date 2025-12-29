@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RectangleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -278,7 +278,7 @@ fun PhoneLayout(
                                         .fillMaxHeight()
                                         .graphicsLayer { translationX = drawerOffset.toPx() }
                                         .zIndex(2f),
-                        shape = RectangleShape,
+                        shape = RoundedCornerShape(0.dp),
                         color = MaterialTheme.colorScheme.surfaceVariant,
                         shadowElevation = sidebarElevation
                 ) {
