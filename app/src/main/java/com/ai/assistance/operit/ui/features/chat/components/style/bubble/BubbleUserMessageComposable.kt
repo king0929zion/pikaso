@@ -268,18 +268,18 @@ fun BubbleUserMessageComposable(
                     }
                 }
 
-                // Message bubble
+                // Message bubble - Anthropic style: surfaceVariant background for user
                 Surface(
                     modifier = Modifier.defaultMinSize(minHeight = AppSizes.buttonMinHeight - 4.dp),
                     shape = RoundedCornerShape(20.dp, 20.dp, 4.dp, 20.dp),
-                    color = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onBackground,
                     tonalElevation = 0.dp
                 ) {
                     Text(
                         text = textContent,
                         modifier = Modifier.padding(16.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp, lineHeight = 22.5.sp)
                     )
                 }
