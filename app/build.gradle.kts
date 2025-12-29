@@ -44,8 +44,8 @@ android {
         applicationId = "com.ai.assistance.pikaso"
         minSdk = 26
         targetSdk = 34
-        versionCode = 77
-        versionName = "1.12.0"
+        versionCode = 78
+        versionName = "1.12.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

@@ -86,7 +86,7 @@ fun TabletLayout(
                                         .fillMaxHeight()
                                         .zIndex(2f), // 确保侧边栏在主内容之上
                         shadowElevation = 4.dp,
-                        color = MaterialTheme.colorScheme.surface
+                        color = MaterialTheme.colorScheme.surfaceVariant
                 ) {
                         // 根据展开状态显示不同内容，保持原有逻辑稳定性
                         if (isTabletSidebarExpanded) {

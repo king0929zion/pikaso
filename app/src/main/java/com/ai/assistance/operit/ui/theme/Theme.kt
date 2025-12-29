@@ -66,43 +66,43 @@ import androidx.core.view.WindowInsetsControllerCompat
  * for a clean, minimalist aesthetic inspired by Anthropic's design
  */
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF2D2D2D),
-    onPrimary = Color(0xFFFFFFFF),
-    primaryContainer = Color(0xFFDCC8C0),
-    onPrimaryContainer = Color(0xFF3E2620),
+    primary = MdSysPrimary,
+    onPrimary = MdSysOnPrimary,
+    primaryContainer = MdSysSecondaryContainer,
+    onPrimaryContainer = MdSysOnSecondaryContainer,
 
-    secondary = Color(0xFF2D2D2D),
-    onSecondary = Color(0xFFFFFFFF),
-    secondaryContainer = Color(0xFFC4D0C5),
-    onSecondaryContainer = Color(0xFF2A352B),
+    secondary = MdSysPrimary,
+    onSecondary = MdSysOnPrimary,
+    secondaryContainer = MdSysSecondaryContainer,
+    onSecondaryContainer = MdSysOnSecondaryContainer,
 
-    tertiary = Color(0xFF2D2D2D),
-    onTertiary = Color(0xFFFFFFFF),
-    tertiaryContainer = Color(0xFFDCC8C0),
-    onTertiaryContainer = Color(0xFF3E2620),
+    tertiary = MdSysPrimary,
+    onTertiary = MdSysOnPrimary,
+    tertiaryContainer = MdSysTertiaryContainer,
+    onTertiaryContainer = MdSysOnTertiaryContainer,
 
-    error = Color(0xFFBA1A1A),
-    onError = Color(0xFFFFFFFF),
-    errorContainer = Color(0xFFFFDAD6),
-    onErrorContainer = Color(0xFF410002),
+    error = MdSysError,
+    onError = MdSysOnError,
+    errorContainer = MdSysErrorContainer,
+    onErrorContainer = MdSysOnErrorContainer,
 
-    background = Color(0xFFF4F3EF),
-    onBackground = Color(0xFF1C1C1C),
+    background = MdSysBackground,
+    onBackground = MdSysOnBackground,
 
-    surface = Color(0xFFF4F3EF),
-    onSurface = Color(0xFF1C1C1C),
+    surface = MdSysSurface,
+    onSurface = MdSysOnBackground,
 
-    surfaceVariant = Color(0xFFE8E6DF),
-    onSurfaceVariant = Color(0xFF484644),
+    surfaceVariant = MdSysSurfaceVariant,
+    onSurfaceVariant = MdSysOnSurfaceVariant,
 
-    outline = Color(0xFF787674),
-    outlineVariant = Color(0xFFCAC5C0),
+    outline = MdSysOutline,
+    outlineVariant = MdSysOutlineVariant,
 
     inverseSurface = Color(0xFFF0EED8),
     inverseOnSurface = Color(0xFF1C1B1B),
     inversePrimary = Color(0xFFE8DCC8),
 
-    surfaceTint = Color(0xFF2D2D2D),
+    surfaceTint = MdSysPrimary,
 
     scrim = Color(0xFF000000)
 )
@@ -114,18 +114,18 @@ private val LightColorScheme = lightColorScheme(
  * for a human-centric, approachable feel
  */
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFFE8DCC8),
-    onPrimary = Color(0xFF1C1C1C),
+    primary = MdSysPrimaryDark,
+    onPrimary = MdSysOnPrimaryDark,
     primaryContainer = Color(0xFF5C4033),
     onPrimaryContainer = Color(0xFFFFDCC8),
 
-    secondary = Color(0xFFE8DCC8),
-    onSecondary = Color(0xFF1C1C1C),
+    secondary = MdSysPrimaryDark,
+    onSecondary = MdSysOnPrimaryDark,
     secondaryContainer = Color(0xFF3D4A3A),
     onSecondaryContainer = Color(0xFFD0E8C8),
 
-    tertiary = Color(0xFFE8DCC8),
-    onTertiary = Color(0xFF1C1C1C),
+    tertiary = MdSysPrimaryDark,
+    onTertiary = MdSysOnPrimaryDark,
     tertiaryContainer = Color(0xFF4A5048),
     onTertiaryContainer = Color(0xFFC4D0C5),
 
@@ -134,14 +134,14 @@ private val DarkColorScheme = darkColorScheme(
     errorContainer = Color(0xFF93000A),
     onErrorContainer = Color(0xFFFFDAD6),
 
-    background = Color(0xFF1C1C1C),
-    onBackground = Color(0xFFE6E3DB),
+    background = MdSysBackgroundDark,
+    onBackground = MdSysOnBackgroundDark,
 
-    surface = Color(0xFF1C1C1C),
-    onSurface = Color(0xFFE6E3DB),
+    surface = MdSysSurfaceDark,
+    onSurface = MdSysOnBackgroundDark,
 
-    surfaceVariant = Color(0xFF3A3A36),
-    onSurfaceVariant = Color(0xFFCAC5C0),
+    surfaceVariant = MdSysSurfaceVariantDark,
+    onSurfaceVariant = MdSysOnSurfaceVariantDark,
 
     outline = Color(0xFF948F84),
     outlineVariant = Color(0xFF3A3A36),

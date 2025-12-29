@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,18 +20,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ai.assistance.operit.ui.theme.AppSizes
 import com.ai.assistance.operit.ui.theme.AppSpacing
+import com.ai.assistance.operit.ui.theme.AppBorderRadius
 
 /** Displays a header in the navigation drawer */
 @Composable
 fun NavigationDrawerItemHeader(title: String) {
     Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = AppSpacing.mediumLarge, top = AppSpacing.medium, bottom = AppSpacing.extraSmall)
+            text = title.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 1.sp,
+            modifier =
+                    Modifier.padding(
+                            start = AppSpacing.small,
+                            top = AppSpacing.medium,
+                            bottom = AppSpacing.extraSmall
+                    )
     )
 }
 
@@ -42,14 +51,21 @@ fun CompactNavigationDrawerItem(
         selected: Boolean,
         onClick: () -> Unit
 ) {
+    val containerColor =
+            if (selected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+    val contentColor =
+            if (selected) MaterialTheme.colorScheme.onSecondaryContainer
+            else MaterialTheme.colorScheme.onBackground
+
     Surface(
             modifier =
                     Modifier.fillMaxWidth()
                             .padding(horizontal = AppSpacing.small, vertical = AppSpacing.micro)
-                            .height(AppSizes.buttonMinHeightSmall),
+                            .height(AppSizes.buttonMinHeight),
             onClick = onClick,
-            color = if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
-            shape = MaterialTheme.shapes.small
+            color = containerColor,
+            contentColor = contentColor,
+            shape = RoundedCornerShape(AppBorderRadius.full)
     ) {
         Row(
                 modifier = Modifier.fillMaxSize().padding(horizontal = AppSpacing.medium),
@@ -58,10 +74,8 @@ fun CompactNavigationDrawerItem(
             Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint =
-                            if (selected) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(AppSpacing.small + 4.dp)
+                    tint = contentColor,
+                    modifier = Modifier.size(AppSizes.iconMedium)
             )
 
             Spacer(modifier = Modifier.width(AppSpacing.small))
@@ -70,9 +84,7 @@ fun CompactNavigationDrawerItem(
                     text = label,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = if (selected) FontWeight.Medium else FontWeight.Normal,
-                    color =
-                            if (selected) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.onSurfaceVariant
+                    color = contentColor
             )
         }
     }

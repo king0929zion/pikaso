@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RectangleShape
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -240,6 +240,27 @@ fun PhoneLayout(
                     )
                 }
 
+                // Drawer Scrim (ui_prototype: rgba(0,0,0,0.4) + blur; here we keep scrim only)
+                if (isDrawerOpen) {
+                        Box(
+                                modifier =
+                                        Modifier.fillMaxSize()
+                                                .background(
+                                                        MaterialTheme.colorScheme.scrim.copy(
+                                                                alpha = 0.4f
+                                                        )
+                                                )
+                                                .zIndex(1f)
+                                                .clickable(
+                                                        interactionSource =
+                                                                remember {
+                                                                        MutableInteractionSource()
+                                                                },
+                                                        indication = null
+                                                ) { scope.launch { drawerState.close() } }
+                        )
+                }
+
                 // // 添加一个小方块，填充圆角和工具栏之间的空隙
                 // Box(
                 //         modifier =
@@ -257,14 +278,8 @@ fun PhoneLayout(
                                         .fillMaxHeight()
                                         .graphicsLayer { translationX = drawerOffset.toPx() }
                                         .zIndex(2f),
-                        shape =
-                                MaterialTheme.shapes.medium.copy(
-                                        topEnd = CornerSize(16.dp),
-                                        bottomEnd = CornerSize(16.dp),
-                                        topStart = CornerSize(0.dp),
-                                        bottomStart = CornerSize(0.dp)
-                                ),
-                        color = MaterialTheme.colorScheme.surface,
+                        shape = RectangleShape,
+                        color = MaterialTheme.colorScheme.surfaceVariant,
                         shadowElevation = sidebarElevation
                 ) {
                         // 使用缓存的抽屉内容
@@ -272,20 +287,6 @@ fun PhoneLayout(
                 }
 
                 // 移除黑色遮罩层，改为透明的可点击区域以关闭抽屉
-                if (isDrawerOpen) {
-                        Box(
-                                modifier =
-                                        Modifier.fillMaxSize()
-                                                .offset(x = drawerWidth)
-                                                .zIndex(0.5f)
-                                                .clickable(
-                                                        interactionSource =
-                                                                remember {
-                                                                        MutableInteractionSource()
-                                                                },
-                                                        indication = null
-                                                ) { scope.launch { drawerState.close() } }
-                        )
-                }
+                // (Scrim handled above)
         }
 }
